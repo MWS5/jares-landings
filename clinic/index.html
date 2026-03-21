@@ -1,1 +1,144 @@
-<!DOCTYPE html><html><body><h1>Coming soon</h1></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinicBot — ИИ-агент для Стоматологии</title>
+<style>
+  :root {--accent:#0d9488;--btn:#0f766e;--hover:#115e59;--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--text:#f0f0ff;--muted:#8888aa;--border:rgba(255,255,255,0.08);--radius:16px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .logo{font-size:20px;font-weight:700;color:var(--accent);}
+  .nav-cta{padding:8px 20px;background:var(--btn);color:#fff;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;transition:background 0.2s;}
+  .nav-cta:hover{background:var(--hover);}
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,#0d948822 0%,transparent 70%);pointer-events:none;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:#0d94881a;border:1px solid #0d948844;border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:28px;font-weight:500;}
+  .hero-badge::before{content:'●';font-size:8px;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  h1{font-size:clamp(36px,7vw,72px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:20px;background:linear-gradient(135deg,#fff 40%,#0d9488);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--muted);max-width:580px;margin-bottom:44px;}
+  .hero-cta-group{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+  .btn-primary{padding:16px 36px;background:var(--btn);color:#fff;border-radius:12px;text-decoration:none;font-size:16px;font-weight:700;transition:all 0.2s;box-shadow:0 4px 24px #0d948840;}
+  .btn-primary:hover{background:var(--hover);transform:translateY(-2px);}
+  .btn-secondary{padding:16px 36px;background:var(--surface2);color:var(--text);border-radius:12px;text-decoration:none;font-size:16px;font-weight:600;border:1px solid var(--border);transition:all 0.2s;}
+  .btn-secondary:hover{background:var(--surface);border-color:#0d948844;}
+  .stats{display:flex;gap:48px;flex-wrap:wrap;justify-content:center;padding:40px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .stat{text-align:center;}
+  .stat-num{font-size:36px;font-weight:800;color:var(--accent);letter-spacing:-1px;}
+  .stat-label{font-size:14px;color:var(--muted);margin-top:4px;}
+  section{padding:80px 24px;max-width:1100px;margin:0 auto;}
+  .section-title{text-align:center;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1px;margin-bottom:16px;}
+  .section-sub{text-align:center;color:var(--muted);margin-bottom:56px;font-size:18px;}
+  .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+  .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all 0.3s;}
+  .feature-card:hover{border-color:#0d948844;transform:translateY(-4px);}
+  .feature-icon{width:48px;height:48px;background:#0d94881a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
+  .feature-card h3{font-size:20px;font-weight:700;margin-bottom:10px;}
+  .feature-card p{color:var(--muted);font-size:15px;line-height:1.6;}
+  .pricing-section{background:var(--surface);padding:80px 24px;}
+  .pricing-inner{max-width:1000px;margin:0 auto;}
+  .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:56px;}
+  .plan{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:36px;position:relative;transition:all 0.3s;}
+  .plan.popular{border-color:var(--accent);box-shadow:0 0 40px #0d948820;}
+  .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--btn);color:#fff;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:700;white-space:nowrap;}
+  .plan-name{font-size:16px;font-weight:600;color:var(--muted);margin-bottom:8px;}
+  .plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;color:var(--text);margin-bottom:4px;}
+  .plan-period{color:var(--muted);font-size:14px;margin-bottom:28px;}
+  .plan-features{list-style:none;margin-bottom:32px;}
+  .plan-features li{padding:8px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--muted);display:flex;align-items:center;gap:10px;}
+  .plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;}
+  .plan-features li:last-child{border-bottom:none;}
+  .plan-btn{display:block;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;transition:all 0.2s;}
+  .plan.popular .plan-btn{background:var(--btn);color:#fff;}
+  .plan.popular .plan-btn:hover{background:var(--hover);}
+  .plan:not(.popular) .plan-btn{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+  .plan:not(.popular) .plan-btn:hover{border-color:#0d948844;}
+  .steps{display:flex;flex-wrap:wrap;justify-content:center;}
+  .step{flex:1;min-width:200px;max-width:260px;text-align:center;padding:32px 24px;position:relative;}
+  .step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:20px;}
+  .step:last-child::after{display:none;}
+  .step-num{width:52px;height:52px;background:#0d94881a;border:2px solid #0d948844;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--accent);margin:0 auto 20px;}
+  .step h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .step p{color:var(--muted);font-size:14px;}
+  .cta-banner{text-align:center;padding:80px 24px;background:linear-gradient(135deg,#0d948815,transparent);border-top:1px solid var(--border);}
+  .cta-banner h2{font-size:clamp(28px,4vw,44px);font-weight:800;margin-bottom:16px;}
+  .cta-banner p{color:var(--muted);font-size:18px;margin-bottom:40px;}
+  footer{text-align:center;padding:32px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:14px;}
+  footer a{color:var(--accent);text-decoration:none;}
+  @media(max-width:600px){nav{padding:14px 20px;}.hero{padding:100px 16px 60px;}.stats{gap:24px;padding:32px 16px;}}
+</style>
+</head>
+<body>
+<nav><div class="logo">⚡ ClinicBot</div><a href="https://t.me/JaresAgentsBot" class="nav-cta">Попробовать бесплатно</a></nav>
+<div class="hero">
+  <div class="hero-badge">ИИ-агент для бизнеса · JARES AI</div>
+  <h1>Автоматизируй<br>Стоматологии<br>с помощью ИИ</h1>
+  <p class="hero-sub">ClinicBot отвечает клиентам 24/7, квалифицирует заявки и записывает на встречи. Без найма, без задержек.</p>
+  <div class="hero-cta-group">
+    <a href="https://t.me/JaresAgentsBot" class="btn-primary">🚀 Запустить агента</a>
+    <a href="#pricing" class="btn-secondary">Посмотреть тарифы</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Без выходных</div></div>
+  <div class="stat"><div class="stat-num">&lt;2с</div><div class="stat-label">Время ответа</div></div>
+  <div class="stat"><div class="stat-num">+40%</div><div class="stat-label">Конверсия заявок</div></div>
+  <div class="stat"><div class="stat-num">от €99</div><div class="stat-label">В месяц</div></div>
+</div>
+<section id="features">
+  <h2 class="section-title">Что умеет ClinicBot</h2>
+  <p class="section-sub">Полная автоматизация коммуникации с клиентами</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">💬</div><h3>Отвечает мгновенно</h3><p>Клиент пишет в Telegram, WhatsApp или на сайт — получает ответ за секунды. Никаких пропущенных заявок.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Квалифицирует клиентов</h3><p>Задаёт нужные вопросы, определяет готовность клиента и приоритизирует горячие заявки.</p></div>
+    <div class="feature-card"><div class="feature-icon">📅</div><h3>Записывает на встречи</h3><p>Автоматически предлагает слоты и записывает клиентов без участия сотрудников.</p></div>
+    <div class="feature-card"><div class="feature-icon">📊</div><h3>Аналитика и отчёты</h3><p>Вы видите сколько заявок пришло и какова конверсия — в реальном времени.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔗</div><h3>CRM интеграция</h3><p>Подключается к вашей CRM и автоматически создаёт сделки и обновляет статусы.</p></div>
+    <div class="feature-card"><div class="feature-icon">🌐</div><h3>Мультиканальность</h3><p>Один агент работает в Telegram, WhatsApp, Instagram Direct и на сайте.</p></div>
+  </div>
+</section>
+<section id="how">
+  <h2 class="section-title">Как это работает</h2>
+  <p class="section-sub">Запуск за 48 часов без программистов</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h3>Оставьте заявку</h3><p>Напишите в бот — ответим в течение часа</p></div>
+    <div class="step"><div class="step-num">2</div><h3>Настройка агента</h3><p>Настраиваем под ваш бизнес и базу знаний</p></div>
+    <div class="step"><div class="step-num">3</div><h3>Тест и запуск</h3><p>Тестируем вместе с вами и запускаем</p></div>
+    <div class="step"><div class="step-num">4</div><h3>Работает сам</h3><p>Агент работает 24/7, вы получаете клиентов</p></div>
+  </div>
+</section>
+<div class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <h2 class="section-title">Тарифы</h2>
+    <p class="section-sub">Прозрачные цены, без скрытых платежей</p>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-name">Старт</div><div class="plan-price">€99</div><div class="plan-period">в месяц</div>
+        <ul class="plan-features"><li>1 канал связи</li><li>До 500 диалогов/мес</li><li>Базовые ответы на FAQ</li><li>Email поддержка</li></ul>
+        <a href="https://t.me/JaresAgentsBot" class="plan-btn">Выбрать</a>
+      </div>
+      <div class="plan popular">
+        <div class="plan-badge">Популярный</div>
+        <div class="plan-name">Бизнес</div><div class="plan-price">€198</div><div class="plan-period">в месяц</div>
+        <ul class="plan-features"><li>3 канала связи</li><li>До 2000 диалогов/мес</li><li>Квалификация клиентов</li><li>CRM интеграция</li><li>Аналитика и отчёты</li><li>Чат поддержка</li></ul>
+        <a href="https://t.me/JaresAgentsBot" class="plan-btn">Выбрать</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Про</div><div class="plan-price">€594</div><div class="plan-period">в месяц</div>
+        <ul class="plan-features"><li>Все каналы связи</li><li>Безлимитные диалоги</li><li>Полная кастомизация</li><li>Приоритетная поддержка</li><li>Выделенный менеджер</li><li>White Label</li></ul>
+        <a href="https://t.me/JaresAgentsBot" class="plan-btn">Выбрать</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cta-banner">
+  <h2>Готовы автоматизировать Стоматологии?</h2>
+  <p>Первые 7 дней бесплатно — без карты, без рисков</p>
+  <a href="https://t.me/JaresAgentsBot" class="btn-primary" style="display:inline-block">🚀 Начать бесплатно</a>
+</div>
+<footer><p>© 2026 JARES AI · <a href="https://jares-ai.com">jares-ai.com</a> · <a href="https://t.me/JaresAgentsBot">Telegram</a></p></footer>
+</body>
+</html>
