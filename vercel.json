@@ -1,0 +1,9 @@
+{
+  "routes": [
+    { "src": "/salon(.*)", "dest": "/salon/index.html" },
+    { "src": "/clinic(.*)", "dest": "/clinic/index.html" },
+    { "src": "/hotel(.*)", "dest": "/hotel/index.html" },
+    { "src": "/realty(.*)", "dest": "/realty/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
