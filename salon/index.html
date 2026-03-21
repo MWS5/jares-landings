@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><body><h1>SalonBot — coming soon</h1></body></html>
+```
+Нажми **"Commit changes"**
+
+Повтори для `index.html` в корне (главная страница).
+
+---
+
+## Шаг 3 — Возвращаемся в Vercel
+
+Теперь в Vercel на экране "New Project":
+
+**Нажми "Install"** (кнопка с GitHub на скриншоте 4) — это подключает GitHub аккаунт MWS5 к Vercel.
+
+После установки появится список репозиториев → найди **`jares-landings`** → нажми **Import**.
+
+Настройки оставь по умолчанию → нажми **Deploy**.
+
+---
+
+## Шаг 4 — Подключаем домен jares-ai.com
+
+После деплоя → Settings → Domains → Add:
+```
+jares-ai.com
+www.jares-ai.com
+*.jares-ai.com     ← wildcard для всех поддоменов
+```
+
+---
+
+## Шаг 5 — DNS у регистратора домена
+
+Где купил `jares-ai.com`? (Namecheap / GoDaddy / другой?) — скажи и дам точные скриншоты где прописать:
+```
+A     @    76.76.21.21
+CNAME *    cname.vercel-dns.com
