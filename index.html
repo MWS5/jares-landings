@@ -367,6 +367,7 @@
 
     /* ── LEAD POPUP — slides up from widget ── */
     #lead-popup {
+      display: none;
       position: fixed;
       bottom: 130px;
       left: 28px;
@@ -374,55 +375,79 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 20px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.14), 0 2px 12px rgba(0,122,255,0.08);
       padding: 24px 22px 20px;
       z-index: 9997;
-      transform: translateY(16px);
+      transform: translateY(20px);
       opacity: 0;
       pointer-events: none;
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.28s ease;
+      transition: transform 0.38s cubic-bezier(0.34,1.56,0.64,1), opacity 0.28s ease;
     }
     #lead-popup.visible {
       transform: translateY(0);
       opacity: 1;
       pointer-events: all;
     }
+    /* Blue accent bar at top */
+    #lead-popup::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-mid));
+      border-radius: 20px 20px 0 0;
+    }
     .lp-close {
       position: absolute; top: 12px; right: 14px;
-      background: none; border: none; color: var(--gray);
-      font-size: 1.1rem; cursor: pointer; line-height: 1;
-      padding: 4px; font-family: inherit;
+      background: none; border: none; color: #c0c0c8;
+      font-size: 1rem; cursor: pointer; line-height: 1;
+      padding: 4px 6px; font-family: inherit; border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
     }
-    .lp-close:hover { color: var(--black); }
-    .lp-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .lp-close:hover { color: var(--black); background: var(--light); }
+    /* Header row: icon + label */
+    .lp-head {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .lp-orb {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
     .lp-title {
-      font-size: 0.95rem; font-weight: 700; color: var(--black);
-      margin-bottom: 4px; letter-spacing: -0.01em;
+      font-size: 0.92rem; font-weight: 700; color: var(--black);
+      letter-spacing: -0.01em; line-height: 1.25;
     }
-    .lp-sub { font-size: 0.78rem; color: var(--gray); margin-bottom: 16px; line-height: 1.4; }
+    .lp-sub { font-size: 0.77rem; color: var(--gray); margin-bottom: 14px; line-height: 1.45; }
     .lp-input {
-      width: 100%; padding: 11px 14px;
-      border: 1.5px solid var(--border); border-radius: 12px;
-      font-size: 0.88rem; font-family: inherit; color: var(--black);
-      background: var(--white); outline: none;
-      transition: border-color 0.15s;
-      margin-bottom: 10px;
+      width: 100%; padding: 10px 13px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 0.87rem; font-family: inherit; color: var(--black);
+      background: var(--light); outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      margin-bottom: 8px; box-sizing: border-box;
     }
-    .lp-input:focus { border-color: var(--blue); }
+    .lp-input:focus { border-color: var(--blue); background: var(--white); }
     .lp-input::placeholder { color: #b0b0b8; }
     .lp-btn {
-      width: 100%; padding: 12px;
-      background: var(--blue); color: var(--white);
-      border: none; border-radius: 12px;
-      font-size: 0.9rem; font-weight: 600; font-family: inherit;
+      width: 100%; padding: 11px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+      color: var(--white);
+      border: none; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600; font-family: inherit;
       cursor: pointer; transition: opacity 0.15s, transform 0.15s;
+      letter-spacing: 0.01em;
     }
-    .lp-btn:hover { opacity: 0.86; transform: scale(1.01); }
+    .lp-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .lp-btn:active { transform: scale(0.99); }
     .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .lp-success { display: none; text-align: center; padding: 8px 0 4px; }
-    .lp-success-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
-    .lp-success-text { font-size: 0.88rem; color: var(--gray); line-height: 1.5; }
-    .lp-divider { font-size: 0.72rem; color: #c0c0c8; text-align: center; margin: 8px 0; }
+    .lp-success { display: none; text-align: center; padding: 12px 0 6px; }
+    .lp-success-icon { font-size: 2.2rem; display: block; margin-bottom: 10px; }
+    .lp-success-title { font-weight: 700; font-size: 0.95rem; color: var(--black); margin-bottom: 6px; }
+    .lp-success-text { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+    .lp-divider { font-size: 0.7rem; color: #d0d0d8; text-align: center; margin: 4px 0 8px; letter-spacing: 0.03em; }
 
     /* ── SCROLL REVEAL ── */
     .r { opacity:0; transform: translateY(22px); transition: opacity 0.85s ease, transform 0.85s ease; }
@@ -660,23 +685,25 @@
   ></elevenlabs-convai>
   <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
 
-  <!-- LEAD CAPTURE POPUP — slides up after conversation ends -->
+  <!-- LEAD CAPTURE POPUP — slides up after conversation ends / scroll / exit intent -->
   <div id="lead-popup">
     <button class="lp-close" onclick="closeLeadPopup()" aria-label="Close">&#x2715;</button>
     <div id="lp-form-view">
-      <span class="lp-icon">💬</span>
-      <div class="lp-title" id="lp-title">Leave your contacts</div>
+      <div class="lp-head">
+        <div class="lp-orb">💬</div>
+        <div class="lp-title" id="lp-title">Leave your contacts</div>
+      </div>
       <div class="lp-sub" id="lp-sub">We will get back to you within a few hours. No spam — just one message.</div>
       <input class="lp-input" id="lp-contact" type="text" placeholder="Phone or email" autocomplete="email" />
       <div class="lp-divider" id="lp-or">or</div>
-      <input class="lp-input" id="lp-name" type="text" placeholder="Your name (optional)" />
+      <input class="lp-input" id="lp-name" type="text" placeholder="Your name (optional)" autocomplete="name" />
       <button class="lp-btn" id="lp-send" onclick="submitLead()">
         <span id="lp-btn-text">Send ✉️</span>
       </button>
     </div>
     <div class="lp-success" id="lp-success-view">
       <span class="lp-success-icon">🎉</span>
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px" id="lp-thanks">Thank you!</div>
+      <div class="lp-success-title" id="lp-thanks">Thank you!</div>
       <div class="lp-success-text" id="lp-thanks-sub">We got your details and will be in touch very soon.</div>
     </div>
   </div>
@@ -958,46 +985,50 @@
 
   /* ══════════════════════════════════════
      HIDE ELEVENLABS BRANDING (shadow DOM)
+     Only targets the "Powered by" footer link — NOT the orb/button
   ══════════════════════════════════════ */
   function hideBranding(widget) {
     const root = widget.shadowRoot;
     if (!root) return;
-    const style = document.createElement('style');
-    style.textContent = `
-      a[href*="elevenlabs"] { display: none !important; }
-      div:has(> a[href*="elevenlabs"]) { display: none !important; }
-      [class*="powered" i], [class*="footer" i], [class*="branding" i],
-      [class*="Powered"], [class*="Footer"] { display: none !important; }
-    `;
-    root.appendChild(style);
 
-    /* Also DOM-walk to catch dynamically rendered banner */
+    /* CSS: hide only anchor tags pointing to elevenlabs.io (the "Powered by" link) */
+    if (!root.querySelector('#jares-no-brand')) {
+      const style = document.createElement('style');
+      style.id = 'jares-no-brand';
+      style.textContent = `
+        a[href*="elevenlabs.io"] { display: none !important; visibility: hidden !important; }
+        [class*="powered" i] { display: none !important; }
+        [class*="Powered"]   { display: none !important; }
+      `;
+      root.appendChild(style);
+    }
+
+    /* JS walk: go up max 2 levels from the "Powered by" link — avoids hiding the orb */
     function killBanner() {
-      root.querySelectorAll('a[href*="elevenlabs"]').forEach(a => {
-        let el = a;
-        for (let i = 0; i < 4; i++) {
-          if (el.parentElement && el.parentElement !== root) el = el.parentElement;
-          else break;
+      root.querySelectorAll('a[href*="elevenlabs.io"]').forEach(a => {
+        /* Step up 1-2 levels to catch the wrapper, but stop before root */
+        let el = a.parentElement && a.parentElement !== root ? a.parentElement : a;
+        if (el.parentElement && el.parentElement !== root && el.children.length <= 3) {
+          el = el.parentElement;
         }
-        el.style.setProperty('display','none','important');
+        el.style.setProperty('display', 'none', 'important');
       });
     }
     killBanner();
-    setTimeout(killBanner, 600);
-    setTimeout(killBanner, 2000);
+    setTimeout(killBanner, 800);
+    setTimeout(killBanner, 2500);
     new MutationObserver(killBanner).observe(root, { childList: true, subtree: true });
   }
 
   function initBrandingHider() {
     document.querySelectorAll('elevenlabs-convai').forEach(w => {
       hideBranding(w);
-      /* Retry after script loads async */
-      setTimeout(() => hideBranding(w), 1000);
-      setTimeout(() => hideBranding(w), 3000);
+      setTimeout(() => hideBranding(w), 1200);
+      setTimeout(() => hideBranding(w), 3500);
     });
   }
   window.addEventListener('load', initBrandingHider);
-  setTimeout(initBrandingHider, 500);
+  setTimeout(initBrandingHider, 600);
 
   /* ══════════════════════════════════════
      LEAD CAPTURE POPUP
@@ -1097,6 +1128,31 @@
   }
   window.addEventListener('load', attachWidgetEvents);
   setTimeout(attachWidgetEvents, 1500);
+
+  /* ══════════════════════════════════════
+     POPUP FALLBACK TRIGGERS
+     Show lead popup even if no conversation happens
+  ══════════════════════════════════════ */
+
+  /* 1. Scroll: show 2.5s after user scrolls past 72% of the page */
+  window.addEventListener('scroll', function onScrollTrigger() {
+    const pct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+    if (pct >= 0.72) {
+      window.removeEventListener('scroll', onScrollTrigger);
+      setTimeout(showLeadPopup, 2500);
+    }
+  }, { passive: true });
+
+  /* 2. Exit intent: mouse leaves viewport through the top edge */
+  document.addEventListener('mouseleave', function onExitIntent(e) {
+    if (e.clientY <= 0) {
+      document.removeEventListener('mouseleave', onExitIntent);
+      setTimeout(showLeadPopup, 800);
+    }
+  });
+
+  /* 3. Timer fallback: show after 2.5 min of idle browsing */
+  setTimeout(showLeadPopup, 150000);
   </script>
 </body>
 </html>
