@@ -984,51 +984,27 @@
   }
 
   /* ══════════════════════════════════════
-     HIDE ELEVENLABS BRANDING (shadow DOM)
-     Only targets the "Powered by" footer link — NOT the orb/button
+     HIDE "Powered by ElevenLabs" TEXT ONLY
+     CSS-only — no DOM parent traversal (that was hiding the widget)
   ══════════════════════════════════════ */
   function hideBranding(widget) {
-    const root = widget.shadowRoot;
-    if (!root) return;
-
-    /* CSS: hide only anchor tags pointing to elevenlabs.io (the "Powered by" link) */
-    if (!root.querySelector('#jares-no-brand')) {
-      const style = document.createElement('style');
-      style.id = 'jares-no-brand';
-      style.textContent = `
-        a[href*="elevenlabs.io"] { display: none !important; visibility: hidden !important; }
-        [class*="powered" i] { display: none !important; }
-        [class*="Powered"]   { display: none !important; }
-      `;
-      root.appendChild(style);
-    }
-
-    /* JS walk: go up max 2 levels from the "Powered by" link — avoids hiding the orb */
-    function killBanner() {
-      root.querySelectorAll('a[href*="elevenlabs.io"]').forEach(a => {
-        /* Step up 1-2 levels to catch the wrapper, but stop before root */
-        let el = a.parentElement && a.parentElement !== root ? a.parentElement : a;
-        if (el.parentElement && el.parentElement !== root && el.children.length <= 3) {
-          el = el.parentElement;
-        }
-        el.style.setProperty('display', 'none', 'important');
-      });
-    }
-    killBanner();
-    setTimeout(killBanner, 800);
-    setTimeout(killBanner, 2500);
-    new MutationObserver(killBanner).observe(root, { childList: true, subtree: true });
+    if (!widget.shadowRoot || widget.shadowRoot.querySelector('#jares-no-brand')) return;
+    const s = document.createElement('style');
+    s.id = 'jares-no-brand';
+    /* Target only the link/text itself — never its parent containers */
+    s.textContent = `
+      a[href*="elevenlabs.io"] { display:none!important; }
+      [class*="powered" i]     { display:none!important; }
+      [class*="Powered"]       { display:none!important; }
+    `;
+    widget.shadowRoot.appendChild(s);
   }
 
+  /* Retry a few times to catch async-rendered shadow DOM */
   function initBrandingHider() {
-    document.querySelectorAll('elevenlabs-convai').forEach(w => {
-      hideBranding(w);
-      setTimeout(() => hideBranding(w), 1200);
-      setTimeout(() => hideBranding(w), 3500);
-    });
+    document.querySelectorAll('elevenlabs-convai').forEach(hideBranding);
   }
-  window.addEventListener('load', initBrandingHider);
-  setTimeout(initBrandingHider, 600);
+  [800, 2000, 4000].forEach(t => setTimeout(initBrandingHider, t));
 
   /* ══════════════════════════════════════
      LEAD CAPTURE POPUP
