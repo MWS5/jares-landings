@@ -365,13 +365,13 @@
       z-index: 9998;
     }
 
-    /* ── LEAD POPUP — slides up from widget ── */
+    /* ── LEAD POPUP — slides up above ElevenLabs widget ── */
     #lead-popup {
       display: none;
       position: fixed;
-      bottom: 130px;
+      bottom: 152px;
       left: 28px;
-      width: 288px;
+      width: 292px;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 20px;
@@ -467,7 +467,7 @@
       .step { border-right: none; border-bottom: 1px solid var(--border); }
       .step:last-child { border-bottom: none; }
       elevenlabs-convai { bottom: 20px !important; left: 16px !important; }
-      #lead-popup { left: 16px; width: calc(100vw - 32px); bottom: 120px; }
+      #lead-popup { left: 16px; width: calc(100vw - 32px); bottom: 144px; }
     }
 
     /* ── NO CURSOR ON MOBILE / TABLET ── */
@@ -1047,20 +1047,22 @@
 
   let popupShown = false;
   function showLeadPopup() {
+    /* Don't show if already closed this session */
+    if (sessionStorage.getItem('lp_dismissed')) return;
     if (popupShown) return;
     popupShown = true;
     updatePopupLang(currentLang);
     const p = document.getElementById('lead-popup');
     p.style.display = 'block';
     requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('visible')));
-    /* Auto-close after 45 sec if untouched */
-    setTimeout(() => { if (!p.querySelector('#lp-contact').value) closeLeadPopup(); }, 45000);
   }
 
   function closeLeadPopup() {
+    /* Mark dismissed — won't show again until page refresh */
+    sessionStorage.setItem('lp_dismissed', '1');
     const p = document.getElementById('lead-popup');
     p.classList.remove('visible');
-    setTimeout(() => { p.style.display = 'none'; }, 350);
+    setTimeout(() => { p.style.display = 'none'; }, 380);
   }
 
   async function submitLead() {
@@ -1130,29 +1132,10 @@
   setTimeout(attachWidgetEvents, 1500);
 
   /* ══════════════════════════════════════
-     POPUP FALLBACK TRIGGERS
-     Show lead popup even if no conversation happens
+     POPUP TRIGGER — 5.5s after page load
+     Slides up above the ElevenLabs widget
   ══════════════════════════════════════ */
-
-  /* 1. Scroll: show 2.5s after user scrolls past 72% of the page */
-  window.addEventListener('scroll', function onScrollTrigger() {
-    const pct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
-    if (pct >= 0.72) {
-      window.removeEventListener('scroll', onScrollTrigger);
-      setTimeout(showLeadPopup, 2500);
-    }
-  }, { passive: true });
-
-  /* 2. Exit intent: mouse leaves viewport through the top edge */
-  document.addEventListener('mouseleave', function onExitIntent(e) {
-    if (e.clientY <= 0) {
-      document.removeEventListener('mouseleave', onExitIntent);
-      setTimeout(showLeadPopup, 800);
-    }
-  });
-
-  /* 3. Timer fallback: show after 2.5 min of idle browsing */
-  setTimeout(showLeadPopup, 150000);
+  setTimeout(showLeadPopup, 5500);
   </script>
 </body>
 </html>
