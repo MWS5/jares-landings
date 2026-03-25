@@ -862,6 +862,27 @@
     ru: "Привет! Я Jares — ИИ этого маркетплейса. Какой у тебя бизнес? Подберу идеального ИИ-агента за 60 секунд."
   };
 
+  /* ══════════════════════════════════════
+     LEAD POPUP TRANSLATIONS (must be before applyLang call)
+  ══════════════════════════════════════ */
+  const LP_TEXTS = {
+    en: { title:'Leave your contacts', sub:'We will reach out within a few hours. One message, no spam.',
+          or:'or', btn:'Send \u2709\uFE0F', thanks:'Thank you!', thanks_sub:'We got your details and will be in touch very soon.',
+          ph_contact:'Phone or email', ph_name:'Your name (optional)' },
+    de: { title:'Hinterlassen Sie Ihre Kontakte', sub:'Wir melden uns in wenigen Stunden. Kein Spam.',
+          or:'oder', btn:'Senden \u2709\uFE0F', thanks:'Vielen Dank!', thanks_sub:'Wir haben Ihre Daten und melden uns bald.',
+          ph_contact:'Telefon oder E-Mail', ph_name:'Ihr Name (optional)' },
+    fr: { title:'Laissez vos coordonnées', sub:'Nous vous répondons dans quelques heures. Aucun spam.',
+          or:'ou', btn:'Envoyer \u2709\uFE0F', thanks:'Merci !', thanks_sub:'Nous avons vos coordonnées et vous contacterons très bientôt.',
+          ph_contact:'Téléphone ou e-mail', ph_name:'Votre prénom (optionnel)' },
+    es: { title:'Deja tus contactos', sub:'Te respondemos en unas horas. Sin spam.',
+          or:'o', btn:'Enviar \u2709\uFE0F', thanks:'¡Gracias!', thanks_sub:'Recibimos tus datos y te contactaremos muy pronto.',
+          ph_contact:'Teléfono o email', ph_name:'Tu nombre (opcional)' },
+    ru: { title:'\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u044b', sub:'\u0421\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0442\u0435\u0447\u0435\u043d\u0438\u0435 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u0438\u0445 \u0447\u0430\u0441\u043e\u0432. \u041d\u0438\u043a\u0430\u043a\u043e\u0433\u043e \u0441\u043f\u0430\u043c\u0430.',
+          or:'\u0438\u043b\u0438', btn:'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u2709\uFE0F', thanks:'\u0421\u043f\u0430\u0441\u0438\u0431\u043e!', thanks_sub:'\u041c\u044b \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u0438 \u0432\u0430\u0448\u0438 \u0434\u0430\u043d\u043d\u044b\u0435 \u0438 \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f.',
+          ph_contact:'\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u0438\u043b\u0438 email', ph_name:'\u0412\u0430\u0448\u0435 \u0438\u043c\u044f (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)' }
+  };
+
   let currentLang = 'en';
 
   function syncWidget(lang) {
@@ -914,6 +935,7 @@
   if (window.matchMedia('(min-width: 1025px)').matches) {
     const cur = document.getElementById('cursor');
     const dot = document.getElementById('cursor-dot');
+    if (cur && dot) {
     let mx=0, my=0, cx=0, cy=0;
     document.addEventListener('mousemove', e => {
       mx = e.clientX; my = e.clientY;
@@ -931,6 +953,7 @@
       el.addEventListener('mouseenter', () => cur.classList.add('big'));
       el.addEventListener('mouseleave', () => cur.classList.remove('big'));
     });
+    } /* end if (cur && dot) */
   }
 
   /* ══════════════════════════════════════
@@ -979,24 +1002,6 @@
   /* ══════════════════════════════════════
      LEAD CAPTURE POPUP
   ══════════════════════════════════════ */
-  const LP_TEXTS = {
-    en: { title:'Leave your contacts', sub:'We will reach out within a few hours. One message, no spam.',
-          or:'or', btn:'Send \u2709\uFE0F', thanks:'Thank you!', thanks_sub:'We got your details and will be in touch very soon.',
-          ph_contact:'Phone or email', ph_name:'Your name (optional)' },
-    de: { title:'Hinterlassen Sie Ihre Kontakte', sub:'Wir melden uns in wenigen Stunden. Kein Spam.',
-          or:'oder', btn:'Senden \u2709\uFE0F', thanks:'Vielen Dank!', thanks_sub:'Wir haben Ihre Daten und melden uns bald.',
-          ph_contact:'Telefon oder E-Mail', ph_name:'Ihr Name (optional)' },
-    fr: { title:'Laissez vos coordonnées', sub:'Nous vous répondons dans quelques heures. Aucun spam.',
-          or:'ou', btn:'Envoyer \u2709\uFE0F', thanks:'Merci !', thanks_sub:'Nous avons vos coordonnées et vous contacterons très bientôt.',
-          ph_contact:'Téléphone ou e-mail', ph_name:'Votre prénom (optionnel)' },
-    es: { title:'Deja tus contactos', sub:'Te respondemos en unas horas. Sin spam.',
-          or:'o', btn:'Enviar \u2709\uFE0F', thanks:'¡Gracias!', thanks_sub:'Recibimos tus datos y te contactaremos muy pronto.',
-          ph_contact:'Teléfono o email', ph_name:'Tu nombre (opcional)' },
-    ru: { title:'\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u044b', sub:'\u0421\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0442\u0435\u0447\u0435\u043d\u0438\u0435 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u0438\u0445 \u0447\u0430\u0441\u043e\u0432. \u041d\u0438\u043a\u0430\u043a\u043e\u0433\u043e \u0441\u043f\u0430\u043c\u0430.',
-          or:'\u0438\u043b\u0438', btn:'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u2709\uFE0F', thanks:'\u0421\u043f\u0430\u0441\u0438\u0431\u043e!', thanks_sub:'\u041c\u044b \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u0438 \u0432\u0430\u0448\u0438 \u0434\u0430\u043d\u043d\u044b\u0435 \u0438 \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f.',
-          ph_contact:'\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u0438\u043b\u0438 email', ph_name:'\u0412\u0430\u0448\u0435 \u0438\u043c\u044f (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)' }
-  };
-
   function updatePopupLang(lang) {
     const t = LP_TEXTS[lang] || LP_TEXTS.en;
     document.getElementById('lp-title').textContent      = t.title;
