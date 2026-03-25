@@ -93,6 +93,22 @@ footer a:hover{color:var(--text)}
 .hero h1 [data-lang], .hero p [data-lang]{display:none}
 .hero h1 [data-lang].active, .hero p [data-lang].active{display:inline}
 
+/* JARES VOICE SECTION */
+.voice-section{border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(124,58,237,.07) 0%,transparent 100%);padding:44px 48px}
+.voice-section-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.voice-left{flex:1;min-width:260px}
+.voice-live-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.voice-live-dot{width:9px;height:9px;border-radius:50%;background:#10b981;flex-shrink:0;animation:vdot 2s ease-in-out infinite}
+@keyframes vdot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,185,129,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.voice-live-label{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:500}
+.voice-section h3{font-size:22px;font-weight:700;margin-bottom:10px;line-height:1.3}
+.voice-section p{color:var(--muted);font-size:14px;line-height:1.7;max-width:420px}
+.voice-right{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0}
+.voice-mic-icon{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#6d28d9);display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 0 32px rgba(124,58,237,.35);animation:vpulse 2.5s ease-in-out infinite;cursor:pointer;border:none}
+@keyframes vpulse{0%,100%{box-shadow:0 0 32px rgba(124,58,237,.35),0 0 0 0 rgba(124,58,237,.25)}50%{box-shadow:0 0 48px rgba(124,58,237,.5),0 0 0 14px rgba(124,58,237,0)}}
+.voice-cta-hint{font-size:12px;color:var(--muted);text-align:center;max-width:120px}
+@media(max-width:768px){.voice-section{padding:32px 20px}.voice-right{display:none}}
+
 @media(max-width:768px){
   nav{padding:14px 20px}
   .nav-right{gap:10px}
@@ -133,6 +149,24 @@ footer a:hover{color:var(--text)}
     <a href="#agents" class="btn-outline" id="btn-agents">See All Agents</a>
   </div>
 </section>
+
+<!-- JARES VOICE SECTION -->
+<div class="voice-section">
+  <div class="voice-section-inner">
+    <div class="voice-left">
+      <div class="voice-live-row">
+        <div class="voice-live-dot"></div>
+        <span class="voice-live-label" id="voice-live-label">Jares is live</span>
+      </div>
+      <h3 id="voice-title">Ask Jares — he'll find the perfect AI for your business</h3>
+      <p id="voice-desc">Click the microphone button in the corner, tell me what you do, and I'll match you with the right agent in 60 seconds.</p>
+    </div>
+    <div class="voice-right">
+      <div class="voice-mic-icon" onclick="openJaresWidget()">🎙</div>
+      <span class="voice-cta-hint" id="voice-cta-hint">Click to talk</span>
+    </div>
+  </div>
+</div>
 
 <!-- STATS -->
 <div class="stats">
@@ -241,7 +275,8 @@ const TRANSLATIONS = {
     "step2-h":"Leave contact","step2-p":"We reach out within 24h to configure your agent",
     "step3-h":"Go live","step3-p":"Your agent starts replying to clients automatically",
     "step4-h":"You get leads","step4-p":"Every qualified lead lands directly in your Telegram",
-    "cta-h2":"Ready to automate<br>your business?","cta-p":"Start free trial — no credit card needed","cta-btn":"Open in Telegram"
+    "cta-h2":"Ready to automate<br>your business?","cta-p":"Start free trial — no credit card needed","cta-btn":"Open in Telegram",
+    "voice-live-label":"Jares is live","voice-title":"Ask Jares — he'll find the perfect AI for your business","voice-desc":"Click the microphone button in the corner, tell me what you do, and I'll match you with the right agent in 60 seconds.","voice-cta-hint":"Click to talk"
   },
   de: {
     "nav-cta":"Kostenlos testen →","badge-text":"KI-Agenten Marktplatz",
@@ -260,7 +295,8 @@ const TRANSLATIONS = {
     "step2-h":"Kontakt hinterlassen","step2-p":"Wir melden uns in 24h und konfigurieren deinen Agenten",
     "step3-h":"Live gehen","step3-p":"Dein Agent beginnt automatisch zu antworten",
     "step4-h":"Leads erhalten","step4-p":"Jeder qualifizierte Lead landet direkt in deinem Telegram",
-    "cta-h2":"Bereit, dein Business<br>zu automatisieren?","cta-p":"Kostenlos testen — keine Kreditkarte nötig","cta-btn":"In Telegram öffnen"
+    "cta-h2":"Bereit, dein Business<br>zu automatisieren?","cta-p":"Kostenlos testen — keine Kreditkarte nötig","cta-btn":"In Telegram öffnen",
+    "voice-live-label":"Jares ist live","voice-title":"Frag Jares — er findet die perfekte KI für dein Unternehmen","voice-desc":"Klick auf den Mikrofon-Button, sag mir was du machst — ich finde deinen KI-Agenten in 60 Sekunden.","voice-cta-hint":"Klicken zum Sprechen"
   },
   fr: {
     "nav-cta":"Essai gratuit →","badge-text":"Marketplace d'agents IA",
@@ -279,7 +315,8 @@ const TRANSLATIONS = {
     "step2-h":"Laisser contact","step2-p":"Nous vous contactons en 24h pour configurer votre agent",
     "step3-h":"Lancer","step3-p":"Votre agent commence à répondre automatiquement",
     "step4-h":"Recevoir des leads","step4-p":"Chaque lead qualifié arrive directement dans votre Telegram",
-    "cta-h2":"Prêt à automatiser<br>votre business?","cta-p":"Essai gratuit — sans carte bancaire","cta-btn":"Ouvrir dans Telegram"
+    "cta-h2":"Prêt à automatiser<br>votre business?","cta-p":"Essai gratuit — sans carte bancaire","cta-btn":"Ouvrir dans Telegram",
+    "voice-live-label":"Jares est en ligne","voice-title":"Demandez à Jares — il trouve l'IA parfaite pour votre entreprise","voice-desc":"Cliquez sur le bouton micro dans le coin, dites-moi ce que vous faites — je vous trouve le bon agent en 60 secondes.","voice-cta-hint":"Cliquer pour parler"
   },
   es: {
     "nav-cta":"Prueba gratis →","badge-text":"Marketplace de agentes IA",
@@ -298,7 +335,8 @@ const TRANSLATIONS = {
     "step2-h":"Deja contacto","step2-p":"Te contactamos en 24h para configurar tu agente",
     "step3-h":"En vivo","step3-p":"Tu agente empieza a responder automáticamente",
     "step4-h":"Recibes leads","step4-p":"Cada lead calificado llega directamente a tu Telegram",
-    "cta-h2":"¿Listo para automatizar<br>tu negocio?","cta-p":"Prueba gratuita — sin tarjeta de crédito","cta-btn":"Abrir en Telegram"
+    "cta-h2":"¿Listo para automatizar<br>tu negocio?","cta-p":"Prueba gratuita — sin tarjeta de crédito","cta-btn":"Abrir en Telegram",
+    "voice-live-label":"Jares está en vivo","voice-title":"Pregunta a Jares — encontrará la IA perfecta para tu negocio","voice-desc":"Haz clic en el botón del micrófono, cuéntame qué haces — te emparejaré con el agente correcto en 60 segundos.","voice-cta-hint":"Clic para hablar"
   },
   ru: {
     "nav-cta":"Попробовать →","badge-text":"Маркетплейс ИИ-агентов",
@@ -317,11 +355,44 @@ const TRANSLATIONS = {
     "step2-h":"Оставь контакт","step2-p":"Свяжемся в течение 24 часов и настроим агента",
     "step3-h":"Запуск","step3-p":"Агент начинает автоматически отвечать клиентам",
     "step4-h":"Получай лиды","step4-p":"Каждый квалифицированный лид приходит прямо в твой Telegram",
-    "cta-h2":"Готов автоматизировать<br>свой бизнес?","cta-p":"Бесплатный пробный период — без карты","cta-btn":"Открыть в Telegram"
+    "cta-h2":"Готов автоматизировать<br>свой бизнес?","cta-p":"Бесплатный пробный период — без карты","cta-btn":"Открыть в Telegram",
+    "voice-live-label":"Jares онлайн","voice-title":"Спроси Jares — он подберёт идеального ИИ для твоего бизнеса","voice-desc":"Нажми кнопку микрофона в углу, расскажи что ты делаешь — за 60 секунд подберём агента.","voice-cta-hint":"Нажми и говори"
   }
 };
 
 let currentLang = 'en';
+
+const WIDGET_FIRST_MESSAGES = {
+  en: "Hey there! I'm Jares - the AI running this marketplace. Tell me, what kind of business do you run? I might just know the perfect AI for it.",
+  de: "Hallo! Ich bin Jares - die KI hinter diesem Marktplatz. Sagen Sie mir, was für ein Unternehmen führen Sie? Ich kenne vielleicht genau die richtige KI dafür.",
+  fr: "Bonjour! Je suis Jares - l'IA de ce marketplace. Dites-moi, quel type d'entreprise dirigez-vous? Je connais peut-être l'IA parfaite pour vous.",
+  es: "¡Hola! Soy Jares - la IA de este marketplace. Cuéntame, ¿qué tipo de negocio tienes? Puede que sepa exactamente qué IA necesitas.",
+  ru: "Привет! Я Jares - ИИ этого маркетплейса. Расскажи, какой у тебя бизнес? Возможно, я знаю идеального ИИ-агента для тебя."
+};
+
+const WIDGET_ACTION_TEXTS = {
+  en: "Talk to Jares",
+  de: "Mit Jares sprechen",
+  fr: "Parler à Jares",
+  es: "Hablar con Jares",
+  ru: "Говорить с Jares"
+};
+
+function syncWidgetLang(lang) {
+  const w = document.getElementById('jares-widget');
+  if (!w) return;
+  w.setAttribute('override-first-message', WIDGET_FIRST_MESSAGES[lang] || WIDGET_FIRST_MESSAGES.en);
+  w.setAttribute('override-language', lang);
+  w.setAttribute('action-text', WIDGET_ACTION_TEXTS[lang] || WIDGET_ACTION_TEXTS.en);
+}
+
+function openJaresWidget() {
+  const w = document.getElementById('jares-widget');
+  if (w && w.shadowRoot) {
+    const btn = w.shadowRoot.querySelector('button');
+    if (btn) btn.click();
+  }
+}
 
 function setLang(lang) {
   currentLang = lang;
@@ -334,6 +405,7 @@ function setLang(lang) {
     const el = document.getElementById(id);
     if (el) el.innerHTML = text;
   });
+  syncWidgetLang(lang);
 }
 
 document.querySelectorAll('[data-lang-btn]').forEach(btn => {
@@ -344,6 +416,19 @@ document.querySelectorAll('[data-lang-btn]').forEach(btn => {
 const browserLang = navigator.language.slice(0,2).toLowerCase();
 const supported = ['en','de','fr','es','ru'];
 if (supported.includes(browserLang)) setLang(browserLang);
+
+// Sync widget after it loads (async script)
+window.addEventListener('load', () => syncWidgetLang(currentLang));
 </script>
+
+<!-- JARES VOICE WIDGET -->
+<elevenlabs-convai
+  id="jares-widget"
+  agent-id="TWsXgfE540nqQmc0rfBS"
+  action-text="Talk to Jares"
+  avatar-orb-color-1="#7c3aed"
+  avatar-orb-color-2="#a78bfa"
+></elevenlabs-convai>
+<script src="https://elevenlabs.io/convai-widget/index.js" async></script>
 </body>
 </html>

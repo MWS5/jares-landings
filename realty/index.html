@@ -69,6 +69,22 @@
   footer{text-align:center;padding:32px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:14px;}
   footer a{color:var(--accent);text-decoration:none;}
   @media(max-width:600px){nav{padding:14px 20px;}.hero{padding:100px 16px 60px;}.stats{gap:24px;padding:32px 16px;}}
+
+  /* ARIA VOICE SECTION */
+  .aria-voice{background:linear-gradient(135deg,#2563eb0f 0%,#1e40af08 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 24px;text-align:center}
+  .aria-voice-inner{max-width:640px;margin:0 auto}
+  .aria-live-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
+  .aria-live-dot{width:10px;height:10px;border-radius:50%;background:#10b981;animation:adot 2s ease-in-out infinite}
+  @keyframes adot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,185,129,.5)}60%{opacity:.7;box-shadow:0 0 0 8px rgba(16,185,129,0)}}
+  .aria-live-text{font-size:13px;color:#10b981;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+  .aria-voice h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-1px;margin-bottom:14px;background:linear-gradient(135deg,#fff 40%,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .aria-voice p{color:var(--muted);font-size:17px;line-height:1.7;margin-bottom:36px}
+  .aria-mic-btn{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--btn),#1e40af);color:#fff;padding:18px 40px;border-radius:50px;font-size:17px;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 8px 32px #2563eb40;animation:amic 3s ease-in-out infinite}
+  @keyframes amic{0%,100%{box-shadow:0 8px 32px #2563eb40,0 0 0 0 #2563eb30}50%{box-shadow:0 12px 48px #2563eb60,0 0 0 12px rgba(37,99,235,0)}}
+  .aria-mic-btn:hover{transform:translateY(-3px);box-shadow:0 16px 48px #2563eb50}
+  .aria-mic-btn:active{transform:translateY(0)}
+  .aria-langs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .aria-lang-tag{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-size:13px;font-weight:500}
 </style>
 </head>
 <body>
@@ -88,6 +104,26 @@
   <div class="stat"><div class="stat-num">+40%</div><div class="stat-label">Conversión de leads</div></div>
   <div class="stat"><div class="stat-num">от €149</div><div class="stat-label">Por mes</div></div>
 </div>
+<!-- ARIA VOICE SECTION -->
+<div class="aria-voice">
+  <div class="aria-voice-inner">
+    <div class="aria-live-row">
+      <div class="aria-live-dot"></div>
+      <span class="aria-live-text">Aria está en vivo — 24/7</span>
+    </div>
+    <h2>Habla con Aria ahora mismo</h2>
+    <p>Pregúntale sobre propiedades en Chipre, presupuestos, zonas y documentación.<br>Aria responde al instante, a cualquier hora.</p>
+    <button class="aria-mic-btn" onclick="openAriaWidget()">
+      🎙 Hablar con Aria
+    </button>
+    <div class="aria-langs">
+      <span class="aria-lang-tag">🇬🇧 English</span>
+      <span class="aria-lang-tag">🇷🇺 Русский</span>
+      <span class="aria-lang-tag">🇬🇷 Ελληνικά</span>
+    </div>
+  </div>
+</div>
+
 <section id="features">
   <h2 class="section-title">Qué hace RealtyBot</h2>
   <p class="section-sub">Automatización completa de la comunicación con clientes</p>
@@ -140,5 +176,32 @@
   <a href="https://t.me/JaresAgentsBot" class="btn-primary" style="display:inline-block">🚀 Comenzar gratis</a>
 </div>
 <footer><p>© 2026 JARES AI · <a href="https://jares-ai.com">jares-ai.com</a> · <a href="https://t.me/JaresAgentsBot">Telegram</a></p></footer>
+
+<!-- ARIA VOICE WIDGET -->
+<elevenlabs-convai
+  id="aria-widget"
+  agent-id="agent_9901kmgvh0creygshyrajvgy4r2x"
+  action-text="Talk to Aria"
+  avatar-orb-color-1="#2563eb"
+  avatar-orb-color-2="#60a5fa"
+></elevenlabs-convai>
+<script src="https://elevenlabs.io/convai-widget/index.js" async></script>
+<script>
+function openAriaWidget() {
+  const w = document.getElementById('aria-widget');
+  if (w && w.shadowRoot) {
+    const btn = w.shadowRoot.querySelector('button');
+    if (btn) { btn.click(); return; }
+  }
+  // Fallback: set expandable after widget loads
+  if (w) w.setAttribute('expandable', 'always');
+}
+// Auto-open on desktop after 4 seconds
+if (window.innerWidth >= 768) {
+  window.addEventListener('load', () => {
+    setTimeout(openAriaWidget, 4000);
+  });
+}
+</script>
 </body>
 </html>
