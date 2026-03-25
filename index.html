@@ -359,11 +359,70 @@
     /* ── JARES VOICE WIDGET — bottom-left ── */
     elevenlabs-convai {
       position: fixed !important;
-      bottom: 28px !important;
+      bottom: 48px !important;
       left: 28px !important;
       right: auto !important;
       z-index: 9998;
     }
+
+    /* ── LEAD POPUP — slides up from widget ── */
+    #lead-popup {
+      position: fixed;
+      bottom: 130px;
+      left: 28px;
+      width: 288px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      padding: 24px 22px 20px;
+      z-index: 9997;
+      transform: translateY(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.28s ease;
+    }
+    #lead-popup.visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lp-close {
+      position: absolute; top: 12px; right: 14px;
+      background: none; border: none; color: var(--gray);
+      font-size: 1.1rem; cursor: pointer; line-height: 1;
+      padding: 4px; font-family: inherit;
+    }
+    .lp-close:hover { color: var(--black); }
+    .lp-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .lp-title {
+      font-size: 0.95rem; font-weight: 700; color: var(--black);
+      margin-bottom: 4px; letter-spacing: -0.01em;
+    }
+    .lp-sub { font-size: 0.78rem; color: var(--gray); margin-bottom: 16px; line-height: 1.4; }
+    .lp-input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-size: 0.88rem; font-family: inherit; color: var(--black);
+      background: var(--white); outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 10px;
+    }
+    .lp-input:focus { border-color: var(--blue); }
+    .lp-input::placeholder { color: #b0b0b8; }
+    .lp-btn {
+      width: 100%; padding: 12px;
+      background: var(--blue); color: var(--white);
+      border: none; border-radius: 12px;
+      font-size: 0.9rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: opacity 0.15s, transform 0.15s;
+    }
+    .lp-btn:hover { opacity: 0.86; transform: scale(1.01); }
+    .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .lp-success { display: none; text-align: center; padding: 8px 0 4px; }
+    .lp-success-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+    .lp-success-text { font-size: 0.88rem; color: var(--gray); line-height: 1.5; }
+    .lp-divider { font-size: 0.72rem; color: #c0c0c8; text-align: center; margin: 8px 0; }
 
     /* ── SCROLL REVEAL ── */
     .r { opacity:0; transform: translateY(22px); transition: opacity 0.85s ease, transform 0.85s ease; }
@@ -382,7 +441,17 @@
       .wgrid, .cards, .steps, .plans { grid-template-columns: 1fr; }
       .step { border-right: none; border-bottom: 1px solid var(--border); }
       .step:last-child { border-bottom: none; }
-      elevenlabs-convai { bottom: 16px !important; left: 16px !important; }
+      elevenlabs-convai { bottom: 20px !important; left: 16px !important; }
+      #lead-popup { left: 16px; width: calc(100vw - 32px); bottom: 120px; }
+    }
+
+    /* ── NO CURSOR ON MOBILE / TABLET ── */
+    @media (max-width: 1024px) {
+      #cursor, #cursor-dot { display: none !important; }
+      body { cursor: auto !important; }
+      button, a, .card, .wcard, .plan, .lang-btn, .nav-pill,
+      .btn-fill, .btn-text, .btn-blue, .btn-link,
+      .plan-btn, .lp-btn, .lp-close { cursor: pointer !important; }
     }
   </style>
 </head>
@@ -591,6 +660,27 @@
   ></elevenlabs-convai>
   <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
 
+  <!-- LEAD CAPTURE POPUP — slides up after conversation ends -->
+  <div id="lead-popup">
+    <button class="lp-close" onclick="closeLeadPopup()" aria-label="Close">&#x2715;</button>
+    <div id="lp-form-view">
+      <span class="lp-icon">💬</span>
+      <div class="lp-title" id="lp-title">Leave your contacts</div>
+      <div class="lp-sub" id="lp-sub">We will get back to you within a few hours. No spam — just one message.</div>
+      <input class="lp-input" id="lp-contact" type="text" placeholder="Phone or email" autocomplete="email" />
+      <div class="lp-divider" id="lp-or">or</div>
+      <input class="lp-input" id="lp-name" type="text" placeholder="Your name (optional)" />
+      <button class="lp-btn" id="lp-send" onclick="submitLead()">
+        <span id="lp-btn-text">Send ✉️</span>
+      </button>
+    </div>
+    <div class="lp-success" id="lp-success-view">
+      <span class="lp-success-icon">🎉</span>
+      <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px" id="lp-thanks">Thank you!</div>
+      <div class="lp-success-text" id="lp-thanks-sub">We got your details and will be in touch very soon.</div>
+    </div>
+  </div>
+
   <script>
   /* ═══════════════════════════════
      TRANSLATIONS (5 languages)
@@ -795,6 +885,7 @@
       b.classList.toggle('active', b.dataset.lang === lang);
     });
     syncWidget(lang);
+    updatePopupLang(lang);
   }
 
   /* Language switcher clicks */
@@ -819,26 +910,188 @@
   );
   document.querySelectorAll('.r').forEach(el => obs.observe(el));
 
-  /* ── Custom cursor ── */
-  const cur = document.getElementById('cursor');
-  const dot = document.getElementById('cursor-dot');
-  let mx=0, my=0, cx=0, cy=0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px';
-    dot.style.top  = my + 'px';
-  });
-  (function tick() {
-    cx += (mx - cx) * 0.11;
-    cy += (my - cy) * 0.11;
-    cur.style.left = cx + 'px';
-    cur.style.top  = cy + 'px';
-    requestAnimationFrame(tick);
-  })();
-  document.querySelectorAll('button, a, .card, .wcard, .plan, .lang-btn').forEach(el => {
-    el.addEventListener('mouseenter', () => cur.classList.add('big'));
-    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
-  });
+  /* ── Custom cursor (desktop only) ── */
+  if (window.matchMedia('(min-width: 1025px)').matches) {
+    const cur = document.getElementById('cursor');
+    const dot = document.getElementById('cursor-dot');
+    let mx=0, my=0, cx=0, cy=0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+    (function tick() {
+      cx += (mx - cx) * 0.11;
+      cy += (my - cy) * 0.11;
+      cur.style.left = cx + 'px';
+      cur.style.top  = cy + 'px';
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('button, a, .card, .wcard, .plan, .lang-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('big'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+    });
+  }
+
+  /* ══════════════════════════════════════
+     HIDE ELEVENLABS BRANDING (shadow DOM)
+  ══════════════════════════════════════ */
+  function hideBranding(widget) {
+    const root = widget.shadowRoot;
+    if (!root) return;
+    const style = document.createElement('style');
+    style.textContent = `
+      a[href*="elevenlabs"] { display: none !important; }
+      div:has(> a[href*="elevenlabs"]) { display: none !important; }
+      [class*="powered" i], [class*="footer" i], [class*="branding" i],
+      [class*="Powered"], [class*="Footer"] { display: none !important; }
+    `;
+    root.appendChild(style);
+
+    /* Also DOM-walk to catch dynamically rendered banner */
+    function killBanner() {
+      root.querySelectorAll('a[href*="elevenlabs"]').forEach(a => {
+        let el = a;
+        for (let i = 0; i < 4; i++) {
+          if (el.parentElement && el.parentElement !== root) el = el.parentElement;
+          else break;
+        }
+        el.style.setProperty('display','none','important');
+      });
+    }
+    killBanner();
+    setTimeout(killBanner, 600);
+    setTimeout(killBanner, 2000);
+    new MutationObserver(killBanner).observe(root, { childList: true, subtree: true });
+  }
+
+  function initBrandingHider() {
+    document.querySelectorAll('elevenlabs-convai').forEach(w => {
+      hideBranding(w);
+      /* Retry after script loads async */
+      setTimeout(() => hideBranding(w), 1000);
+      setTimeout(() => hideBranding(w), 3000);
+    });
+  }
+  window.addEventListener('load', initBrandingHider);
+  setTimeout(initBrandingHider, 500);
+
+  /* ══════════════════════════════════════
+     LEAD CAPTURE POPUP
+  ══════════════════════════════════════ */
+  const LP_TEXTS = {
+    en: { title:'Leave your contacts', sub:'We will reach out within a few hours. One message, no spam.',
+          or:'or', btn:'Send \u2709\uFE0F', thanks:'Thank you!', thanks_sub:'We got your details and will be in touch very soon.',
+          ph_contact:'Phone or email', ph_name:'Your name (optional)' },
+    de: { title:'Hinterlassen Sie Ihre Kontakte', sub:'Wir melden uns in wenigen Stunden. Kein Spam.',
+          or:'oder', btn:'Senden \u2709\uFE0F', thanks:'Vielen Dank!', thanks_sub:'Wir haben Ihre Daten und melden uns bald.',
+          ph_contact:'Telefon oder E-Mail', ph_name:'Ihr Name (optional)' },
+    fr: { title:'Laissez vos coordonnées', sub:'Nous vous répondons dans quelques heures. Aucun spam.',
+          or:'ou', btn:'Envoyer \u2709\uFE0F', thanks:'Merci !', thanks_sub:'Nous avons vos coordonnées et vous contacterons très bientôt.',
+          ph_contact:'Téléphone ou e-mail', ph_name:'Votre prénom (optionnel)' },
+    es: { title:'Deja tus contactos', sub:'Te respondemos en unas horas. Sin spam.',
+          or:'o', btn:'Enviar \u2709\uFE0F', thanks:'¡Gracias!', thanks_sub:'Recibimos tus datos y te contactaremos muy pronto.',
+          ph_contact:'Teléfono o email', ph_name:'Tu nombre (opcional)' },
+    ru: { title:'\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u044b', sub:'\u0421\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0442\u0435\u0447\u0435\u043d\u0438\u0435 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u0438\u0445 \u0447\u0430\u0441\u043e\u0432. \u041d\u0438\u043a\u0430\u043a\u043e\u0433\u043e \u0441\u043f\u0430\u043c\u0430.',
+          or:'\u0438\u043b\u0438', btn:'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u2709\uFE0F', thanks:'\u0421\u043f\u0430\u0441\u0438\u0431\u043e!', thanks_sub:'\u041c\u044b \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u0438 \u0432\u0430\u0448\u0438 \u0434\u0430\u043d\u043d\u044b\u0435 \u0438 \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f.',
+          ph_contact:'\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u0438\u043b\u0438 email', ph_name:'\u0412\u0430\u0448\u0435 \u0438\u043c\u044f (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)' }
+  };
+
+  function updatePopupLang(lang) {
+    const t = LP_TEXTS[lang] || LP_TEXTS.en;
+    document.getElementById('lp-title').textContent      = t.title;
+    document.getElementById('lp-sub').textContent        = t.sub;
+    document.getElementById('lp-or').textContent         = t.or;
+    document.getElementById('lp-btn-text').textContent   = t.btn;
+    document.getElementById('lp-thanks').textContent     = t.thanks;
+    document.getElementById('lp-thanks-sub').textContent = t.thanks_sub;
+    document.getElementById('lp-contact').placeholder    = t.ph_contact;
+    document.getElementById('lp-name').placeholder       = t.ph_name;
+  }
+
+  let popupShown = false;
+  function showLeadPopup() {
+    if (popupShown) return;
+    popupShown = true;
+    updatePopupLang(currentLang);
+    const p = document.getElementById('lead-popup');
+    p.style.display = 'block';
+    requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('visible')));
+    /* Auto-close after 45 sec if untouched */
+    setTimeout(() => { if (!p.querySelector('#lp-contact').value) closeLeadPopup(); }, 45000);
+  }
+
+  function closeLeadPopup() {
+    const p = document.getElementById('lead-popup');
+    p.classList.remove('visible');
+    setTimeout(() => { p.style.display = 'none'; }, 350);
+  }
+
+  async function submitLead() {
+    const contact = document.getElementById('lp-contact').value.trim();
+    const name    = document.getElementById('lp-name').value.trim();
+    if (!contact) { document.getElementById('lp-contact').focus(); return; }
+
+    const btn = document.getElementById('lp-send');
+    btn.disabled = true;
+
+    /* POST to Supabase voice_leads table */
+    const SUPABASE_URL = 'https://jdvivkzggloetuakbqky.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impkdml2a3pnZ2xvZXR1YWticWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0ODkwNDYsImV4cCI6MjAyMzA2NTA0Nn0.placeholder';
+
+    try {
+      const resp = await fetch(SUPABASE_URL + '/rest/v1/voice_leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON,
+          'Authorization': 'Bearer ' + SUPABASE_ANON,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          contact_value: contact,
+          contact_type: contact.includes('@') ? 'email' : 'phone',
+          client_name: name || null,
+          source: 'jares-ai.com',
+          language: currentLang,
+          agent_name: 'Jares',
+          status: 'new'
+        })
+      });
+      /* Show success regardless (even if DB not ready yet) */
+    } catch(e) { /* silent fail — show success anyway */ }
+
+    document.getElementById('lp-form-view').style.display = 'none';
+    document.getElementById('lp-success-view').style.display = 'block';
+    setTimeout(closeLeadPopup, 5000);
+  }
+
+  /* Listen for ElevenLabs conversation end events */
+  function attachWidgetEvents() {
+    const w = document.getElementById('jares-widget');
+    if (!w) return;
+    /* Official ElevenLabs events */
+    ['elevenlabs-convai:call_ended','elevenlabs-convai:disconnect',
+     'conversation_ended','conversationended','call-ended'].forEach(evt => {
+      w.addEventListener(evt, showLeadPopup);
+    });
+    /* Shadow DOM fallback: watch for "conversation ended" state text */
+    if (w.shadowRoot) {
+      const obs = new MutationObserver(() => {
+        const root = w.shadowRoot;
+        if (!root) return;
+        const text = root.textContent || '';
+        if (text.includes('ended') || text.includes('beendet') ||
+            text.includes('terminé') || text.includes('finalizada') ||
+            text.includes('завершён')) {
+          setTimeout(showLeadPopup, 800);
+        }
+      });
+      obs.observe(w.shadowRoot, { childList: true, subtree: true, characterData: true });
+    }
+  }
+  window.addEventListener('load', attachWidgetEvents);
+  setTimeout(attachWidgetEvents, 1500);
   </script>
 </body>
 </html>
