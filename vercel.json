@@ -1,10 +1,10 @@
 {
-  "routes": [
-    { "src": "/beauty/?$", "dest": "/beauty/index.html" },
-    { "src": "/salon(.*)", "dest": "/salon/index.html" },
-    { "src": "/clinic(.*)", "dest": "/clinic/index.html" },
-    { "src": "/hotel(.*)", "dest": "/hotel/index.html" },
-    { "src": "/realty(.*)", "dest": "/realty/index.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/beauty", "destination": "/beauty/index.html" },
+    { "source": "/salon", "destination": "/salon/index.html" },
+    { "source": "/clinic", "destination": "/clinic/index.html" },
+    { "source": "/hotel", "destination": "/hotel/index.html" },
+    { "source": "/realty", "destination": "/realty/index.html" },
+    { "source": "/((?!.*\\.).*)", "destination": "/index.html" }
   ]
 }
