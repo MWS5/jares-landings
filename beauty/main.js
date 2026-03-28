@@ -89,14 +89,24 @@ mobileOverlay.innerHTML = `
 `;
 document.body.appendChild(mobileOverlay);
 
-function closeMobileNav() { mobileOverlay.classList.remove('open'); }
+const lunaWrap = document.querySelector('.luna-widget-wrap');
+
+function closeMobileNav() {
+  mobileOverlay.classList.remove('open');
+  if (lunaWrap) lunaWrap.style.display = '';
+}
+
+function openMobileNav() {
+  // Hide Luna widget so it can't intercept touch events over the overlay
+  if (lunaWrap) lunaWrap.style.display = 'none';
+  mobileOverlay.classList.add('open');
+}
 
 const mobileNavClose = document.getElementById('mobileNavClose');
-['click', 'touchend'].forEach(ev =>
-  mobileNavClose.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); closeMobileNav(); }, { passive: false })
-);
+mobileNavClose.addEventListener('pointerup', (e) => { e.stopPropagation(); closeMobileNav(); });
+mobileNavClose.addEventListener('click', (e) => { e.stopPropagation(); closeMobileNav(); });
 
-navBurger.addEventListener('click', () => mobileOverlay.classList.add('open'));
+navBurger.addEventListener('click', openMobileNav);
 
 // tap on dark backdrop (not on content) also closes
 mobileOverlay.addEventListener('click', (e) => { if (e.target === mobileOverlay) closeMobileNav(); });
@@ -355,6 +365,38 @@ const LUNA_LABELS = {
   ru: 'Луна слушает',
 };
 
+const LUNA_FIRST_MSG = {
+  en: "Welcome to LUMIÈRE. I'm Luna — your personal beauty consultant. How may I help you today?",
+  de: "Willkommen bei LUMIÈRE. Ich bin Luna — Ihre persönliche Beauty-Beraterin. Wie kann ich Ihnen helfen?",
+  fr: "Bienvenue chez LUMIÈRE. Je suis Luna — votre conseillère beauté personnelle. Comment puis-je vous aider?",
+  es: "Bienvenido a LUMIÈRE. Soy Luna — tu consultora de belleza personal. ¿Cómo puedo ayudarte?",
+  ru: "Добро пожаловать в LUMIÈRE. Я Луна — ваш личный beauty-консультант. Чем могу помочь?",
+};
+
+const LUNA_LANG_RULE = {
+  en: 'You MUST respond exclusively in English throughout the entire conversation.',
+  de: 'Du MUSST ausschließlich auf Deutsch antworten — während der gesamten Unterhaltung.',
+  fr: 'Vous DEVEZ répondre exclusivement en français pendant toute la conversation.',
+  es: 'DEBES responder exclusivamente en español durante toda la conversación.',
+  ru: 'Ты ОБЯЗАНА отвечать исключительно на русском языке на протяжении всего разговора.',
+};
+
+function updateLunaLanguage(lang) {
+  const widget = document.querySelector('elevenlabs-convai');
+  if (!widget) return;
+  const langRule = LUNA_LANG_RULE[lang] || LUNA_LANG_RULE.en;
+  const firstMsg = LUNA_FIRST_MSG[lang] || LUNA_FIRST_MSG.en;
+  const overrideConfig = {
+    agent: {
+      first_message: firstMsg,
+      prompt: {
+        prompt: `You are Luna, an elegant AI voice assistant for LUMIÈRE Beauty & Wellness — a premium beauty salon. Your role is to warmly welcome guests, answer questions about services (facial treatments, massage, body care, hair, nails), help with bookings, and share the studio's philosophy of luxury and harmony. Be refined, warm, poetic, and concise. ${langRule}`,
+      },
+    },
+  };
+  widget.setAttribute('override-config', JSON.stringify(overrideConfig));
+}
+
 function styleLunaWidget(widget) {
   if (!widget) return;
   widget.setAttribute('avatar-orb-color-1', '#e0b845');
@@ -366,87 +408,125 @@ function styleLunaWidget(widget) {
     if (existing) existing.remove(); // always refresh
     const s = document.createElement('style');
     s.id = 'luna-custom-style';
+    // Chocolate-gold palette:
+    // bg: warm dark chocolate #2c1005 → #3d1608
+    // border: gold #c8930f at 70% opacity
+    // accent text: pale gold #f2d890
+    // CTA button: gold gradient
     s.textContent = `
-      /* ── FAB trigger button ── */
-      button[part="button"], .fab, [class*="fab-"],
-      [class*="Fab"], [class*="trigger"], [class*="Trigger"] {
-        background: linear-gradient(135deg, #c8930f 0%, #e0b845 100%) !important;
-        border: none !important;
+      /* ── Reset all backgrounds to chocolate ── */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* ── FAB trigger button (closed state) ── */
+      button[part="button"] {
+        background: linear-gradient(135deg, #b8820d 0%, #e0b845 100%) !important;
+        border: 2px solid rgba(224,184,69,0.5) !important;
         border-radius: 100px !important;
-        box-shadow: 0 4px 28px rgba(200,147,15,0.5), 0 0 0 2px rgba(224,184,69,0.35) !important;
+        box-shadow:
+          0 4px 28px rgba(200,147,15,0.55),
+          0 0 0 3px rgba(200,147,15,0.18) !important;
         color: #120a05 !important;
       }
-      button[part="button"]:hover {
-        box-shadow: 0 6px 36px rgba(200,147,15,0.7), 0 0 0 3px rgba(224,184,69,0.5) !important;
-        transform: scale(1.06) !important;
+
+      /* ── Expanded card — catch by position/display heuristic ── */
+      div:not([class*="button"]):not([class*="btn"]) {
+        background-color: transparent;
       }
 
-      /* ── Action-text label pill (appears beside FAB) ── */
-      [class*="action-text"], [class*="ActionText"],
+      /* Main popup/card wrapper — large divs with padding */
+      [style*="border-radius"],
+      [style*="background"],
+      [style*="padding"] {
+        border-radius: 28px !important;
+      }
+
+      /* ── Nuclear approach: style the :host element ── */
+      :host {
+        --widget-bg: #2c1005;
+        --widget-border: rgba(200,147,15,0.65);
+        --widget-radius: 28px;
+        --gold: #c8930f;
+        --gold-light: #e0b845;
+        --gold-pale: #f2d890;
+        --text: rgba(242,216,144,0.85);
+      }
+
+      /* ── Action-text label pill ── */
+      [class*="action"], [class*="Action"],
       [class*="prompt"], [class*="Prompt"],
+      [class*="label"], [class*="Label"],
       [class*="tooltip"], [class*="Tooltip"],
-      [class*="label"], [class*="Label"] {
-        background: rgba(30,12,4,0.95) !important;
+      [class*="hint"], [class*="Hint"],
+      [class*="text-button"], [class*="TextButton"] {
+        background: rgba(28,10,2,0.94) !important;
         color: #e0b845 !important;
-        border: 1px solid rgba(200,147,15,0.5) !important;
+        border: 1px solid rgba(200,147,15,0.55) !important;
         border-radius: 100px !important;
-        backdrop-filter: blur(14px) !important;
-        font-family: 'Montserrat', sans-serif !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
         font-weight: 500 !important;
         letter-spacing: 0.05em !important;
-        padding: 8px 18px !important;
+        padding: 9px 20px !important;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.4) !important;
       }
 
-      /* ── Expanded widget card / panel ── */
+      /* ── Expanded card container ── */
       [class*="widget"], [class*="Widget"],
       [class*="card"], [class*="Card"],
       [class*="panel"], [class*="Panel"],
       [class*="container"], [class*="Container"],
       [class*="popup"], [class*="Popup"],
-      [class*="dialog"], [class*="Dialog"] {
-        background: linear-gradient(160deg, #3d1a08 0%, #241005 100%) !important;
-        border: 2px solid rgba(200,147,15,0.55) !important;
+      [class*="modal"], [class*="Modal"],
+      [class*="overlay"], [class*="Overlay"],
+      [class*="window"], [class*="Window"],
+      [class*="expanded"], [class*="Expanded"],
+      [class*="open"], [class*="Open"],
+      [class*="sheet"], [class*="Sheet"],
+      [class*="drawer"], [class*="Drawer"],
+      [class*="conversation"], [class*="Conversation"] {
+        background: linear-gradient(150deg, #3d1608 0%, #2c1005 60%, #1e0b04 100%) !important;
+        border: 2px solid rgba(200,147,15,0.65) !important;
         border-radius: 28px !important;
         box-shadow:
-          0 12px 60px rgba(0,0,0,0.6),
-          0 0 0 1px rgba(224,184,69,0.12),
-          inset 0 1px 0 rgba(224,184,69,0.08) !important;
+          0 16px 64px rgba(0,0,0,0.7),
+          0 0 0 1px rgba(224,184,69,0.1),
+          inset 0 1px 0 rgba(224,184,69,0.07) !important;
+        color: #f2d890 !important;
       }
 
-      /* ── "Start a call" / action button inside card ── */
+      /* ── "Start a call" button inside card ── */
+      button:not([part="button"]),
       [class*="call"], [class*="Call"],
       [class*="start"], [class*="Start"],
-      [class*="action-button"], [class*="ActionButton"],
-      [class*="cta"], [class*="Cta"] {
+      [class*="cta"], [class*="Cta"],
+      [class*="connect"], [class*="Connect"],
+      [class*="begin"], [class*="Begin"] {
         background: linear-gradient(135deg, #c8930f 0%, #e0b845 100%) !important;
         color: #120a05 !important;
         border: none !important;
         border-radius: 100px !important;
-        font-family: 'Montserrat', sans-serif !important;
         font-weight: 600 !important;
         letter-spacing: 0.06em !important;
-        box-shadow: 0 4px 20px rgba(200,147,15,0.4) !important;
+        box-shadow: 0 4px 20px rgba(200,147,15,0.45) !important;
       }
 
-      /* ── Text inside card ── */
-      [class*="title"], [class*="Title"],
-      [class*="name"], [class*="Name"],
-      [class*="heading"], [class*="Heading"] {
+      /* ── Text colors ── */
+      h1, h2, h3, h4, h5, p, span:not([class*="icon"]) {
         color: #f2d890 !important;
-        font-family: 'Cormorant Garamond', serif !important;
-      }
-      [class*="subtitle"], [class*="Subtitle"],
-      [class*="description"], [class*="Description"],
-      [class*="message"], [class*="Message"] {
-        color: rgba(242,216,144,0.65) !important;
-        font-family: 'Montserrat', sans-serif !important;
-        font-weight: 300 !important;
       }
 
-      /* ── Hide ElevenLabs branding ── */
+      /* ── Hide branding ── */
       a[href*="elevenlabs"], [class*="powered"], [class*="Powered"],
-      [class*="branding"], [class*="Branding"] {
+      [class*="branding"], [class*="Branding"], [class*="logo"]:not([class*="avatar"]) {
         display: none !important;
+      }
+
+      /* ── Avatar/orb area ── */
+      [class*="avatar"], [class*="Avatar"],
+      [class*="orb"], [class*="Orb"] {
+        border-radius: 50% !important;
       }
     `;
     widget.shadowRoot.appendChild(s);
@@ -460,6 +540,7 @@ function syncLunaLabel(lang) {
   const widget = document.querySelector('elevenlabs-convai');
   if (!widget) return;
   widget.setAttribute('action-text', LUNA_LABELS[lang] || LUNA_LABELS.en);
+  updateLunaLanguage(lang);
   styleLunaWidget(widget);
 }
 
