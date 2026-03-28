@@ -373,28 +373,12 @@ const LUNA_FIRST_MSG = {
   ru: "Добро пожаловать в LUMIÈRE. Я Луна — ваш личный beauty-консультант. Чем могу помочь?",
 };
 
-const LUNA_LANG_RULE = {
-  en: 'You MUST respond exclusively in English throughout the entire conversation.',
-  de: 'Du MUSST ausschließlich auf Deutsch antworten — während der gesamten Unterhaltung.',
-  fr: 'Vous DEVEZ répondre exclusivement en français pendant toute la conversation.',
-  es: 'DEBES responder exclusivamente en español durante toda la conversación.',
-  ru: 'Ты ОБЯЗАНА отвечать исключительно на русском языке на протяжении всего разговора.',
-};
 
 function updateLunaLanguage(lang) {
   const widget = document.querySelector('elevenlabs-convai');
   if (!widget) return;
-  const langRule = LUNA_LANG_RULE[lang] || LUNA_LANG_RULE.en;
-  const firstMsg = LUNA_FIRST_MSG[lang] || LUNA_FIRST_MSG.en;
-  const overrideConfig = {
-    agent: {
-      first_message: firstMsg,
-      prompt: {
-        prompt: `You are Luna, an elegant AI voice assistant for LUMIÈRE Beauty & Wellness — a premium beauty salon. Your role is to warmly welcome guests, answer questions about services (facial treatments, massage, body care, hair, nails), help with bookings, and share the studio's philosophy of luxury and harmony. Be refined, warm, poetic, and concise. ${langRule}`,
-      },
-    },
-  };
-  widget.setAttribute('override-config', JSON.stringify(overrideConfig));
+  widget.setAttribute('override-language', lang);
+  widget.setAttribute('override-first-message', LUNA_FIRST_MSG[lang] || LUNA_FIRST_MSG.en);
 }
 
 function styleLunaWidget(widget) {
