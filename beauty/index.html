@@ -93,6 +93,30 @@
 
     .luna-widget-wrap { position: fixed; bottom: 28px; left: 28px; z-index: 9990; }
 
+    /* ── Mobile lang switcher (inside overlay) ── */
+    .mobile-lang-switcher {
+      display: flex; align-items: center; justify-content: center;
+      gap: 4px; margin: 0 0 24px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(200,147,15,0.2);
+      border-radius: 100px; padding: 5px 8px;
+    }
+    .mobile-lang-btn {
+      background: none; border: none;
+      font-size: 0.72rem; font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      padding: 6px 12px; border-radius: 100px;
+      cursor: pointer; font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.06em; transition: all 0.2s; line-height: 1;
+      touch-action: manipulation;
+    }
+    .mobile-lang-btn:hover { color: rgba(255,255,255,0.9); }
+    .mobile-lang-btn.active {
+      background: linear-gradient(135deg, rgba(200,147,15,0.3), rgba(224,184,69,0.2));
+      color: var(--gold-light);
+      box-shadow: 0 0 0 1px rgba(200,147,15,0.35);
+    }
+
     @media (max-width: 900px) {
       .jares-inner { grid-template-columns: 1fr; gap: 48px; }
       .lang-switcher { display: none; }

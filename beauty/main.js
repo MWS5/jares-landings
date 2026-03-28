@@ -72,7 +72,14 @@ const navBurger = document.getElementById('navBurger');
 const mobileOverlay = document.createElement('div');
 mobileOverlay.className = 'mobile-nav-overlay';
 mobileOverlay.innerHTML = `
-  <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&#x2715;</button>
+  <div class="mobile-lang-switcher">
+    <button class="mobile-lang-btn" data-lang="en">EN</button>
+    <button class="mobile-lang-btn" data-lang="de">DE</button>
+    <button class="mobile-lang-btn" data-lang="fr">FR</button>
+    <button class="mobile-lang-btn" data-lang="es">ES</button>
+    <button class="mobile-lang-btn" data-lang="ru">RU</button>
+  </div>
   <a href="#about" data-i18n="nav.about">About</a>
   <a href="#services" data-i18n="nav.services">Services</a>
   <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
@@ -82,11 +89,38 @@ mobileOverlay.innerHTML = `
 `;
 document.body.appendChild(mobileOverlay);
 
+function closeMobileNav() { mobileOverlay.classList.remove('open'); }
+
+const mobileNavClose = document.getElementById('mobileNavClose');
+['click', 'touchend'].forEach(ev =>
+  mobileNavClose.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); closeMobileNav(); }, { passive: false })
+);
+
 navBurger.addEventListener('click', () => mobileOverlay.classList.add('open'));
-document.getElementById('mobileNavClose').addEventListener('click', () => mobileOverlay.classList.remove('open'));
+
+// tap on dark backdrop (not on content) also closes
+mobileOverlay.addEventListener('click', (e) => { if (e.target === mobileOverlay) closeMobileNav(); });
+
 mobileOverlay.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => mobileOverlay.classList.remove('open'));
+  link.addEventListener('click', closeMobileNav);
 });
+
+// Mobile lang buttons
+mobileOverlay.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const lang = btn.dataset.lang;
+    if (window.applyLang) window.applyLang(lang);
+    // sync active state on mobile buttons
+    mobileOverlay.querySelectorAll('.mobile-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  });
+});
+
+// Keep mobile lang active state in sync with main applyLang
+const _origApplyLang = window.applyLang;
+window.applyLang = function(lang) {
+  if (_origApplyLang) _origApplyLang(lang);
+  mobileOverlay.querySelectorAll('.mobile-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+};
 
 // ==========================================
 // PARALLAX ENGINE — smooth lerp RAF loop
@@ -314,55 +348,112 @@ document.querySelectorAll('.team-card').forEach(card => {
 // LUNA WIDGET — gold styling + text sync
 // ==========================================
 const LUNA_LABELS = {
-  en: 'Chat with Luna',
-  de: 'Mit Luna chatten',
-  fr: 'Parler à Luna',
-  es: 'Hablar con Luna',
-  ru: 'Говорить с Луной',
+  en: 'Luna listens',
+  de: 'Luna hört zu',
+  fr: 'Luna vous écoute',
+  es: 'Luna te escucha',
+  ru: 'Луна слушает',
 };
 
 function styleLunaWidget(widget) {
   if (!widget) return;
-  // Gold orb colors matching LUMIERE palette
   widget.setAttribute('avatar-orb-color-1', '#e0b845');
   widget.setAttribute('avatar-orb-color-2', '#7a3f0a');
-  // Inject shadow DOM styles
+
   function injectStyle() {
     if (!widget.shadowRoot) return;
-    if (widget.shadowRoot.getElementById('luna-custom-style')) return;
+    const existing = widget.shadowRoot.getElementById('luna-custom-style');
+    if (existing) existing.remove(); // always refresh
     const s = document.createElement('style');
     s.id = 'luna-custom-style';
     s.textContent = `
-      /* Main button/fab */
-      button[part="button"], .fab, [class*="fab"], [class*="button"] {
-        background: linear-gradient(135deg, #c8930f, #e0b845) !important;
+      /* ── FAB trigger button ── */
+      button[part="button"], .fab, [class*="fab-"],
+      [class*="Fab"], [class*="trigger"], [class*="Trigger"] {
+        background: linear-gradient(135deg, #c8930f 0%, #e0b845 100%) !important;
         border: none !important;
-        box-shadow: 0 4px 24px rgba(200,147,15,0.45), 0 0 0 1px rgba(224,184,69,0.3) !important;
+        border-radius: 100px !important;
+        box-shadow: 0 4px 28px rgba(200,147,15,0.5), 0 0 0 2px rgba(224,184,69,0.35) !important;
         color: #120a05 !important;
       }
-      button[part="button"]:hover, .fab:hover {
-        box-shadow: 0 6px 32px rgba(200,147,15,0.65), 0 0 0 2px rgba(224,184,69,0.5) !important;
-        transform: translateY(-2px) scale(1.04) !important;
+      button[part="button"]:hover {
+        box-shadow: 0 6px 36px rgba(200,147,15,0.7), 0 0 0 3px rgba(224,184,69,0.5) !important;
+        transform: scale(1.06) !important;
       }
-      /* Action label pill */
-      [class*="action"], [class*="label"], [class*="text"] {
-        background: rgba(18,10,5,0.92) !important;
+
+      /* ── Action-text label pill (appears beside FAB) ── */
+      [class*="action-text"], [class*="ActionText"],
+      [class*="prompt"], [class*="Prompt"],
+      [class*="tooltip"], [class*="Tooltip"],
+      [class*="label"], [class*="Label"] {
+        background: rgba(30,12,4,0.95) !important;
         color: #e0b845 !important;
-        border: 1px solid rgba(200,147,15,0.35) !important;
-        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(200,147,15,0.5) !important;
+        border-radius: 100px !important;
+        backdrop-filter: blur(14px) !important;
         font-family: 'Montserrat', sans-serif !important;
-        letter-spacing: 0.04em !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.05em !important;
+        padding: 8px 18px !important;
       }
-      /* Hide ElevenLabs branding */
-      a[href*="elevenlabs"], [class*="powered"], [class*="Powered"] {
+
+      /* ── Expanded widget card / panel ── */
+      [class*="widget"], [class*="Widget"],
+      [class*="card"], [class*="Card"],
+      [class*="panel"], [class*="Panel"],
+      [class*="container"], [class*="Container"],
+      [class*="popup"], [class*="Popup"],
+      [class*="dialog"], [class*="Dialog"] {
+        background: linear-gradient(160deg, #3d1a08 0%, #241005 100%) !important;
+        border: 2px solid rgba(200,147,15,0.55) !important;
+        border-radius: 28px !important;
+        box-shadow:
+          0 12px 60px rgba(0,0,0,0.6),
+          0 0 0 1px rgba(224,184,69,0.12),
+          inset 0 1px 0 rgba(224,184,69,0.08) !important;
+      }
+
+      /* ── "Start a call" / action button inside card ── */
+      [class*="call"], [class*="Call"],
+      [class*="start"], [class*="Start"],
+      [class*="action-button"], [class*="ActionButton"],
+      [class*="cta"], [class*="Cta"] {
+        background: linear-gradient(135deg, #c8930f 0%, #e0b845 100%) !important;
+        color: #120a05 !important;
+        border: none !important;
+        border-radius: 100px !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.06em !important;
+        box-shadow: 0 4px 20px rgba(200,147,15,0.4) !important;
+      }
+
+      /* ── Text inside card ── */
+      [class*="title"], [class*="Title"],
+      [class*="name"], [class*="Name"],
+      [class*="heading"], [class*="Heading"] {
+        color: #f2d890 !important;
+        font-family: 'Cormorant Garamond', serif !important;
+      }
+      [class*="subtitle"], [class*="Subtitle"],
+      [class*="description"], [class*="Description"],
+      [class*="message"], [class*="Message"] {
+        color: rgba(242,216,144,0.65) !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 300 !important;
+      }
+
+      /* ── Hide ElevenLabs branding ── */
+      a[href*="elevenlabs"], [class*="powered"], [class*="Powered"],
+      [class*="branding"], [class*="Branding"] {
         display: none !important;
       }
     `;
     widget.shadowRoot.appendChild(s);
   }
-  // Try immediately, then retry async
+
   injectStyle();
-  [300, 800, 1800, 3500].forEach(t => setTimeout(injectStyle, t));
+  [200, 600, 1500, 3000, 6000].forEach(t => setTimeout(injectStyle, t));
 }
 
 function syncLunaLabel(lang) {
