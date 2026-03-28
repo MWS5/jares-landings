@@ -780,6 +780,7 @@
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
     });
+    if (window.syncLunaLabel) window.syncLunaLabel(lang);
   }
 
   document.querySelectorAll('.lang-btn').forEach(btn => {

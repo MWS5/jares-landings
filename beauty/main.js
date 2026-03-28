@@ -41,7 +41,6 @@ if (!isTouchDevice()) {
   document.addEventListener('mouseleave', () => document.body.classList.add('cursor-hidden'));
   document.addEventListener('mouseenter', () => document.body.classList.remove('cursor-hidden'));
 } else {
-  // Touch: hide cursor elements
   if (cursor) cursor.style.display = 'none';
   if (cursorFollower) cursorFollower.style.display = 'none';
 }
@@ -90,49 +89,62 @@ mobileOverlay.querySelectorAll('a').forEach(link => {
 });
 
 // ==========================================
-// PARALLAX ENGINE (RAF throttled)
+// PARALLAX ENGINE — smooth lerp RAF loop
 // ==========================================
 const heroParallax = document.getElementById('heroParallax');
 const parallaxBannerBg = document.getElementById('parallaxBannerBg');
 const parallaxBanner = document.getElementById('parallaxBanner');
 
+const _lerp = (a, b, t) => a + (b - a) * t;
+const LERP_SPEED = 0.07;
+
 const parallaxSections = [
-  { el: document.querySelector('.about-bg-figure'),       speed: 0.12 },
-  { el: document.querySelector('.about-img-1'),            speed: -0.08 },
-  { el: document.querySelector('.about-img-2'),            speed: 0.10 },
-  { el: document.querySelector('.services-bg'),            speed: 0.06 },
-  { el: document.querySelector('.parallax-banner-figure'), speed: -0.10 },
-  { el: document.querySelector('.testimonials-bg-figure'), speed: 0.09 },
-  { el: document.querySelector('.contact-bg'),             speed: -0.06 },
+  { el: document.querySelector('.about-bg-figure'),       speed: 0.10, cur: 0 },
+  { el: document.querySelector('.about-img-1'),            speed: -0.06, cur: 0 },
+  { el: document.querySelector('.about-img-2'),            speed: 0.08,  cur: 0 },
+  { el: document.querySelector('.services-bg'),            speed: 0.05,  cur: 0 },
+  { el: document.querySelector('.parallax-banner-figure'), speed: -0.08, cur: 0 },
+  { el: document.querySelector('.testimonials-bg-figure'), speed: 0.07,  cur: 0 },
+  { el: document.querySelector('.contact-bg'),             speed: -0.05, cur: 0 },
 ];
 
-function updateHeroParallax() {
-  const scrollY = window.scrollY;
-  if (scrollY < window.innerHeight * 1.5 && heroParallax) {
-    heroParallax.style.transform = `translateY(${scrollY * 0.32}px)`;
-  }
-}
+let rawScrollY = window.scrollY;
+let smoothScrollY = rawScrollY;
+let heroSmooth = 0;
 
-function updateBannerParallax() {
-  if (!parallaxBanner || !parallaxBannerBg) return;
-  const rect = parallaxBanner.getBoundingClientRect();
-  if (rect.bottom > 0 && rect.top < window.innerHeight) {
-    const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-    parallaxBannerBg.style.transform = `translateY(${(progress - 0.5) * -100}px)`;
-    const figure = parallaxBanner.querySelector('.parallax-banner-figure');
-    if (figure) figure.style.transform = `translateY(${(progress - 0.5) * 40}px)`;
-  }
-}
+window.addEventListener('scroll', () => { rawScrollY = window.scrollY; }, { passive: true });
 
-function updateSectionParallax() {
-  parallaxSections.forEach(({ el, speed }) => {
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
+function parallaxLoop() {
+  smoothScrollY = _lerp(smoothScrollY, rawScrollY, LERP_SPEED);
+
+  // Hero
+  if (heroParallax && rawScrollY < window.innerHeight * 1.5) {
+    heroSmooth = _lerp(heroSmooth, smoothScrollY * 0.28, LERP_SPEED);
+    heroParallax.style.transform = `translateY(${heroSmooth}px)`;
+  }
+
+  // Section backgrounds
+  parallaxSections.forEach(state => {
+    if (!state.el) return;
+    const rect = state.el.getBoundingClientRect();
     if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return;
-    const vy = (window.innerHeight / 2 - (rect.top + rect.height / 2)) * speed;
-    el.style.transform = `translateY(${vy}px)`;
+    const target = (window.innerHeight / 2 - (rect.top + rect.height / 2)) * state.speed;
+    state.cur = _lerp(state.cur, target, LERP_SPEED);
+    state.el.style.transform = `translateY(${state.cur}px)`;
   });
 
+  // Parallax banner
+  if (parallaxBanner && parallaxBannerBg) {
+    const rect = parallaxBanner.getBoundingClientRect();
+    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+      const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+      parallaxBannerBg.style.transform = `translateY(${(progress - 0.5) * -90}px)`;
+      const figure = parallaxBanner.querySelector('.parallax-banner-figure');
+      if (figure) figure.style.transform = `translateY(${(progress - 0.5) * 35}px)`;
+    }
+  }
+
+  // Gallery items
   document.querySelectorAll('.gallery-item[data-parallax-speed]').forEach(item => {
     const rect = item.getBoundingClientRect();
     if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
@@ -140,20 +152,10 @@ function updateSectionParallax() {
     const vy = (window.innerHeight / 2 - (rect.top + rect.height / 2)) * speed;
     item.style.transform = `translateY(${vy}px)`;
   });
-}
 
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      updateHeroParallax();
-      updateBannerParallax();
-      updateSectionParallax();
-      ticking = false;
-    });
-    ticking = true;
-  }
-}, { passive: true });
+  requestAnimationFrame(parallaxLoop);
+}
+parallaxLoop();
 
 // ==========================================
 // SCROLL REVEAL
@@ -307,3 +309,75 @@ document.querySelectorAll('.team-card').forEach(card => {
   card.addEventListener('mouseenter', () => { photo.style.boxShadow = '0 0 0 4px rgba(212,160,23,0.15), 0 0 40px rgba(212,160,23,0.2)'; });
   card.addEventListener('mouseleave', () => { photo.style.boxShadow = ''; });
 });
+
+// ==========================================
+// LUNA WIDGET — gold styling + text sync
+// ==========================================
+const LUNA_LABELS = {
+  en: 'Chat with Luna',
+  de: 'Mit Luna chatten',
+  fr: 'Parler à Luna',
+  es: 'Hablar con Luna',
+  ru: 'Говорить с Луной',
+};
+
+function styleLunaWidget(widget) {
+  if (!widget) return;
+  // Gold orb colors matching LUMIERE palette
+  widget.setAttribute('avatar-orb-color-1', '#e0b845');
+  widget.setAttribute('avatar-orb-color-2', '#7a3f0a');
+  // Inject shadow DOM styles
+  function injectStyle() {
+    if (!widget.shadowRoot) return;
+    if (widget.shadowRoot.getElementById('luna-custom-style')) return;
+    const s = document.createElement('style');
+    s.id = 'luna-custom-style';
+    s.textContent = `
+      /* Main button/fab */
+      button[part="button"], .fab, [class*="fab"], [class*="button"] {
+        background: linear-gradient(135deg, #c8930f, #e0b845) !important;
+        border: none !important;
+        box-shadow: 0 4px 24px rgba(200,147,15,0.45), 0 0 0 1px rgba(224,184,69,0.3) !important;
+        color: #120a05 !important;
+      }
+      button[part="button"]:hover, .fab:hover {
+        box-shadow: 0 6px 32px rgba(200,147,15,0.65), 0 0 0 2px rgba(224,184,69,0.5) !important;
+        transform: translateY(-2px) scale(1.04) !important;
+      }
+      /* Action label pill */
+      [class*="action"], [class*="label"], [class*="text"] {
+        background: rgba(18,10,5,0.92) !important;
+        color: #e0b845 !important;
+        border: 1px solid rgba(200,147,15,0.35) !important;
+        backdrop-filter: blur(12px) !important;
+        font-family: 'Montserrat', sans-serif !important;
+        letter-spacing: 0.04em !important;
+      }
+      /* Hide ElevenLabs branding */
+      a[href*="elevenlabs"], [class*="powered"], [class*="Powered"] {
+        display: none !important;
+      }
+    `;
+    widget.shadowRoot.appendChild(s);
+  }
+  // Try immediately, then retry async
+  injectStyle();
+  [300, 800, 1800, 3500].forEach(t => setTimeout(injectStyle, t));
+}
+
+function syncLunaLabel(lang) {
+  const widget = document.querySelector('elevenlabs-convai');
+  if (!widget) return;
+  widget.setAttribute('action-text', LUNA_LABELS[lang] || LUNA_LABELS.en);
+  styleLunaWidget(widget);
+}
+
+// Expose so index.html applyLang can call it
+window.syncLunaLabel = syncLunaLabel;
+
+window.addEventListener('load', () => {
+  syncLunaLabel(window.currentLang || 'en');
+});
+// Also retry after ElevenLabs widget script initialises
+setTimeout(() => syncLunaLabel(window.currentLang || 'en'), 1500);
+setTimeout(() => syncLunaLabel(window.currentLang || 'en'), 3500);
