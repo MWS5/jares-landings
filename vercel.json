@@ -1,5 +1,6 @@
 {
   "routes": [
+    { "src": "/beauty(.*)", "dest": "/beauty/index.html" },
     { "src": "/salon(.*)", "dest": "/salon/index.html" },
     { "src": "/clinic(.*)", "dest": "/clinic/index.html" },
     { "src": "/hotel(.*)", "dest": "/hotel/index.html" },
