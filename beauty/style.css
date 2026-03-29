@@ -1995,7 +1995,14 @@ body::before {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0,0,0,0.2);
 }
-.pain-icon { font-size: 1.7rem; margin-bottom: 18px; display: block; }
+.pain-icon {
+  width: 48px; height: 48px; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(200,147,15,0.10);
+  border: 1px solid rgba(200,147,15,0.22);
+  border-radius: 14px;
+  font-size: 1.4rem; line-height: 1;
+}
 .pain-card h3 {
   font-family: var(--font-display); font-size: 1.18rem; font-weight: 400;
   color: var(--cream); margin: 0 0 10px; letter-spacing: 0.01em;
@@ -2003,6 +2010,46 @@ body::before {
 .pain-card p {
   font-family: var(--font-body); font-size: 0.86rem;
   color: rgba(255,255,255,0.4); line-height: 1.75; margin: 0;
+}
+
+/* Social proof */
+.luna-social {
+  padding: 72px 0;
+  background: linear-gradient(180deg, var(--choco-dark) 0%, rgba(12,6,2,0.95) 100%);
+  border-top: 1px solid rgba(200,147,15,0.08);
+}
+.social-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.social-quote {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(200,147,15,0.14);
+  border-radius: 20px; padding: 36px 32px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.social-quote:hover {
+  border-color: rgba(200,147,15,0.28);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.sq-stars {
+  color: var(--gold); font-size: 0.7rem; letter-spacing: 3px;
+  margin-bottom: 18px;
+}
+.sq-text {
+  font-family: var(--font-display); font-size: 1.08rem;
+  font-style: italic; font-weight: 300;
+  color: rgba(242,216,144,0.85); line-height: 1.7;
+  margin: 0 0 24px;
+}
+.sq-author { display: flex; flex-direction: column; gap: 4px; }
+.sq-name {
+  font-family: var(--font-body); font-size: 0.82rem;
+  font-weight: 500; color: var(--cream); letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sq-role {
+  font-family: var(--font-body); font-size: 0.78rem;
+  color: rgba(255,255,255,0.32); letter-spacing: 0.03em;
 }
 
 /* How it works */
@@ -2132,8 +2179,11 @@ body::before {
 .plan-cta--outline:hover { background: rgba(200,147,15,0.08); }
 .pricing-note {
   text-align: center; margin-top: 40px;
-  font-family: var(--font-body); font-size: 0.8rem;
-  color: rgba(255,255,255,0.28); letter-spacing: 0.04em;
+  font-family: var(--font-body); font-size: 0.82rem;
+  color: rgba(255,255,255,0.42); letter-spacing: 0.05em;
+  border: 1px solid rgba(200,147,15,0.12);
+  border-radius: 100px; padding: 10px 28px;
+  display: inline-block;
 }
 
 /* Demo contact additions */
@@ -2169,6 +2219,7 @@ body::before {
 @media (max-width: 900px) {
   .pain-grid { grid-template-columns: repeat(2, 1fr); }
   .results-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .social-grid { grid-template-columns: 1fr; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
   .price-plan--popular { transform: none; }
 }
