@@ -5,18 +5,21 @@
 
 /* --- CSS Variables (Design Tokens) --- */
 :root {
-  --choco-dark:   #120a05;
-  --choco-deep:   #1e0f08;
-  --choco-mid:    #2e1a0e;
-  --choco-warm:   #4a2a14;
-  --gold-dark:    #7a5a0a;
-  --gold-mid:     #a87800;
+  --choco-dark:   #1e1008;   /* lighter — amber-warm mystical */
+  --choco-deep:   #271708;
+  --choco-mid:    #3c200e;
+  --choco-warm:   #582d14;
+  --amber:        #a15416;   /* key warm amber accent */
+  --amber-light:  #c47820;
+  --amber-glow:   rgba(161,84,22,0.3);
+  --gold-dark:    #8a6510;
+  --gold-mid:     #b88800;
   --gold:         #c8930f;
   --gold-light:   #e0b845;
   --gold-pale:    #f2d890;
   --gold-glow:    rgba(200,147,15,0.35);
-  --cream:        #faf4e8;
-  --cream-warm:   #ede0c5;
+  --cream:        #fdf6ec;
+  --cream-warm:   #eee0c4;
   --white:        #ffffff;
 
   --font-display: 'Cormorant Garamond', serif;
@@ -51,11 +54,11 @@ body {
   line-height: 1.7;
   cursor: none;
   overflow-x: hidden;
-  /* Deep multi-layer background */
+  /* Amber-mystical background — warm, luminous, deep */
   background-image:
-    radial-gradient(ellipse 120% 60% at 80% 20%, rgba(74,42,20,0.5) 0%, transparent 55%),
-    radial-gradient(ellipse 80% 80% at 10% 80%, rgba(30,15,8,0.8) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(46,26,14,0.3) 0%, transparent 55%);
+    radial-gradient(ellipse 120% 60% at 80% 20%, rgba(161,84,22,0.38) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 80% at 10% 80%, rgba(30,15,8,0.60) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(161,84,22,0.14) 0%, transparent 55%);
 }
 
 a { color: inherit; text-decoration: none; cursor: none; }
@@ -654,12 +657,12 @@ body.cursor-hidden .cursor-follower { opacity: 0; }
   bottom: 0; right: 0;
   border-radius: var(--radius-lg);
   background:
-    linear-gradient(to bottom, rgba(18,10,5,0.1) 0%, rgba(18,10,5,0.35) 100%),
-    url('https://images.unsplash.com/photo-1558769132-cb1aea47c95f?w=800&q=72&fit=crop&fm=webp&auto=format');
+    linear-gradient(to bottom, rgba(18,10,5,0.08) 0%, rgba(18,10,5,0.28) 100%),
+    url('/beauty/images/about-2.webp');
   background-size: cover, cover;
-  background-position: center, center;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(200,147,15,0.1);
-  border: 1px solid rgba(200,147,15,0.25);
+  background-position: center center, center center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(200,147,15,0.12);
+  border: 1px solid rgba(200,147,15,0.28);
   overflow: hidden;
 }
 
@@ -2008,8 +2011,8 @@ body::before {
   color: var(--cream); margin: 0 0 10px; letter-spacing: 0.01em;
 }
 .pain-card p {
-  font-family: var(--font-body); font-size: 0.86rem;
-  color: rgba(255,255,255,0.4); line-height: 1.75; margin: 0;
+  font-family: var(--font-body); font-size: 0.88rem;
+  color: rgba(255,245,230,0.68); line-height: 1.78; margin: 0;
 }
 
 /* Social proof */
@@ -2049,7 +2052,7 @@ body::before {
 }
 .sq-role {
   font-family: var(--font-body); font-size: 0.78rem;
-  color: rgba(255,255,255,0.32); letter-spacing: 0.03em;
+  color: rgba(255,245,220,0.52); letter-spacing: 0.03em;
 }
 
 /* How it works */
@@ -2066,7 +2069,7 @@ body::before {
 }
 .how-num {
   font-family: var(--font-display); font-size: 4rem; font-weight: 300;
-  color: rgba(200,147,15,0.18); line-height: 1; margin-bottom: 20px;
+  color: rgba(200,147,15,0.30); line-height: 1; margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
 .how-step h3 {
@@ -2074,8 +2077,8 @@ body::before {
   color: var(--cream); margin: 0 0 14px;
 }
 .how-step p {
-  font-family: var(--font-body); font-size: 0.87rem;
-  color: rgba(255,255,255,0.45); line-height: 1.75;
+  font-family: var(--font-body); font-size: 0.88rem; font-weight: 400;
+  color: rgba(255,245,230,0.65); line-height: 1.8;
 }
 
 /* Results numbers */
@@ -2095,8 +2098,8 @@ body::before {
   font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 12px;
 }
 .result-label {
-  font-family: var(--font-body); font-size: 0.82rem;
-  color: rgba(255,255,255,0.4); letter-spacing: 0.04em; line-height: 1.5;
+  font-family: var(--font-body); font-size: 0.84rem; font-weight: 400;
+  color: rgba(255,245,225,0.60); letter-spacing: 0.04em; line-height: 1.55;
 }
 
 /* Pricing */
@@ -2139,11 +2142,11 @@ body::before {
 }
 .plan-mo {
   font-family: var(--font-body); font-size: 0.9rem;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,245,220,0.52);
 }
 .plan-sub {
   font-family: var(--font-body); font-size: 0.82rem;
-  color: rgba(255,255,255,0.38); margin: 6px 0 24px;
+  color: rgba(255,245,220,0.56); margin: 6px 0 24px;
   padding-bottom: 24px;
   border-bottom: 1px solid rgba(200,147,15,0.1);
 }
@@ -2188,8 +2191,8 @@ body::before {
 
 /* Demo contact additions */
 .contact-sub {
-  font-family: var(--font-body); font-size: 0.95rem;
-  color: rgba(255,255,255,0.45); line-height: 1.75;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 400;
+  color: rgba(255,245,225,0.62); line-height: 1.78;
   margin: 16px 0 28px;
 }
 .demo-chips { display: flex; flex-wrap: wrap; gap: 10px; }

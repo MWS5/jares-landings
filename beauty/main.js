@@ -367,7 +367,7 @@ const LUNA_LABELS = {
   de: '✦ Mit Luna sprechen',
   fr: '✦ Parler à Luna',
   es: '✦ Hablar con Luna',
-  ru: '✦ Говорить с Луной',
+  ru: '✦ Говорить с Luna',
 };
 
 const LUNA_FIRST_MSG = {
@@ -375,7 +375,7 @@ const LUNA_FIRST_MSG = {
   de: "Willkommen bei LUMIÈRE. Ich bin Luna — Ihre persönliche Beauty-Beraterin. Wie kann ich Ihnen helfen?",
   fr: "Bienvenue chez LUMIÈRE. Je suis Luna — votre conseillère beauté personnelle. Comment puis-je vous aider?",
   es: "Bienvenido a LUMIÈRE. Soy Luna — tu consultora de belleza personal. ¿Cómo puedo ayudarte?",
-  ru: "Добро пожаловать в LUMIÈRE. Я Луна — ваш личный beauty-консультант. Чем могу помочь?",
+  ru: "Добро пожаловать в LUMIÈRE. Я Luna — ваш личный beauty-консультант. Чем могу помочь?",
 };
 
 function injectLunaPillStyle(widget) {
