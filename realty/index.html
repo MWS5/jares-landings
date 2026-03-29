@@ -1,207 +1,614 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RealtyBot — ИИ-агент для Inmobiliaria</title>
-<style>
-  :root {--accent:#2563eb;--btn:#1d4ed8;--hover:#1e40af;--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--text:#f0f0ff;--muted:#8888aa;--border:rgba(255,255,255,0.08);--radius:16px;}
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
-  .logo{font-size:20px;font-weight:700;color:var(--accent);}
-  .nav-cta{padding:8px 20px;background:var(--btn);color:#fff;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;transition:background 0.2s;}
-  .nav-cta:hover{background:var(--hover);}
-  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,#2563eb22 0%,transparent 70%);pointer-events:none;}
-  .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:#2563eb1a;border:1px solid #2563eb44;border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:28px;font-weight:500;}
-  .hero-badge::before{content:'●';font-size:8px;animation:pulse 2s infinite;}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-  h1{font-size:clamp(36px,7vw,72px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:20px;background:linear-gradient(135deg,#fff 40%,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-  .hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--muted);max-width:580px;margin-bottom:44px;}
-  .hero-cta-group{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
-  .btn-primary{padding:16px 36px;background:var(--btn);color:#fff;border-radius:12px;text-decoration:none;font-size:16px;font-weight:700;transition:all 0.2s;box-shadow:0 4px 24px #2563eb40;}
-  .btn-primary:hover{background:var(--hover);transform:translateY(-2px);}
-  .btn-secondary{padding:16px 36px;background:var(--surface2);color:var(--text);border-radius:12px;text-decoration:none;font-size:16px;font-weight:600;border:1px solid var(--border);transition:all 0.2s;}
-  .btn-secondary:hover{background:var(--surface);border-color:#2563eb44;}
-  .stats{display:flex;gap:48px;flex-wrap:wrap;justify-content:center;padding:40px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-  .stat{text-align:center;}
-  .stat-num{font-size:36px;font-weight:800;color:var(--accent);letter-spacing:-1px;}
-  .stat-label{font-size:14px;color:var(--muted);margin-top:4px;}
-  section{padding:80px 24px;max-width:1100px;margin:0 auto;}
-  .section-title{text-align:center;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1px;margin-bottom:16px;}
-  .section-sub{text-align:center;color:var(--muted);margin-bottom:56px;font-size:18px;}
-  .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
-  .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all 0.3s;}
-  .feature-card:hover{border-color:#2563eb44;transform:translateY(-4px);}
-  .feature-icon{width:48px;height:48px;background:#2563eb1a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
-  .feature-card h3{font-size:20px;font-weight:700;margin-bottom:10px;}
-  .feature-card p{color:var(--muted);font-size:15px;line-height:1.6;}
-  .pricing-section{background:var(--surface);padding:80px 24px;}
-  .pricing-inner{max-width:1000px;margin:0 auto;}
-  .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:56px;}
-  .plan{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:36px;position:relative;transition:all 0.3s;}
-  .plan.popular{border-color:var(--accent);box-shadow:0 0 40px #2563eb20;}
-  .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--btn);color:#fff;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:700;white-space:nowrap;}
-  .plan-name{font-size:16px;font-weight:600;color:var(--muted);margin-bottom:8px;}
-  .plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;color:var(--text);margin-bottom:4px;}
-  .plan-period{color:var(--muted);font-size:14px;margin-bottom:28px;}
-  .plan-features{list-style:none;margin-bottom:32px;}
-  .plan-features li{padding:8px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--muted);display:flex;align-items:center;gap:10px;}
-  .plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;}
-  .plan-features li:last-child{border-bottom:none;}
-  .plan-btn{display:block;text-align:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;transition:all 0.2s;}
-  .plan.popular .plan-btn{background:var(--btn);color:#fff;}
-  .plan.popular .plan-btn:hover{background:var(--hover);}
-  .plan:not(.popular) .plan-btn{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
-  .plan:not(.popular) .plan-btn:hover{border-color:#2563eb44;}
-  .steps{display:flex;flex-wrap:wrap;justify-content:center;}
-  .step{flex:1;min-width:200px;max-width:260px;text-align:center;padding:32px 24px;position:relative;}
-  .step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:20px;}
-  .step:last-child::after{display:none;}
-  .step-num{width:52px;height:52px;background:#2563eb1a;border:2px solid #2563eb44;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--accent);margin:0 auto 20px;}
-  .step h3{font-size:18px;font-weight:700;margin-bottom:8px;}
-  .step p{color:var(--muted);font-size:14px;}
-  .cta-banner{text-align:center;padding:80px 24px;background:linear-gradient(135deg,#2563eb15,transparent);border-top:1px solid var(--border);}
-  .cta-banner h2{font-size:clamp(28px,4vw,44px);font-weight:800;margin-bottom:16px;}
-  .cta-banner p{color:var(--muted);font-size:18px;margin-bottom:40px;}
-  footer{text-align:center;padding:32px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:14px;}
-  footer a{color:var(--accent);text-decoration:none;}
-  @media(max-width:600px){nav{padding:14px 20px;}.hero{padding:100px 16px 60px;}.stats{gap:24px;padding:32px 16px;}}
-
-  /* ARIA VOICE SECTION */
-  .aria-voice{background:linear-gradient(135deg,#2563eb0f 0%,#1e40af08 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 24px;text-align:center}
-  .aria-voice-inner{max-width:640px;margin:0 auto}
-  .aria-live-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
-  .aria-live-dot{width:10px;height:10px;border-radius:50%;background:#10b981;animation:adot 2s ease-in-out infinite}
-  @keyframes adot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,185,129,.5)}60%{opacity:.7;box-shadow:0 0 0 8px rgba(16,185,129,0)}}
-  .aria-live-text{font-size:13px;color:#10b981;font-weight:600;text-transform:uppercase;letter-spacing:1px}
-  .aria-voice h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-1px;margin-bottom:14px;background:linear-gradient(135deg,#fff 40%,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .aria-voice p{color:var(--muted);font-size:17px;line-height:1.7;margin-bottom:36px}
-  .aria-mic-btn{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--btn),#1e40af);color:#fff;padding:18px 40px;border-radius:50px;font-size:17px;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 8px 32px #2563eb40;animation:amic 3s ease-in-out infinite}
-  @keyframes amic{0%,100%{box-shadow:0 8px 32px #2563eb40,0 0 0 0 #2563eb30}50%{box-shadow:0 12px 48px #2563eb60,0 0 0 12px rgba(37,99,235,0)}}
-  .aria-mic-btn:hover{transform:translateY(-3px);box-shadow:0 16px 48px #2563eb50}
-  .aria-mic-btn:active{transform:translateY(0)}
-  .aria-langs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
-  .aria-lang-tag{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-size:13px;font-weight:500}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MERIDIAN — Luxury Real Estate | AI Voice Agent Demo</title>
+  <meta name="description" content="MERIDIAN — Premium Real Estate Agency. Experience Aria, an AI voice agent for property agencies — powered by JARES AI."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/realty/style.css"/>
+  <style>
+    .lang-switcher { display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.08); border-radius: 20px; padding: 3px; margin-right: 12px; }
+    .lang-btn { background: none; border: none; font-size: 0.68rem; font-weight: 600; color: rgba(255,255,255,0.55); padding: 4px 8px; border-radius: 16px; cursor: pointer; font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em; transition: all 0.2s; line-height: 1; }
+    .lang-btn:hover { color: rgba(255,255,255,0.9); }
+    .lang-btn.active { background: rgba(200,147,15,0.25); color: var(--gold); }
+    @media (max-width: 900px) { .lang-switcher { display: none; } }
+  </style>
 </head>
 <body>
-<nav><div class="logo">⚡ RealtyBot</div><a href="https://t.me/JaresAgentsBot" class="nav-cta">Probar gratis</a></nav>
-<div class="hero">
-  <div class="hero-badge">Agente IA para negocios · JARES AI</div>
-  <h1>Automatiza<br>Inmobiliaria<br>con IA</h1>
-  <p class="hero-sub">RealtyBot responde a clientes 24/7, califica leads y agenda reuniones. Sin contrataciones, sin demoras.</p>
-  <div class="hero-cta-group">
-    <a href="https://t.me/JaresAgentsBot" class="btn-primary">🚀 Lanzar agente</a>
-    <a href="#pricing" class="btn-secondary">Ver precios</a>
-  </div>
-</div>
-<div class="stats">
-  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Sin descanso</div></div>
-  <div class="stat"><div class="stat-num">&lt;2с</div><div class="stat-label">Tiempo de respuesta</div></div>
-  <div class="stat"><div class="stat-num">+40%</div><div class="stat-label">Conversión de leads</div></div>
-  <div class="stat"><div class="stat-num">от €149</div><div class="stat-label">Por mes</div></div>
-</div>
-<!-- ARIA VOICE SECTION -->
-<div class="aria-voice">
-  <div class="aria-voice-inner">
-    <div class="aria-live-row">
-      <div class="aria-live-dot"></div>
-      <span class="aria-live-text">Aria está en vivo — 24/7</span>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <div class="preloader" id="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-logo">MERIDIAN</div>
+      <div class="preloader-line"></div>
     </div>
-    <h2>Habla con Aria ahora mismo</h2>
-    <p>Pregúntale sobre propiedades en Chipre, presupuestos, zonas y documentación.<br>Aria responde al instante, a cualquier hora.</p>
-    <button class="aria-mic-btn" onclick="openAriaWidget()">
-      🎙 Hablar con Aria
+  </div>
+
+  <!-- MOBILE OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobileNav">
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+    <div class="mobile-lang-switcher">
+      <button class="mobile-lang-btn active" data-lang="en">EN</button>
+      <button class="mobile-lang-btn" data-lang="de">DE</button>
+      <button class="mobile-lang-btn" data-lang="fr">FR</button>
+      <button class="mobile-lang-btn" data-lang="es">ES</button>
+      <button class="mobile-lang-btn" data-lang="ru">RU</button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#services" data-i18n="nav.services">Services</a></li>
+      <li><a href="#how" data-i18n="nav.how">How it works</a></li>
+      <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <nav class="nav" id="nav">
+    <div class="nav-logo">MERIDIAN</div>
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#services" data-i18n="nav.services">Services</a></li>
+      <li><a href="#how" data-i18n="nav.how">How it works</a></li>
+      <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-i18n="nav.cta">Get Demo</a>
+    <button class="nav-burger" id="navBurger">
+      <span></span><span></span><span></span>
     </button>
-    <div class="aria-langs">
-      <span class="aria-lang-tag">🇬🇧 English</span>
-      <span class="aria-lang-tag">🇷🇺 Русский</span>
-      <span class="aria-lang-tag">🇬🇷 Ελληνικά</span>
-    </div>
-  </div>
-</div>
+  </nav>
 
-<section id="features">
-  <h2 class="section-title">Qué hace RealtyBot</h2>
-  <p class="section-sub">Automatización completa de la comunicación con clientes</p>
-  <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon">💬</div><h3>Respuestas instantáneas</h3><p>El cliente escribe por WhatsApp o Telegram — respuesta en segundos.</p></div>
-    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Califica leads</h3><p>Hace las preguntas correctas y prioriza leads calientes.</p></div>
-    <div class="feature-card"><div class="feature-icon">📅</div><h3>Agenda reuniones</h3><p>Propone horarios automáticamente y agenda citas.</p></div>
-    <div class="feature-card"><div class="feature-icon">📊</div><h3>Análisis e informes</h3><p>Ve tasas de conversión y volumen de leads en tiempo real.</p></div>
-    <div class="feature-card"><div class="feature-icon">🔗</div><h3>Integración CRM</h3><p>Se conecta a tu CRM y crea negocios automáticamente.</p></div>
-    <div class="feature-card"><div class="feature-icon">🌐</div><h3>Omnicanal</h3><p>Telegram, WhatsApp, Instagram Direct y web al mismo tiempo.</p></div>
-  </div>
-</section>
-<section id="how">
-  <h2 class="section-title">Cómo funciona</h2>
-  <p class="section-sub">En marcha en 48 horas, sin programadores</p>
-  <div class="steps">
-    <div class="step"><div class="step-num">1</div><h3>Envía tu solicitud</h3><p>Escribe al bot — respondemos en una hora</p></div>
-    <div class="step"><div class="step-num">2</div><h3>Configuración</h3><p>Lo configuramos para tu negocio</p></div>
-    <div class="step"><div class="step-num">3</div><h3>Prueba y lanzamiento</h3><p>Probamos juntos y salimos en vivo</p></div>
-    <div class="step"><div class="step-num">4</div><h3>Funciona solo</h3><p>El agente trabaja 24/7, tú recibes los clientes</p></div>
-  </div>
-</section>
-<div class="pricing-section" id="pricing">
-  <div class="pricing-inner">
-    <h2 class="section-title">Precios</h2>
-    <p class="section-sub">Precios transparentes, sin cargos ocultos</p>
-    <div class="pricing-grid">
-      <div class="plan">
-        <div class="plan-name">Inicial</div><div class="plan-price">€149</div><div class="plan-period">por mes</div>
-        <ul class="plan-features"><li>1 canal de comunicación</li><li>Hasta 500 diálogos/mes</li><li>Respuestas FAQ básicas</li><li>Soporte por email</li></ul>
-        <a href="https://t.me/JaresAgentsBot" class="plan-btn">Elegir</a>
-      </div>
-      <div class="plan popular">
-        <div class="plan-badge">Más popular</div>
-        <div class="plan-name">Negocio</div><div class="plan-price">€298</div><div class="plan-period">por mes</div>
-        <ul class="plan-features"><li>3 canales de comunicación</li><li>Hasta 2000 diálogos/mes</li><li>Calificación de leads</li><li>Integración CRM</li><li>Análisis e informes</li><li>Soporte por chat</li></ul>
-        <a href="https://t.me/JaresAgentsBot" class="plan-btn">Elegir</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Pro</div><div class="plan-price">€894</div><div class="plan-period">por mes</div>
-        <ul class="plan-features"><li>Todos los canales</li><li>Diálogos ilimitados</li><li>Personalización completa</li><li>Soporte prioritario</li><li>Manager dedicado</li><li>White Label</li></ul>
-        <a href="https://t.me/JaresAgentsBot" class="plan-btn">Elegir</a>
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-parallax" id="heroParallax"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-sub reveal-up" data-i18n="hero.sub">Luxury Real Estate &amp; Property Advisory</p>
+      <h1 class="hero-title reveal-up" data-i18n="hero.title"><span>Your Home</span><br><em>in the Right</em><br><span>Hands</span></h1>
+      <p class="hero-desc reveal-up" data-i18n="hero.desc">Premium properties in the world's most sought-after locations. Guided by expertise. Powered by AI.</p>
+      <div class="hero-actions reveal-up">
+        <a href="#services" class="btn-primary" data-i18n="hero.btn1">View Properties</a>
+        <a href="#contact" class="btn-outline" data-i18n="hero.btn2">Speak with Aria</a>
       </div>
     </div>
-  </div>
-</div>
-<div class="cta-banner">
-  <h2>¿Listo para automatizar Inmobiliaria?</h2>
-  <p>Primeros 7 días gratis — sin tarjeta, sin riesgo</p>
-  <a href="https://t.me/JaresAgentsBot" class="btn-primary" style="display:inline-block">🚀 Comenzar gratis</a>
-</div>
-<footer><p>© 2026 JARES AI · <a href="https://jares-ai.com">jares-ai.com</a> · <a href="https://t.me/JaresAgentsBot">Telegram</a></p></footer>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span data-i18n="hero.scroll">Scroll</span>
+    </div>
+  </section>
 
-<!-- ARIA VOICE WIDGET -->
-<elevenlabs-convai
-  id="aria-widget"
-  agent-id="agent_9901kmgvh0creygshyrajvgy4r2x"
-  action-text="Talk to Aria"
-  avatar-orb-color-1="#2563eb"
-  avatar-orb-color-2="#60a5fa"
-></elevenlabs-convai>
-<script src="https://elevenlabs.io/convai-widget/index.js" async></script>
-<script>
-function openAriaWidget() {
-  const w = document.getElementById('aria-widget');
-  if (w && w.shadowRoot) {
-    const btn = w.shadowRoot.querySelector('button');
-    if (btn) { btn.click(); return; }
-  }
-  // Fallback: set expandable after widget loads
-  if (w) w.setAttribute('expandable', 'always');
-}
-// Auto-open on desktop after 4 seconds
-if (window.innerWidth >= 768) {
-  window.addEventListener('load', () => {
-    setTimeout(openAriaWidget, 4000);
-  });
-}
-</script>
+  <!-- QUOTE STRIP -->
+  <div class="quote-strip">
+    <div class="quote-track">
+      <span data-i18n="quote.1">Premium Properties ✦</span>
+      <span data-i18n="quote.2">Global Reach ✦</span>
+      <span data-i18n="quote.3">Exceptional Service ✦</span>
+      <span data-i18n="quote.1">Premium Properties ✦</span>
+      <span data-i18n="quote.2">Global Reach ✦</span>
+      <span data-i18n="quote.3">Exceptional Service ✦</span>
+    </div>
+  </div>
+
+  <!-- ABOUT / DEMO -->
+  <section class="about" id="about">
+    <div class="about-bg-figure"></div>
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-img-wrap">
+            <div class="about-img about-img-1"></div>
+            <div class="about-img about-img-2"></div>
+            <div class="about-img about-img-3"></div>
+          </div>
+          <div class="about-stat-card">
+            <span class="stat-num">850+</span>
+            <span class="stat-label" data-i18n="about.stat">Properties sold globally</span>
+          </div>
+        </div>
+        <div class="about-text">
+          <p class="section-eyebrow reveal-up" data-i18n="about.eye">About Us</p>
+          <h2 class="section-title reveal-up" data-i18n="about.title">Where <em>exceptional</em><br>property finds its owner</h2>
+          <p class="about-desc reveal-up" data-i18n="about.desc1">MERIDIAN has redefined luxury real estate. For over a decade, we have matched discerning international buyers with extraordinary properties — from Monaco penthouses to Cypriot villas.</p>
+          <p class="about-desc reveal-up" data-i18n="about.desc2">Now Aria, our AI property consultant, ensures no inquiry ever goes unanswered — in any language, at any hour.</p>
+          <div class="about-features reveal-up">
+            <div class="feature-item"><div class="feature-icon">✦</div><span data-i18n="about.f1">5 languages, zero delays</span></div>
+            <div class="feature-item"><div class="feature-icon">✦</div><span data-i18n="about.f2">Instant property matching</span></div>
+            <div class="feature-item"><div class="feature-icon">✦</div><span data-i18n="about.f3">24/7 viewing appointments</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSITION STRIP -->
+  <div class="aria-transition">
+    <div class="at-inner">
+      <span class="at-star">✦</span>
+      <p data-i18n="lt.text">What Aria does for your agency — every inquiry, every language, every hour of the night</p>
+      <span class="at-star">✦</span>
+    </div>
+  </div>
+
+  <!-- PAIN POINTS -->
+  <section class="aria-pain" id="services">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow reveal-up" data-i18n="pain.eye">Sound familiar?</p>
+        <h2 class="section-title reveal-up" data-i18n="pain.title">Your agency loses buyers<br><em>every night</em></h2>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card reveal-card" data-delay="0">
+          <div class="pain-icon">🌙</div>
+          <h3 data-i18n="p1.title">No reply at midnight</h3>
+          <p data-i18n="p1.desc">An international buyer wrote at 11 PM about a penthouse — and called your competitor in the morning</p>
+        </div>
+        <div class="pain-card reveal-card" data-delay="100">
+          <div class="pain-icon">🌍</div>
+          <h3 data-i18n="p2.title">Language barrier</h3>
+          <p data-i18n="p2.desc">Russian, Arabic, Chinese buyers leave when no one replies in their language within minutes</p>
+        </div>
+        <div class="pain-card reveal-card" data-delay="200">
+          <div class="pain-icon">💬</div>
+          <h3 data-i18n="p3.title">Buried in WhatsApp</h3>
+          <p data-i18n="p3.desc">Dozens of messages daily. The team spends hours on same basic questions about location and price</p>
+        </div>
+        <div class="pain-card reveal-card" data-delay="0">
+          <div class="pain-icon">📅</div>
+          <h3 data-i18n="p4.title">Missed viewings</h3>
+          <p data-i18n="p4.desc">Buyers want viewings today — but your team is busy and the appointment was never confirmed</p>
+        </div>
+        <div class="pain-card reveal-card" data-delay="100">
+          <div class="pain-icon">🔄</div>
+          <h3 data-i18n="p5.title">Unqualified leads</h3>
+          <p data-i18n="p5.desc">Agents spend time on window shoppers while serious buyers with budget wait for response</p>
+        </div>
+        <div class="pain-card reveal-card" data-delay="200">
+          <div class="pain-icon">📊</div>
+          <h3 data-i18n="p6.title">CRM never updated</h3>
+          <p data-i18n="p6.desc">No one logs the conversations. Leads fall through the cracks and the pipeline stays invisible</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARALLAX BANNER -->
+  <div class="parallax-banner" id="parallaxBanner">
+    <div class="parallax-banner-bg" id="parallaxBannerBg"></div>
+    <div class="parallax-banner-overlay"></div>
+    <div class="parallax-banner-figure"></div>
+    <div class="parallax-banner-content">
+      <p class="section-eyebrow" data-i18n="banner.eye">Aria — 24/7 AI property consultant</p>
+      <h2 data-i18n="banner.quote">«Never miss<br><em>a property sale</em>»</h2>
+      <a href="#contact" class="btn-primary" data-i18n="banner.btn">Get Aria for my agency</a>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="aria-how" id="how">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow reveal-up" data-i18n="how.eye">Simple process</p>
+        <h2 class="section-title reveal-up" data-i18n="how.title">Up and running in<br><em>48 hours</em></h2>
+      </div>
+      <div class="how-steps">
+        <div class="how-step reveal-up" data-delay="0">
+          <div class="how-num">01</div>
+          <h3 data-i18n="h1.title">We configure Aria</h3>
+          <p data-i18n="h1.desc">Our team trains Aria on your portfolio: property types, locations, pricing, languages, and your agency's brand voice. Just share a brief.</p>
+        </div>
+        <div class="how-connector"></div>
+        <div class="how-step reveal-up" data-delay="150">
+          <div class="how-num">02</div>
+          <h3 data-i18n="h2.title">Aria goes live</h3>
+          <p data-i18n="h2.desc">Aria handles inquiries on your website, WhatsApp, and email. She qualifies buyers, books viewings, and logs everything to your CRM.</p>
+        </div>
+        <div class="how-connector"></div>
+        <div class="how-step reveal-up" data-delay="300">
+          <div class="how-num">03</div>
+          <h3 data-i18n="h3.title">Your team closes deals</h3>
+          <p data-i18n="h3.desc">Agents receive pre-qualified, motivated buyers with full context. Less admin. More closings. Zero missed leads.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="aria-results">
+    <div class="container">
+      <div class="results-grid">
+        <div class="result-item reveal-up" data-delay="0">
+          <span class="result-num">24/7</span>
+          <p class="result-label" data-i18n="stat1.label">Handles inquiries around the clock</p>
+        </div>
+        <div class="result-item reveal-up" data-delay="100">
+          <span class="result-num">5</span>
+          <p class="result-label" data-i18n="stat2.label">Languages spoken instantly</p>
+        </div>
+        <div class="result-item reveal-up" data-delay="200">
+          <span class="result-num">+35%</span>
+          <p class="result-label" data-i18n="stat3.label">More qualified leads in month one</p>
+        </div>
+        <div class="result-item reveal-up" data-delay="300">
+          <span class="result-num">48h</span>
+          <p class="result-label" data-i18n="stat4.label">From brief to fully live</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="aria-social">
+    <div class="container">
+      <div class="social-grid">
+        <div class="social-quote reveal-card" data-delay="0">
+          <div class="sq-stars">✦ ✦ ✦ ✦ ✦</div>
+          <p class="sq-text" data-i18n="sq1.text">"Aria answered 23 inquiries in one night while we were closed. Three became viewing appointments. One became a €2.4M sale."</p>
+          <div class="sq-author">
+            <span class="sq-name" data-i18n="sq1.name">Marcus T.</span>
+            <span class="sq-role" data-i18n="sq1.role">Director, T&amp;A Property Group · Cyprus</span>
+          </div>
+        </div>
+        <div class="social-quote reveal-card" data-delay="150">
+          <div class="sq-stars">✦ ✦ ✦ ✦ ✦</div>
+          <p class="sq-text" data-i18n="sq2.text">"Our Russian and Chinese buyers now get instant replies in their language. Our conversion from inquiry to viewing went up by 40%."</p>
+          <div class="sq-author">
+            <span class="sq-name" data-i18n="sq2.name">Elena V.</span>
+            <span class="sq-role" data-i18n="sq2.role">CEO, Prestige Realty · Dubai</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="aria-pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow reveal-up" data-i18n="price.eye">Pricing</p>
+        <h2 class="section-title reveal-up" data-i18n="price.title">Simple.<br><em>Transparent.</em></h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-plan reveal-card" data-delay="0">
+          <p class="plan-name">STARTER</p>
+          <div class="plan-price-row"><span class="plan-price">€299</span><span class="plan-mo" data-i18n="plan.mo">/ month</span></div>
+          <p class="plan-sub" data-i18n="plan1.sub">For boutique agencies</p>
+          <ul class="plan-features">
+            <li data-i18n="plan1.f1">Aria AI voice consultant</li>
+            <li data-i18n="plan1.f2">Inquiry handling 24/7</li>
+            <li data-i18n="plan1.f3">Basic property matching</li>
+            <li data-i18n="plan1.f4">1 language</li>
+            <li data-i18n="plan1.f5">Email support</li>
+          </ul>
+          <a href="#contact" class="plan-cta plan-cta--outline" data-i18n="plan.start">Get started</a>
+        </div>
+        <div class="price-plan price-plan--popular reveal-card" data-delay="150">
+          <div class="plan-badge" data-i18n="plan.popular">Most popular</div>
+          <p class="plan-name">GROWTH</p>
+          <div class="plan-price-row"><span class="plan-price">€599</span><span class="plan-mo" data-i18n="plan.mo">/ month</span></div>
+          <p class="plan-sub" data-i18n="plan2.sub">For active property agencies</p>
+          <ul class="plan-features">
+            <li data-i18n="plan2.f1">Everything in Starter</li>
+            <li data-i18n="plan2.f2">5 languages</li>
+            <li data-i18n="plan2.f3">Lead qualification &amp; CRM sync</li>
+            <li data-i18n="plan2.f4">Viewing appointment booking</li>
+            <li data-i18n="plan2.f5">Analytics dashboard</li>
+          </ul>
+          <a href="#contact" class="plan-cta plan-cta--primary" data-i18n="plan.start">Get started</a>
+        </div>
+        <div class="price-plan reveal-card" data-delay="300">
+          <p class="plan-name">ENTERPRISE</p>
+          <div class="plan-price-row"><span class="plan-price">€1,499</span><span class="plan-mo" data-i18n="plan.mo">/ month</span></div>
+          <p class="plan-sub" data-i18n="plan3.sub">For large agencies &amp; chains</p>
+          <ul class="plan-features">
+            <li data-i18n="plan3.f1">Everything in Growth</li>
+            <li data-i18n="plan3.f2">Multi-branch setup</li>
+            <li data-i18n="plan3.f3">Custom integrations</li>
+            <li data-i18n="plan3.f4">Priority launch in 24h</li>
+            <li data-i18n="plan3.f5">Dedicated account manager</li>
+          </ul>
+          <a href="#contact" class="plan-cta plan-cta--outline" data-i18n="plan.contact">Contact us</a>
+        </div>
+      </div>
+      <div style="text-align:center"><p class="pricing-note reveal-up" data-i18n="price.note">One-time setup €499 · 14-day money-back guarantee · No contracts</p></div>
+    </div>
+  </section>
+
+  <!-- DEMO REQUEST FORM -->
+  <section class="contact" id="contact">
+    <div class="contact-bg"></div>
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p class="section-eyebrow reveal-up" data-i18n="demo.eye">Get your demo</p>
+          <h2 class="section-title reveal-up" data-i18n="demo.title">Launch <em>Aria</em><br>in your agency</h2>
+          <p class="contact-sub reveal-up" data-i18n="demo.sub">Fill in the form — we'll contact you within 24 hours and configure a personal demo for your agency and property portfolio</p>
+          <div class="demo-chips reveal-up">
+            <span class="demo-chip">⚡ <span data-i18n="chip1">48h setup</span></span>
+            <span class="demo-chip">🌍 <span data-i18n="chip2">5 languages</span></span>
+            <span class="demo-chip">🔁 <span data-i18n="chip3">24/7 active</span></span>
+            <span class="demo-chip">✅ <span data-i18n="chip4">14-day guarantee</span></span>
+          </div>
+        </div>
+        <div class="contact-form-wrap reveal-up">
+          <form class="contact-form" id="demoForm">
+            <h3 data-i18n="form.title">Request a demo</h3>
+            <div class="form-group">
+              <input type="text" id="fagency" placeholder="Agency name" data-i18n-ph="form.agency" required/>
+            </div>
+            <div class="form-group">
+              <input type="text" id="fname" placeholder="Your name" data-i18n-ph="form.name" required/>
+            </div>
+            <div class="form-group">
+              <input type="tel" id="fphone" placeholder="Phone / WhatsApp" data-i18n-ph="form.phone" required/>
+            </div>
+            <div class="form-group">
+              <input type="email" id="femail" placeholder="Email" data-i18n-ph="form.email"/>
+            </div>
+            <button type="submit" class="btn-primary btn-full" data-i18n="form.btn">Request Demo →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JARES BRAND BAR -->
+  <div class="jares-bar">
+    <div class="container">
+      <p data-i18n="jares.bar">Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs · Your AI agent in 48 hours</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">MERIDIAN</div>
+        <p class="footer-tagline" data-i18n="footer.tagline">Exceptional properties, intelligently matched</p>
+        <div class="footer-social">
+          <a href="#" class="social-link">Instagram</a>
+          <a href="#" class="social-link">WhatsApp</a>
+          <a href="#" class="social-link">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 MERIDIAN · Demo by JARES AI</p>
+        <div class="footer-legal">
+          <a href="https://jares-ai.com" target="_blank">jares-ai.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ARIA WIDGET -->
+  <div class="aria-widget-wrap" id="ariaWidgetWrap">
+    <elevenlabs-convai
+      id="ariaWidget"
+      agent-id="agent_9901kmgvh0creygshyrajvgy4r2x"
+      action-text="✦ Speak with Aria"
+      avatar-orb-color-1="#1e5fa3"
+      avatar-orb-color-2="#c8930f"
+    ></elevenlabs-convai>
+  </div>
+  <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
+
+  <script src="/realty/main.js" defer></script>
+
+  <!-- i18n dictionary -->
+  <script>
+  const REALTY_I18N = {
+    en: {
+      'nav.about':'About','nav.services':'Services','nav.how':'How it works','nav.pricing':'Pricing','nav.contact':'Contact','nav.cta':'Get Demo',
+      'hero.sub':'Luxury Real Estate & Property Advisory',
+      'hero.title':'<span>Your Home</span><br><em>in the Right</em><br><span>Hands</span>',
+      'hero.desc':'Premium properties in the world\'s most sought-after locations. Guided by expertise. Powered by AI.',
+      'hero.btn1':'View Properties','hero.btn2':'Speak with Aria','hero.scroll':'Scroll',
+      'quote.1':'Premium Properties ✦','quote.2':'Global Reach ✦','quote.3':'Exceptional Service ✦',
+      'about.eye':'About Us','about.title':'Where <em>exceptional</em><br>property finds its owner',
+      'about.desc1':'MERIDIAN has redefined luxury real estate. For over a decade, we have matched discerning international buyers with extraordinary properties — from Monaco penthouses to Cypriot villas.',
+      'about.desc2':'Now Aria, our AI property consultant, ensures no inquiry ever goes unanswered — in any language, at any hour.',
+      'about.f1':'5 languages, zero delays','about.f2':'Instant property matching','about.f3':'24/7 viewing appointments','about.stat':'Properties sold globally',
+      'lt.text':'What Aria does for your agency — every inquiry, every language, every hour of the night',
+      'pain.eye':'Sound familiar?','pain.title':'Your agency loses buyers<br><em>every night</em>',
+      'p1.title':'No reply at midnight','p1.desc':'An international buyer wrote at 11 PM about a penthouse — and called your competitor in the morning',
+      'p2.title':'Language barrier','p2.desc':'Russian, Arabic, Chinese buyers leave when no one replies in their language within minutes',
+      'p3.title':'Buried in WhatsApp','p3.desc':'Dozens of messages daily. The team spends hours on same basic questions about location and price',
+      'p4.title':'Missed viewings','p4.desc':'Buyers want viewings today — but your team is busy and the appointment was never confirmed',
+      'p5.title':'Unqualified leads','p5.desc':'Agents spend time on window shoppers while serious buyers with budget wait for response',
+      'p6.title':'CRM never updated','p6.desc':'No one logs the conversations. Leads fall through the cracks and the pipeline stays invisible',
+      'banner.eye':'Aria — 24/7 AI property consultant','banner.quote':'«Never miss<br><em>a property sale</em>»','banner.btn':'Get Aria for my agency',
+      'how.eye':'Simple process','how.title':'Up and running in<br><em>48 hours</em>',
+      'h1.title':'We configure Aria','h1.desc':'Our team trains Aria on your portfolio: property types, locations, pricing, languages, and your agency\'s brand voice. Just share a brief.',
+      'h2.title':'Aria goes live','h2.desc':'Aria handles inquiries on your website, WhatsApp, and email. She qualifies buyers, books viewings, and logs everything to your CRM.',
+      'h3.title':'Your team closes deals','h3.desc':'Agents receive pre-qualified, motivated buyers with full context. Less admin. More closings. Zero missed leads.',
+      'stat1.label':'Handles inquiries around the clock','stat2.label':'Languages spoken instantly','stat3.label':'More qualified leads in month one','stat4.label':'From brief to fully live',
+      'sq1.text':'"Aria answered 23 inquiries in one night while we were closed. Three became viewing appointments. One became a €2.4M sale."','sq1.name':'Marcus T.','sq1.role':'Director, T&A Property Group · Cyprus',
+      'sq2.text':'"Our Russian and Chinese buyers now get instant replies in their language. Our conversion from inquiry to viewing went up by 40%."','sq2.name':'Elena V.','sq2.role':'CEO, Prestige Realty · Dubai',
+      'price.eye':'Pricing','price.title':'Simple.<br><em>Transparent.</em>',
+      'plan.mo':'/ month','plan.popular':'Most popular','plan.start':'Get started','plan.contact':'Contact us',
+      'plan1.sub':'For boutique agencies','plan1.f1':'Aria AI voice consultant','plan1.f2':'Inquiry handling 24/7','plan1.f3':'Basic property matching','plan1.f4':'1 language','plan1.f5':'Email support',
+      'plan2.sub':'For active property agencies','plan2.f1':'Everything in Starter','plan2.f2':'5 languages','plan2.f3':'Lead qualification & CRM sync','plan2.f4':'Viewing appointment booking','plan2.f5':'Analytics dashboard',
+      'plan3.sub':'For large agencies & chains','plan3.f1':'Everything in Growth','plan3.f2':'Multi-branch setup','plan3.f3':'Custom integrations','plan3.f4':'Priority launch in 24h','plan3.f5':'Dedicated account manager',
+      'price.note':'One-time setup €499 · 14-day money-back guarantee · No contracts',
+      'demo.eye':'Get your demo','demo.title':'Launch <em>Aria</em><br>in your agency','demo.sub':'Fill in the form — we\'ll contact you within 24 hours and configure a personal demo for your agency and property portfolio',
+      'chip1':'48h setup','chip2':'5 languages','chip3':'24/7 active','chip4':'14-day guarantee',
+      'form.title':'Request a demo','form.agency':'Agency name','form.name':'Your name','form.phone':'Phone / WhatsApp','form.email':'Email','form.btn':'Request Demo →',
+      'jares.bar':'Powered by JARES AI · Voice by ElevenLabs · Your AI agent in 48 hours',
+      'footer.tagline':'Exceptional properties, intelligently matched',
+    },
+    de: {
+      'nav.about':'Über uns','nav.services':'Leistungen','nav.how':'So funktioniert es','nav.pricing':'Preise','nav.contact':'Kontakt','nav.cta':'Demo anfordern',
+      'hero.sub':'Luxus-Immobilien &amp; Beratung',
+      'hero.title':'<span>Ihr Zuhause</span><br><em>in den besten</em><br><span>Händen</span>',
+      'hero.desc':'Exklusive Immobilien an den gefragtesten Standorten der Welt. Begleitet von Experten. Unterstützt von KI.',
+      'hero.btn1':'Immobilien ansehen','hero.btn2':'Mit Aria sprechen','hero.scroll':'Scrollen',
+      'quote.1':'Exklusive Immobilien ✦','quote.2':'Globale Reichweite ✦','quote.3':'Außergewöhnlicher Service ✦',
+      'about.eye':'Über uns','about.title':'Wo <em>außergewöhnliche</em><br>Immobilien ihren Besitzer finden',
+      'about.desc1':'MERIDIAN hat den Luxusimmobilienmarkt neu definiert. Seit über einem Jahrzehnt verbinden wir internationale Käufer mit außergewöhnlichen Immobilien.',
+      'about.desc2':'Jetzt sorgt Aria, unsere KI-Immobilienberaterin, dafür, dass keine Anfrage unbeantwortet bleibt — in jeder Sprache, zu jeder Stunde.',
+      'about.f1':'5 Sprachen, null Verzögerung','about.f2':'Sofortige Immobilienzuordnung','about.f3':'24/7 Besichtigungstermine','about.stat':'Weltweit verkaufte Immobilien',
+      'lt.text':'Was Aria für Ihre Agentur tut — jede Anfrage, jede Sprache, jede Nachtstunde',
+      'pain.eye':'Kommt Ihnen das bekannt vor?','pain.title':'Ihre Agentur verliert Käufer<br><em>jede Nacht</em>',
+      'p1.title':'Keine Antwort um Mitternacht','p1.desc':'Ein internationaler Käufer schrieb um 23 Uhr über ein Penthouse — und rief morgens Ihren Konkurrenten an',
+      'p2.title':'Sprachbarriere','p2.desc':'Russische, arabische, chinesische Käufer gehen, wenn niemand innerhalb von Minuten in ihrer Sprache antwortet',
+      'p3.title':'In WhatsApp vergraben','p3.desc':'Dutzende Nachrichten täglich. Das Team verbringt Stunden mit denselben Grundfragen zu Lage und Preis',
+      'p4.title':'Verpasste Besichtigungen','p4.desc':'Käufer möchten heute besichtigen — aber Ihr Team ist beschäftigt und der Termin wurde nie bestätigt',
+      'p5.title':'Unqualifizierte Leads','p5.desc':'Makler verbringen Zeit mit Schaufensterkäufern, während ernsthafte Käufer auf Antwort warten',
+      'p6.title':'CRM nie aktualisiert','p6.desc':'Niemand protokolliert Gespräche. Leads gehen verloren und die Pipeline bleibt unsichtbar',
+      'banner.eye':'Aria — 24/7 KI-Immobilienberaterin','banner.quote':'«Verpassen Sie nie<br><em>einen Immobilienverkauf</em>»','banner.btn':'Aria für meine Agentur',
+      'how.eye':'Einfacher Prozess','how.title':'In Betrieb in<br><em>48 Stunden</em>',
+      'h1.title':'Wir konfigurieren Aria','h1.desc':'Unser Team trainiert Aria mit Ihrem Portfolio: Immobilientypen, Standorte, Preise, Sprachen und Ihre Markenstimme.',
+      'h2.title':'Aria geht live','h2.desc':'Aria bearbeitet Anfragen auf Ihrer Website, WhatsApp und E-Mail. Sie qualifiziert Käufer und bucht Besichtigungen.',
+      'h3.title':'Ihr Team schließt Deals ab','h3.desc':'Makler erhalten vorqualifizierte, motivierte Käufer mit vollem Kontext. Weniger Verwaltung. Mehr Abschlüsse.',
+      'stat1.label':'Bearbeitet Anfragen rund um die Uhr','stat2.label':'Sprachen sofort gesprochen','stat3.label':'Mehr qualifizierte Leads im ersten Monat','stat4.label':'Vom Briefing bis zum Live-Gang',
+      'sq1.text':'"Aria beantwortete 23 Anfragen in einer Nacht. Drei wurden Besichtigungstermine. Einer wurde ein €2,4M-Verkauf."','sq1.name':'Marcus T.','sq1.role':'Direktor, T&A Property Group · Zypern',
+      'sq2.text':'"Unsere russischen und chinesischen Käufer erhalten jetzt sofortige Antworten in ihrer Sprache. Unsere Konversion stieg um 40%."','sq2.name':'Elena V.','sq2.role':'CEO, Prestige Realty · Dubai',
+      'price.eye':'Preise','price.title':'Einfach.<br><em>Transparent.</em>',
+      'plan.mo':'/ Monat','plan.popular':'Am beliebtesten','plan.start':'Loslegen','plan.contact':'Kontaktieren',
+      'plan1.sub':'Für Boutique-Agenturen','plan1.f1':'Aria KI-Sprachberaterin','plan1.f2':'Anfragen 24/7','plan1.f3':'Basis-Immobilienabgleich','plan1.f4':'1 Sprache','plan1.f5':'E-Mail-Support',
+      'plan2.sub':'Für aktive Immobilienagenturen','plan2.f1':'Alles in Starter','plan2.f2':'5 Sprachen','plan2.f3':'Lead-Qualifizierung & CRM-Sync','plan2.f4':'Besichtigungsterminbuchung','plan2.f5':'Analyse-Dashboard',
+      'plan3.sub':'Für große Agenturen & Ketten','plan3.f1':'Alles in Growth','plan3.f2':'Multi-Standort-Setup','plan3.f3':'Individuelle Integrationen','plan3.f4':'Prioritätsstart in 24h','plan3.f5':'Dedizierter Kundenbetreuer',
+      'price.note':'Einmalige Einrichtung €499 · 14-Tage-Geld-zurück-Garantie · Keine Verträge',
+      'demo.eye':'Ihre Demo','demo.title':'<em>Aria</em> in Ihrer Agentur starten','demo.sub':'Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden',
+      'chip1':'48h Einrichtung','chip2':'5 Sprachen','chip3':'24/7 aktiv','chip4':'14-Tage-Garantie',
+      'form.title':'Demo anfragen','form.agency':'Agenturname','form.name':'Ihr Name','form.phone':'Telefon / WhatsApp','form.email':'E-Mail','form.btn':'Demo anfragen →',
+      'jares.bar':'Powered by JARES AI · Stimme von ElevenLabs · Ihr KI-Agent in 48 Stunden',
+      'footer.tagline':'Außergewöhnliche Immobilien, intelligent vermittelt',
+    },
+    fr: {
+      'nav.about':'À propos','nav.services':'Services','nav.how':'Comment ça marche','nav.pricing':'Tarifs','nav.contact':'Contact','nav.cta':'Obtenir une démo',
+      'hero.sub':'Immobilier de luxe &amp; conseil en propriété',
+      'hero.title':'<span>Votre maison</span><br><em>entre les meilleures</em><br><span>mains</span>',
+      'hero.desc':'Des propriétés premium dans les destinations les plus prisées au monde. Guidé par l\'expertise. Propulsé par l\'IA.',
+      'hero.btn1':'Voir les propriétés','hero.btn2':'Parler à Aria','hero.scroll':'Défiler',
+      'quote.1':'Propriétés premium ✦','quote.2':'Portée mondiale ✦','quote.3':'Service exceptionnel ✦',
+      'about.eye':'À propos','about.title':'Là où la propriété <em>exceptionnelle</em><br>trouve son propriétaire',
+      'about.desc1':'MERIDIAN a redéfini l\'immobilier de luxe. Depuis plus d\'une décennie, nous associons des acheteurs internationaux exigeants à des propriétés extraordinaires.',
+      'about.desc2':'Désormais, Aria, notre consultante IA en immobilier, garantit qu\'aucune demande ne reste sans réponse — dans toutes les langues, à toute heure.',
+      'about.f1':'5 langues, zéro délai','about.f2':'Correspondance immédiate','about.f3':'Visites 24/7','about.stat':'Propriétés vendues dans le monde',
+      'lt.text':'Ce qu\'Aria fait pour votre agence — chaque demande, chaque langue, chaque heure de la nuit',
+      'pain.eye':'Vous reconnaissez-vous ?','pain.title':'Votre agence perd des acheteurs<br><em>chaque nuit</em>',
+      'p1.title':'Pas de réponse à minuit','p1.desc':'Un acheteur international a écrit à 23h pour un penthouse — et a appelé votre concurrent le matin',
+      'p2.title':'Barrière linguistique','p2.desc':'Les acheteurs russes, arabes, chinois partent quand personne ne répond dans leur langue en quelques minutes',
+      'p3.title':'Noyé dans WhatsApp','p3.desc':'Des dizaines de messages par jour. L\'équipe passe des heures sur les mêmes questions basiques',
+      'p4.title':'Visites manquées','p4.desc':'Les acheteurs veulent visiter aujourd\'hui — mais votre équipe est occupée et le rendez-vous n\'a jamais été confirmé',
+      'p5.title':'Leads non qualifiés','p5.desc':'Les agents passent du temps avec les curieux tandis que les vrais acheteurs attendent une réponse',
+      'p6.title':'CRM jamais mis à jour','p6.desc':'Personne ne consigne les conversations. Les leads tombent et le pipeline reste invisible',
+      'banner.eye':'Aria — consultante IA immobilière 24/7','banner.quote':'«Ne manquez plus<br><em>une vente immobilière</em>»','banner.btn':'Aria pour mon agence',
+      'how.eye':'Processus simple','how.title':'Opérationnel en<br><em>48 heures</em>',
+      'h1.title':'Nous configurons Aria','h1.desc':'Notre équipe entraîne Aria sur votre portefeuille : types de propriétés, emplacements, prix, langues et voix de marque.',
+      'h2.title':'Aria passe en direct','h2.desc':'Aria gère les demandes sur votre site, WhatsApp et email. Elle qualifie les acheteurs et réserve les visites.',
+      'h3.title':'Votre équipe conclut','h3.desc':'Les agents reçoivent des acheteurs pré-qualifiés avec le contexte complet. Moins d\'admin. Plus de ventes.',
+      'stat1.label':'Gère les demandes 24h/24','stat2.label':'Langues parlées instantanément','stat3.label':'Leads qualifiés en plus au 1er mois','stat4.label':'Du brief au lancement',
+      'sq1.text':'"Aria a répondu à 23 demandes en une nuit. Trois sont devenues des visites. Une est devenue une vente à €2,4M."','sq1.name':'Marcus T.','sq1.role':'Directeur, T&A Property Group · Chypre',
+      'sq2.text':'"Nos acheteurs russes et chinois reçoivent maintenant des réponses instantanées dans leur langue. Notre conversion a augmenté de 40%."','sq2.name':'Elena V.','sq2.role':'PDG, Prestige Realty · Dubaï',
+      'price.eye':'Tarifs','price.title':'Simple.<br><em>Transparent.</em>',
+      'plan.mo':'/ mois','plan.popular':'Le plus populaire','plan.start':'Commencer','plan.contact':'Nous contacter',
+      'plan1.sub':'Pour les agences boutique','plan1.f1':'Aria consultante IA','plan1.f2':'Demandes 24/7','plan1.f3':'Correspondance de base','plan1.f4':'1 langue','plan1.f5':'Support email',
+      'plan2.sub':'Pour les agences actives','plan2.f1':'Tout de Starter','plan2.f2':'5 langues','plan2.f3':'Qualification leads & CRM','plan2.f4':'Réservation de visites','plan2.f5':'Tableau de bord analytique',
+      'plan3.sub':'Pour grandes agences & chaînes','plan3.f1':'Tout de Growth','plan3.f2':'Configuration multi-sites','plan3.f3':'Intégrations personnalisées','plan3.f4':'Lancement prioritaire 24h','plan3.f5':'Gestionnaire dédié',
+      'price.note':'Mise en place unique €499 · Garantie 14 jours · Sans engagement',
+      'demo.eye':'Votre démo','demo.title':'Lancez <em>Aria</em><br>dans votre agence','demo.sub':'Remplissez le formulaire — nous vous contacterons sous 24 heures',
+      'chip1':'Setup 48h','chip2':'5 langues','chip3':'24/7 actif','chip4':'Garantie 14j',
+      'form.title':'Demander une démo','form.agency':'Nom de l\'agence','form.name':'Votre nom','form.phone':'Téléphone / WhatsApp','form.email':'Email','form.btn':'Demander une démo →',
+      'jares.bar':'Propulsé par JARES AI · Voix par ElevenLabs · Votre agent IA en 48 heures',
+      'footer.tagline':'Des propriétés exceptionnelles, intelligemment associées',
+    },
+    es: {
+      'nav.about':'Sobre nosotros','nav.services':'Servicios','nav.how':'Cómo funciona','nav.pricing':'Precios','nav.contact':'Contacto','nav.cta':'Solicitar demo',
+      'hero.sub':'Inmobiliaria de lujo y asesoría de propiedades',
+      'hero.title':'<span>Tu hogar</span><br><em>en las mejores</em><br><span>manos</span>',
+      'hero.desc':'Propiedades premium en los destinos más codiciados del mundo. Guiados por experiencia. Impulsados por IA.',
+      'hero.btn1':'Ver propiedades','hero.btn2':'Hablar con Aria','hero.scroll':'Desplazar',
+      'quote.1':'Propiedades premium ✦','quote.2':'Alcance global ✦','quote.3':'Servicio excepcional ✦',
+      'about.eye':'Sobre nosotros','about.title':'Donde la propiedad <em>excepcional</em><br>encuentra a su propietario',
+      'about.desc1':'MERIDIAN ha redefinido el lujo inmobiliario. Durante más de una década, hemos conectado compradores internacionales con propiedades extraordinarias.',
+      'about.desc2':'Ahora Aria, nuestra consultora IA inmobiliaria, garantiza que ninguna consulta quede sin respuesta — en cualquier idioma, a cualquier hora.',
+      'about.f1':'5 idiomas, cero demoras','about.f2':'Matching inmediato','about.f3':'Visitas 24/7','about.stat':'Propiedades vendidas globalmente',
+      'lt.text':'Lo que Aria hace por tu agencia — cada consulta, cada idioma, cada hora de la noche',
+      'pain.eye':'¿Te suena familiar?','pain.title':'Tu agencia pierde compradores<br><em>cada noche</em>',
+      'p1.title':'Sin respuesta a medianoche','p1.desc':'Un comprador internacional escribió a las 11 PM sobre un ático — y llamó a tu competidor por la mañana',
+      'p2.title':'Barrera idiomática','p2.desc':'Compradores rusos, árabes, chinos se van cuando nadie responde en su idioma en minutos',
+      'p3.title':'Enterrado en WhatsApp','p3.desc':'Docenas de mensajes diarios. El equipo pasa horas respondiendo las mismas preguntas básicas',
+      'p4.title':'Visitas perdidas','p4.desc':'Los compradores quieren visitar hoy — pero el equipo está ocupado y la cita nunca se confirmó',
+      'p5.title':'Leads no cualificados','p5.desc':'Los agentes pierden tiempo con curiosos mientras compradores serios esperan respuesta',
+      'p6.title':'CRM nunca actualizado','p6.desc':'Nadie registra las conversaciones. Los leads caen y el pipeline permanece invisible',
+      'banner.eye':'Aria — consultora IA inmobiliaria 24/7','banner.quote':'«Nunca pierdas<br><em>una venta inmobiliaria</em>»','banner.btn':'Aria para mi agencia',
+      'how.eye':'Proceso simple','how.title':'En marcha en<br><em>48 horas</em>',
+      'h1.title':'Configuramos Aria','h1.desc':'Nuestro equipo entrena a Aria con tu portfolio: tipos de propiedades, ubicaciones, precios, idiomas y voz de marca.',
+      'h2.title':'Aria entra en vivo','h2.desc':'Aria gestiona consultas en tu web, WhatsApp y email. Cualifica compradores y reserva visitas.',
+      'h3.title':'Tu equipo cierra tratos','h3.desc':'Los agentes reciben compradores pre-cualificados con contexto completo. Menos admin. Más cierres.',
+      'stat1.label':'Gestiona consultas 24 horas','stat2.label':'Idiomas hablados al instante','stat3.label':'Más leads cualificados en el primer mes','stat4.label':'Del briefing al lanzamiento',
+      'sq1.text':'"Aria respondió 23 consultas en una noche. Tres se convirtieron en visitas. Una se convirtió en una venta de €2,4M."','sq1.name':'Marcus T.','sq1.role':'Director, T&A Property Group · Chipre',
+      'sq2.text':'"Nuestros compradores rusos y chinos ahora reciben respuestas instantáneas en su idioma. Nuestra conversión subió un 40%."','sq2.name':'Elena V.','sq2.role':'CEO, Prestige Realty · Dubái',
+      'price.eye':'Precios','price.title':'Simple.<br><em>Transparente.</em>',
+      'plan.mo':'/ mes','plan.popular':'Más popular','plan.start':'Empezar','plan.contact':'Contáctanos',
+      'plan1.sub':'Para agencias boutique','plan1.f1':'Aria consultora IA de voz','plan1.f2':'Consultas 24/7','plan1.f3':'Matching básico de propiedades','plan1.f4':'1 idioma','plan1.f5':'Soporte por email',
+      'plan2.sub':'Para agencias activas','plan2.f1':'Todo de Starter','plan2.f2':'5 idiomas','plan2.f3':'Cualificación leads & CRM','plan2.f4':'Reserva de visitas','plan2.f5':'Dashboard analítico',
+      'plan3.sub':'Para grandes agencias y cadenas','plan3.f1':'Todo de Growth','plan3.f2':'Configuración multi-sede','plan3.f3':'Integraciones personalizadas','plan3.f4':'Lanzamiento prioritario 24h','plan3.f5':'Gestor dedicado',
+      'price.note':'Configuración única €499 · Garantía 14 días · Sin contratos',
+      'demo.eye':'Tu demo','demo.title':'Lanza <em>Aria</em><br>en tu agencia','demo.sub':'Rellena el formulario — te contactamos en 24 horas',
+      'chip1':'Setup 48h','chip2':'5 idiomas','chip3':'24/7 activo','chip4':'Garantía 14 días',
+      'form.title':'Solicitar una demo','form.agency':'Nombre de agencia','form.name':'Tu nombre','form.phone':'Teléfono / WhatsApp','form.email':'Email','form.btn':'Solicitar demo →',
+      'jares.bar':'Powered by JARES AI · Voz por ElevenLabs · Tu agente IA en 48 horas',
+      'footer.tagline':'Propiedades excepcionales, inteligentemente conectadas',
+    },
+    ru: {
+      'nav.about':'О нас','nav.services':'Услуги','nav.how':'Как это работает','nav.pricing':'Цены','nav.contact':'Контакт','nav.cta':'Получить демо',
+      'hero.sub':'Элитная недвижимость и консультирование',
+      'hero.title':'<span>Ваш дом</span><br><em>в надёжных</em><br><span>руках</span>',
+      'hero.desc':'Премиальная недвижимость в самых востребованных локациях мира. Экспертное сопровождение. Поддержка ИИ.',
+      'hero.btn1':'Смотреть объекты','hero.btn2':'Говорить с Арией','hero.scroll':'Прокрутить',
+      'quote.1':'Элитная недвижимость ✦','quote.2':'Глобальный охват ✦','quote.3':'Исключительный сервис ✦',
+      'about.eye':'О нас','about.title':'Там, где <em>исключительная</em><br>недвижимость находит своего владельца',
+      'about.desc1':'MERIDIAN переопределил рынок элитной недвижимости. Более десяти лет мы объединяем взыскательных международных покупателей с уникальными объектами.',
+      'about.desc2':'Теперь Ария, наш ИИ-консультант по недвижимости, гарантирует, что ни один запрос не останется без ответа — на любом языке, в любое время.',
+      'about.f1':'5 языков без задержек','about.f2':'Мгновенный подбор объектов','about.f3':'Запись на просмотры 24/7','about.stat':'Объектов продано по миру',
+      'lt.text':'Что Ария делает для вашего агентства — каждый запрос, каждый язык, каждый ночной час',
+      'pain.eye':'Вам это знакомо?','pain.title':'Ваше агентство теряет покупателей<br><em>каждую ночь</em>',
+      'p1.title':'Нет ответа в полночь','p1.desc':'Международный покупатель написал в 23:00 о пентхаусе — и утром позвонил вашему конкуренту',
+      'p2.title':'Языковой барьер','p2.desc':'Русские, арабские, китайские покупатели уходят, когда никто не отвечает на их языке в течение минут',
+      'p3.title':'Утонули в WhatsApp','p3.desc':'Десятки сообщений в день. Команда часами отвечает на одни и те же базовые вопросы о цене и локации',
+      'p4.title':'Пропущенные просмотры','p4.desc':'Покупатели хотят просмотр сегодня — но команда занята и встреча так и не была подтверждена',
+      'p5.title':'Неквалифицированные лиды','p5.desc':'Агенты тратят время на случайных людей, пока серьёзные покупатели ждут ответа',
+      'p6.title':'CRM не обновляется','p6.desc':'Никто не записывает разговоры. Лиды теряются и воронка остаётся невидимой',
+      'banner.eye':'Ария — ИИ-консультант по недвижимости 24/7','banner.quote':'«Никогда не упустите<br><em>продажу недвижимости</em>»','banner.btn':'Арию в моё агентство',
+      'how.eye':'Простой процесс','how.title':'Запуск за<br><em>48 часов</em>',
+      'h1.title':'Мы настраиваем Арию','h1.desc':'Наша команда обучает Арию на вашем портфолио: типы объектов, локации, цены, языки и голос вашего бренда.',
+      'h2.title':'Ария выходит в эфир','h2.desc':'Ария обрабатывает запросы на вашем сайте, в WhatsApp и по email. Квалифицирует покупателей и записывает на просмотры.',
+      'h3.title':'Ваша команда закрывает сделки','h3.desc':'Агенты получают предквалифицированных, мотивированных покупателей с полным контекстом. Меньше рутины. Больше продаж.',
+      'stat1.label':'Обрабатывает запросы круглосуточно','stat2.label':'Языков — мгновенный ответ','stat3.label':'Больше квалифицированных лидов за 1й месяц','stat4.label':'От брифа до запуска',
+      'sq1.text':'"Ария ответила на 23 запроса за одну ночь пока мы были закрыты. Трое записались на просмотр. Один стал продажей на €2,4M."','sq1.name':'Маркус Т.','sq1.role':'Директор, T&A Property Group · Кипр',
+      'sq2.text':'"Наши русские и китайские покупатели теперь получают мгновенные ответы на своём языке. Конверсия выросла на 40%."','sq2.name':'Елена В.','sq2.role':'CEO, Prestige Realty · Дубай',
+      'price.eye':'Цены','price.title':'Просто.<br><em>Прозрачно.</em>',
+      'plan.mo':'/ мес','plan.popular':'Самый популярный','plan.start':'Начать','plan.contact':'Связаться',
+      'plan1.sub':'Для небольших агентств','plan1.f1':'Ария — ИИ-голосовой консультант','plan1.f2':'Запросы 24/7','plan1.f3':'Базовый подбор объектов','plan1.f4':'1 язык','plan1.f5':'Email-поддержка',
+      'plan2.sub':'Для активных агентств','plan2.f1':'Всё из Starter','plan2.f2':'5 языков','plan2.f3':'Квалификация лидов & CRM','plan2.f4':'Запись на просмотры','plan2.f5':'Аналитика дашборд',
+      'plan3.sub':'Для крупных агентств и сетей','plan3.f1':'Всё из Growth','plan3.f2':'Мультиофисная настройка','plan3.f3':'Индивидуальные интеграции','plan3.f4':'Приоритетный запуск за 24ч','plan3.f5':'Персональный менеджер',
+      'price.note':'Единоразовая настройка €499 · Гарантия 14 дней · Без контрактов',
+      'demo.eye':'Получите демо','demo.title':'Запустите <em>Арию</em><br>в вашем агентстве','demo.sub':'Заполните форму — свяжемся с вами в течение 24 часов и настроим персональное демо',
+      'chip1':'Запуск 48ч','chip2':'5 языков','chip3':'24/7 работает','chip4':'Гарантия 14 дней',
+      'form.title':'Запросить демо','form.agency':'Название агентства','form.name':'Ваше имя','form.phone':'Телефон / WhatsApp','form.email':'Email','form.btn':'Запросить демо →',
+      'jares.bar':'Powered by JARES AI · Голос ElevenLabs · Ваш ИИ-агент за 48 часов',
+      'footer.tagline':'Исключительная недвижимость, умно подобранная',
+    }
+  };
+  </script>
+
 </body>
 </html>
