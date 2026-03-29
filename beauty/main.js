@@ -82,10 +82,10 @@ mobileOverlay.innerHTML = `
   </div>
   <a href="#about" data-i18n="nav.about">About</a>
   <a href="#services" data-i18n="nav.services">Services</a>
-  <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
-  <a href="#team" data-i18n="nav.team">Masters</a>
+  <a href="#how" data-i18n="nav.how">How it works</a>
+  <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
   <a href="#contact" data-i18n="nav.contact">Contact</a>
-  <a href="#contact" data-i18n="nav.cta" style="color: var(--gold);">Book Now</a>
+  <a href="#contact" data-i18n="nav.cta" style="color: var(--gold);">Get Demo</a>
 `;
 document.body.appendChild(mobileOverlay);
 
@@ -144,13 +144,10 @@ const LERP_SPEED = 0.07;
 
 const parallaxSections = [
   { el: document.querySelector('.about-bg-figure'),       speed: 0.10, cur: 0 },
-  { el: document.querySelector('.about-img-1'),            speed: -0.06, cur: 0 },
-  { el: document.querySelector('.about-img-2'),            speed: 0.08,  cur: 0 },
-  { el: document.querySelector('.services-bg'),            speed: 0.05,  cur: 0 },
   { el: document.querySelector('.parallax-banner-figure'), speed: -0.08, cur: 0 },
-  { el: document.querySelector('.testimonials-bg-figure'), speed: 0.07,  cur: 0 },
   { el: document.querySelector('.contact-bg'),             speed: -0.05, cur: 0 },
 ];
+parallaxSections.forEach(state => { if (state.el) state.el.style.willChange = 'transform'; });
 
 let rawScrollY = window.scrollY;
 let smoothScrollY = rawScrollY;
@@ -251,35 +248,39 @@ document.querySelectorAll('.service-card').forEach(card => {
 });
 
 // ==========================================
-// TESTIMONIALS SLIDER
+// TESTIMONIALS SLIDER (guarded — section removed in B2B version)
 // ==========================================
 const testimonialCards = document.querySelectorAll('.testimonial-card');
 const tDots = document.querySelectorAll('.t-dot');
 let currentTestimonial = 0;
 let testimonialTimer;
 
-function showTestimonial(index) {
-  testimonialCards[currentTestimonial].classList.remove('active');
-  tDots[currentTestimonial].classList.remove('active');
-  currentTestimonial = (index + testimonialCards.length) % testimonialCards.length;
-  testimonialCards[currentTestimonial].classList.add('active');
-  tDots[currentTestimonial].classList.add('active');
-}
+if (testimonialCards.length > 0) {
+  function showTestimonial(index) {
+    testimonialCards[currentTestimonial].classList.remove('active');
+    tDots[currentTestimonial].classList.remove('active');
+    currentTestimonial = (index + testimonialCards.length) % testimonialCards.length;
+    testimonialCards[currentTestimonial].classList.add('active');
+    tDots[currentTestimonial].classList.add('active');
+  }
 
-function startTestimonialTimer() {
-  clearInterval(testimonialTimer);
-  testimonialTimer = setInterval(() => showTestimonial(currentTestimonial + 1), 5000);
-}
+  function startTestimonialTimer() {
+    clearInterval(testimonialTimer);
+    testimonialTimer = setInterval(() => showTestimonial(currentTestimonial + 1), 5000);
+  }
 
-document.getElementById('tNext').addEventListener('click', () => { showTestimonial(currentTestimonial + 1); startTestimonialTimer(); });
-document.getElementById('tPrev').addEventListener('click', () => { showTestimonial(currentTestimonial - 1); startTestimonialTimer(); });
-tDots.forEach((dot, i) => dot.addEventListener('click', () => { showTestimonial(i); startTestimonialTimer(); }));
-startTestimonialTimer();
+  const tNext = document.getElementById('tNext');
+  const tPrev = document.getElementById('tPrev');
+  if (tNext) tNext.addEventListener('click', () => { showTestimonial(currentTestimonial + 1); startTestimonialTimer(); });
+  if (tPrev) tPrev.addEventListener('click', () => { showTestimonial(currentTestimonial - 1); startTestimonialTimer(); });
+  tDots.forEach((dot, i) => dot.addEventListener('click', () => { showTestimonial(i); startTestimonialTimer(); }));
+  startTestimonialTimer();
+}
 
 // ==========================================
 // CONTACT FORM
 // ==========================================
-document.getElementById('contactForm').addEventListener('submit', (e) => {
+document.getElementById('demoForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const btn = e.target.querySelector('.btn-primary');
   const orig = btn.textContent;

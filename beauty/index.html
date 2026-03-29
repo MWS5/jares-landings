@@ -140,8 +140,8 @@
     <ul class="nav-links">
       <li><a href="#about" data-i18n="nav.about">About</a></li>
       <li><a href="#services" data-i18n="nav.services">Services</a></li>
-      <li><a href="#gallery" data-i18n="nav.gallery">Gallery</a></li>
-      <li><a href="#team" data-i18n="nav.team">Masters</a></li>
+      <li><a href="#how" data-i18n="nav.how">How it works</a></li>
+      <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
       <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
     <div class="lang-switcher">
@@ -221,298 +221,223 @@
     </div>
   </section>
 
-  <section class="services" id="services">
-    <div class="services-bg"></div>
+  <!-- ── TRANSITION STRIP ── -->
+  <div class="luna-transition">
+    <div class="lt-inner">
+      <span class="lt-star">✦</span>
+      <p data-i18n="lt.text">What Luna does for your salon — every hour, every day, in any language</p>
+      <span class="lt-star">✦</span>
+    </div>
+  </div>
+
+  <!-- ── PAIN POINTS ── -->
+  <section class="luna-pain" id="services">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow reveal-up" data-i18n="services.eye">Our Services</p>
-        <h2 class="section-title reveal-up" data-i18n="services.title">Beauty<br><em>Rituals</em></h2>
+        <p class="section-eyebrow reveal-up" data-i18n="pain.eye">Sound familiar?</p>
+        <h2 class="section-title reveal-up" data-i18n="pain.title">Your salon loses clients<br><em>every night</em></h2>
       </div>
-      <div class="services-grid">
-        <div class="service-card reveal-card" data-delay="0">
-          <div class="service-img service-img-1"></div>
-          <div class="service-body">
-            <div class="service-icon">◈</div>
-            <h3 data-i18n="s1.name">Body Massage</h3>
-            <p data-i18n="s1.desc">Signature techniques that restore body-mind balance. Deep relaxation at the cellular level.</p>
-            <div class="service-price" data-i18n="s1.price">from €80</div>
-            <a href="#contact" class="service-link" data-i18n="s1.link">Book →</a>
-          </div>
+      <div class="pain-grid">
+        <div class="pain-card reveal-card" data-delay="0">
+          <div class="pain-icon">🌙</div>
+          <h3 data-i18n="p1.title">No answer at 11 PM</h3>
+          <p data-i18n="p1.desc">A client wrote at midnight — and booked with your competitor instead</p>
         </div>
-        <div class="service-card reveal-card" data-delay="150">
-          <div class="service-img service-img-2"></div>
-          <div class="service-body">
-            <div class="service-icon">◈</div>
-            <h3 data-i18n="s2.name">Facial Care</h3>
-            <p data-i18n="s2.desc">Exclusive rejuvenation rituals using gold and rare extracts. Visible results from the first session.</p>
-            <div class="service-price" data-i18n="s2.price">from €120</div>
-            <a href="#contact" class="service-link" data-i18n="s2.link">Book →</a>
-          </div>
+        <div class="pain-card reveal-card" data-delay="100">
+          <div class="pain-icon">💬</div>
+          <h3 data-i18n="p2.title">Lost in WhatsApp</h3>
+          <p data-i18n="p2.desc">The message was seen, the booking was forgotten. Client didn't show up</p>
         </div>
-        <div class="service-card reveal-card" data-delay="300">
-          <div class="service-img service-img-3"></div>
-          <div class="service-body">
-            <div class="service-icon">◈</div>
-            <h3 data-i18n="s3.name">SPA Rituals</h3>
-            <p data-i18n="s3.desc">A complete immersion in luxury. Comprehensive programs for body, mind and soul with aromatherapy.</p>
-            <div class="service-price" data-i18n="s3.price">from €200</div>
-            <a href="#contact" class="service-link" data-i18n="s3.link">Book →</a>
-          </div>
+        <div class="pain-card reveal-card" data-delay="200">
+          <div class="pain-icon">🌍</div>
+          <h3 data-i18n="p3.title">Language barrier</h3>
+          <p data-i18n="p3.desc">International clients leave when no one replies in their language</p>
         </div>
-        <div class="service-card reveal-card" data-delay="0">
-          <div class="service-img service-img-4"></div>
-          <div class="service-body">
-            <div class="service-icon">◈</div>
-            <h3 data-i18n="s4.name">Float Therapy</h3>
-            <p data-i18n="s4.desc">Weightlessness and silence. Innovative sensory deprivation chamber for deep nervous system recovery.</p>
-            <div class="service-price" data-i18n="s4.price">from €150</div>
-            <a href="#contact" class="service-link" data-i18n="s4.link">Book →</a>
-          </div>
+        <div class="pain-card reveal-card" data-delay="0">
+          <div class="pain-icon">🔄</div>
+          <h3 data-i18n="p4.title">Same questions all day</h3>
+          <p data-i18n="p4.desc">30% of admin time goes to: «What's the price of a massage?»</p>
         </div>
-        <div class="service-card reveal-card" data-delay="150">
-          <div class="service-img service-img-5"></div>
-          <div class="service-body">
-            <div class="service-icon">◈</div>
-            <h3 data-i18n="s5.name">Body Sculpting</h3>
-            <p data-i18n="s5.desc">A signature body contouring program. Professional lymphatic drainage and silhouette modelling techniques.</p>
-            <div class="service-price" data-i18n="s5.price">from €180</div>
-            <a href="#contact" class="service-link" data-i18n="s5.link">Book →</a>
-          </div>
+        <div class="pain-card reveal-card" data-delay="100">
+          <div class="pain-icon">📅</div>
+          <h3 data-i18n="p5.title">No-shows &amp; forgotten bookings</h3>
+          <p data-i18n="p5.desc">Without reminders, 25% of bookings simply don't arrive</p>
         </div>
-        <div class="service-card reveal-card" data-delay="300">
-          <div class="service-img service-img-6"></div>
-          <div class="service-body">
-            <div class="service-icon">◈</div>
-            <h3 data-i18n="s6.name">VIP Programs</h3>
-            <p data-i18n="s6.desc">Individually crafted total transformation programs. Private suite, champagne, unlimited service.</p>
-            <div class="service-price" data-i18n="s6.price">from €500</div>
-            <a href="#contact" class="service-link" data-i18n="s6.link">Book →</a>
-          </div>
+        <div class="pain-card reveal-card" data-delay="200">
+          <div class="pain-icon">📱</div>
+          <h3 data-i18n="p6.title">Instagram with no sales</h3>
+          <p data-i18n="p6.desc">You post every day — but bookings still come through calls only</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── PARALLAX BANNER (updated text) ── -->
   <div class="parallax-banner" id="parallaxBanner">
     <div class="parallax-banner-bg" id="parallaxBannerBg"></div>
     <div class="parallax-banner-overlay"></div>
     <div class="parallax-banner-figure"></div>
     <div class="parallax-banner-content">
-      <p class="section-eyebrow" data-i18n="banner.eye">LUMIÈRE Philosophy</p>
-      <h2 data-i18n="banner.quote">«Every&nbsp;woman<br><em>deserves</em>&nbsp;a masterpiece»</h2>
-      <a href="#contact" class="btn-primary" data-i18n="banner.btn">Treat yourself to luxury</a>
+      <p class="section-eyebrow" data-i18n="banner.eye">Luna — 24/7 AI consultant</p>
+      <h2 data-i18n="banner.quote">«Works while<br><em>you rest</em>»</h2>
+      <a href="#contact" class="btn-primary" data-i18n="banner.btn">Get Luna for my salon</a>
     </div>
   </div>
 
-  <section class="gallery" id="gallery">
+  <!-- ── HOW IT WORKS ── -->
+  <section class="luna-how" id="how">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow reveal-up" data-i18n="gallery.eye">Our Atmosphere</p>
-        <h2 class="section-title reveal-up" data-i18n="gallery.title">The World<br>of <em>LUMIÈRE</em></h2>
+        <p class="section-eyebrow reveal-up" data-i18n="how.eye">Simple process</p>
+        <h2 class="section-title reveal-up" data-i18n="how.title">Up and running in<br><em>48 hours</em></h2>
       </div>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item gallery-item-1 reveal-gallery" data-parallax-speed="0.05">
-        <div class="gallery-overlay"><span data-i18n="g1">Salon Interior</span></div>
-      </div>
-      <div class="gallery-item gallery-item-2 reveal-gallery" data-parallax-speed="-0.05">
-        <div class="gallery-overlay"><span data-i18n="g2">Massage Room</span></div>
-      </div>
-      <div class="gallery-item gallery-item-3 reveal-gallery" data-parallax-speed="0.03">
-        <div class="gallery-overlay"><span data-i18n="g3">SPA Zone</span></div>
-      </div>
-      <div class="gallery-item gallery-item-4 reveal-gallery" data-parallax-speed="-0.03">
-        <div class="gallery-overlay"><span data-i18n="g4">Care Ritual</span></div>
-      </div>
-      <div class="gallery-item gallery-item-5 reveal-gallery" data-parallax-speed="0.05">
-        <div class="gallery-overlay"><span data-i18n="g5">VIP Suite</span></div>
-      </div>
-      <div class="gallery-item gallery-item-6 reveal-gallery" data-parallax-speed="-0.04">
-        <div class="gallery-overlay"><span data-i18n="g6">Body Treatment</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="team" id="team">
-    <div class="container">
-      <div class="section-header">
-        <p class="section-eyebrow reveal-up" data-i18n="team.eye">Our Masters</p>
-        <h2 class="section-title reveal-up" data-i18n="team.title">Hands that<br>create <em>masterpieces</em></h2>
-      </div>
-      <div class="team-grid">
-        <div class="team-card reveal-card" data-delay="0">
-          <div class="team-photo team-photo-1"></div>
-          <div class="team-info">
-            <h3 data-i18n="t1.name">Anna Morozova</h3>
-            <p class="team-role" data-i18n="t1.role">Head SPA Therapist</p>
-            <p class="team-exp" data-i18n="t1.exp">15 years · Paris School Certificate</p>
-          </div>
+      <div class="how-steps">
+        <div class="how-step reveal-up" data-delay="0">
+          <div class="how-num">01</div>
+          <h3 data-i18n="h1.title">We configure Luna</h3>
+          <p data-i18n="h1.desc">Our team sets up Luna specifically for your salon: services, pricing, languages, and your brand voice. You just answer a few questions.</p>
         </div>
-        <div class="team-card reveal-card" data-delay="150">
-          <div class="team-photo team-photo-2"></div>
-          <div class="team-info">
-            <h3 data-i18n="t2.name">Maria Constantinou</h3>
-            <p class="team-role" data-i18n="t2.role">Aesthetic Cosmetologist</p>
-            <p class="team-exp" data-i18n="t2.exp">12 years · Anti-age specialist</p>
-          </div>
+        <div class="how-connector"></div>
+        <div class="how-step reveal-up" data-delay="150">
+          <div class="how-num">02</div>
+          <h3 data-i18n="h2.title">Luna goes live</h3>
+          <p data-i18n="h2.desc">Luna appears on your website and WhatsApp. She books appointments, answers questions 24/7 and sends automatic reminders.</p>
         </div>
-        <div class="team-card reveal-card" data-delay="300">
-          <div class="team-photo team-photo-3"></div>
-          <div class="team-info">
-            <h3 data-i18n="t3.name">Elena Lucas</h3>
-            <p class="team-role" data-i18n="t3.role">Massage Therapist &amp; Rehabilitator</p>
-            <p class="team-exp" data-i18n="t3.exp">10 years · Thai techniques</p>
-          </div>
+        <div class="how-connector"></div>
+        <div class="how-step reveal-up" data-delay="300">
+          <div class="how-num">03</div>
+          <h3 data-i18n="h3.title">You see results</h3>
+          <p data-i18n="h3.desc">You get a simple dashboard with bookings, conversations and analytics. More clients, less admin work, zero missed leads.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="testimonials">
-    <div class="testimonials-bg-figure"></div>
+  <!-- ── RESULTS / NUMBERS ── -->
+  <section class="luna-results">
     <div class="container">
-      <div class="section-header">
-        <p class="section-eyebrow reveal-up" data-i18n="reviews.eye">Reviews</p>
-        <h2 class="section-title reveal-up" data-i18n="reviews.title">They trust us<br>with <em>their beauty</em></h2>
-      </div>
-      <div class="testimonials-slider" id="testimonialsSlider">
-        <div class="testimonial-card active">
-          <div class="testimonial-stars">★★★★★</div>
-          <p data-i18n="r1.text">«LUMIÈRE changed my perception of beauty. This isn't just a salon — it's a place where you feel like a goddess. The hot stone massage is absolutely incredible.»</p>
-          <div class="testimonial-author">
-            <div class="author-avatar author-1"></div>
-            <div><strong data-i18n="r1.author">Natalie K.</strong><span data-i18n="r1.label">Regular client, 3 years</span></div>
-          </div>
+      <div class="results-grid">
+        <div class="result-item reveal-up" data-delay="0">
+          <div class="result-num">24/7</div>
+          <p class="result-label" data-i18n="stat1.label">Works every hour, no days off</p>
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p data-i18n="r2.text">«I came for the VIP program on my birthday. It was the best gift to myself! The level of service exceeded all expectations. I'll definitely be back.»</p>
-          <div class="testimonial-author">
-            <div class="author-avatar author-2"></div>
-            <div><strong data-i18n="r2.author">Sophia M.</strong><span data-i18n="r2.label">VIP program client</span></div>
-          </div>
+        <div class="result-item reveal-up" data-delay="100">
+          <div class="result-num">5</div>
+          <p class="result-label" data-i18n="stat2.label">Languages spoken fluently</p>
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p data-i18n="r3.text">«The gold facial is pure magic. My skin glows like I'm 25 again! The masters are true professionals.»</p>
-          <div class="testimonial-author">
-            <div class="author-avatar author-3"></div>
-            <div><strong data-i18n="r3.author">Ekaterina V.</strong><span data-i18n="r3.label">Client, 1.5 years</span></div>
-          </div>
+        <div class="result-item reveal-up" data-delay="200">
+          <div class="result-num">+40%</div>
+          <p class="result-label" data-i18n="stat3.label">More bookings in the first month</p>
         </div>
-      </div>
-      <div class="testimonials-nav">
-        <button class="t-nav-btn" id="tPrev">←</button>
-        <div class="t-dots">
-          <span class="t-dot active"></span>
-          <span class="t-dot"></span>
-          <span class="t-dot"></span>
+        <div class="result-item reveal-up" data-delay="300">
+          <div class="result-num">48h</div>
+          <p class="result-label" data-i18n="stat4.label">From agreement to launch</p>
         </div>
-        <button class="t-nav-btn" id="tNext">→</button>
       </div>
     </div>
   </section>
 
+  <!-- ── PRICING ── -->
+  <section class="luna-pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow reveal-up" data-i18n="price.eye">Pricing</p>
+        <h2 class="section-title reveal-up" data-i18n="price.title">Simple.<br><em>Transparent.</em></h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-plan reveal-card" data-delay="0">
+          <p class="plan-name">STARTER</p>
+          <div class="plan-price-row"><span class="plan-price">€149</span><span class="plan-mo" data-i18n="plan.mo">/ month</span></div>
+          <p class="plan-sub" data-i18n="plan1.sub">For boutique salons</p>
+          <ul class="plan-features">
+            <li data-i18n="plan1.f1">Luna AI voice assistant</li>
+            <li data-i18n="plan1.f2">Appointment booking 24/7</li>
+            <li data-i18n="plan1.f3">FAQ &amp; service info</li>
+            <li data-i18n="plan1.f4">1 language</li>
+            <li data-i18n="plan1.f5">Email support</li>
+          </ul>
+          <a href="#contact" class="plan-cta plan-cta--outline" data-i18n="plan.start">Get started</a>
+        </div>
+        <div class="price-plan price-plan--popular reveal-card" data-delay="150">
+          <div class="plan-badge" data-i18n="plan.popular">Most popular</div>
+          <p class="plan-name">GROWTH</p>
+          <div class="plan-price-row"><span class="plan-price">€299</span><span class="plan-mo" data-i18n="plan.mo">/ month</span></div>
+          <p class="plan-sub" data-i18n="plan2.sub">For active salons</p>
+          <ul class="plan-features">
+            <li data-i18n="plan2.f1">Everything in Starter</li>
+            <li data-i18n="plan2.f2">5 languages</li>
+            <li data-i18n="plan2.f3">Lead capture &amp; CRM sync</li>
+            <li data-i18n="plan2.f4">Automated reminders</li>
+            <li data-i18n="plan2.f5">Analytics dashboard</li>
+          </ul>
+          <a href="#contact" class="plan-cta plan-cta--primary" data-i18n="plan.start">Get started</a>
+        </div>
+        <div class="price-plan reveal-card" data-delay="300">
+          <p class="plan-name">PREMIUM</p>
+          <div class="plan-price-row"><span class="plan-price">€499</span><span class="plan-mo" data-i18n="plan.mo">/ month</span></div>
+          <p class="plan-sub" data-i18n="plan3.sub">For spa centers &amp; chains</p>
+          <ul class="plan-features">
+            <li data-i18n="plan3.f1">Everything in Growth</li>
+            <li data-i18n="plan3.f2">Multi-location setup</li>
+            <li data-i18n="plan3.f3">Custom integrations</li>
+            <li data-i18n="plan3.f4">Priority launch in 24h</li>
+            <li data-i18n="plan3.f5">Dedicated manager</li>
+          </ul>
+          <a href="#contact" class="plan-cta plan-cta--outline" data-i18n="plan.contact">Contact us</a>
+        </div>
+      </div>
+      <p class="pricing-note reveal-up" data-i18n="price.note">Setup fee one-time €299 · 14-day money-back guarantee · No contracts</p>
+    </div>
+  </section>
+
+  <!-- ── DEMO REQUEST FORM ── -->
   <section class="contact" id="contact">
     <div class="contact-bg"></div>
     <div class="container">
       <div class="contact-grid">
         <div class="contact-info">
-          <p class="section-eyebrow reveal-up" data-i18n="contact.eye">Booking</p>
-          <h2 class="section-title reveal-up" data-i18n="contact.title">Start your<br><em>ritual</em> today</h2>
-          <div class="contact-details reveal-up">
-            <div class="contact-item">
-              <div class="contact-icon">◉</div>
-              <div><strong data-i18n="addr.label">Location</strong><span data-i18n="addr.val">Your city · Premium district</span></div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-icon">◉</div>
-              <div><strong data-i18n="phone.label">Phone</strong><span data-i18n="phone.val">+XX XXX XXX XXX</span></div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-icon">◉</div>
-              <div><strong data-i18n="hours.label">Hours</strong><span data-i18n="hours.val">Daily 10:00 — 21:00</span></div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-icon">◉</div>
-              <div><strong data-i18n="ig.label">Instagram</strong><span data-i18n="ig.val">@lumiere.beauty</span></div>
-            </div>
+          <p class="section-eyebrow reveal-up" data-i18n="demo.eye">Get your demo</p>
+          <h2 class="section-title reveal-up" data-i18n="demo.title">Launch <em>Luna</em><br>in your salon</h2>
+          <p class="contact-sub reveal-up" data-i18n="demo.sub">Fill in the form — we'll contact you within 24 hours and set up a personal demo for your salon</p>
+          <div class="demo-chips reveal-up">
+            <span class="demo-chip">⚡ <span data-i18n="chip1">48h setup</span></span>
+            <span class="demo-chip">🌍 <span data-i18n="chip2">5 languages</span></span>
+            <span class="demo-chip">🔁 <span data-i18n="chip3">24/7 works</span></span>
+            <span class="demo-chip">✅ <span data-i18n="chip4">14-day guarantee</span></span>
           </div>
         </div>
         <div class="contact-form-wrap reveal-up">
-          <form class="contact-form" id="contactForm">
-            <h3 data-i18n="form.title">Book a Session</h3>
+          <form class="contact-form" id="demoForm">
+            <h3 data-i18n="form.title">Request a demo</h3>
+            <div class="form-group">
+              <input type="text" id="fsalon" placeholder="Salon name" data-i18n-ph="form.salon" required/>
+              <label for="fsalon" data-i18n="form.salon">Salon name</label>
+            </div>
             <div class="form-group">
               <input type="text" id="fname" placeholder="Your name" data-i18n-ph="form.name" required/>
               <label for="fname" data-i18n="form.name">Your name</label>
             </div>
             <div class="form-group">
-              <input type="tel" id="fphone" placeholder="Phone" data-i18n-ph="form.phone" required/>
-              <label for="fphone" data-i18n="form.phone">Phone</label>
+              <input type="tel" id="fphone" placeholder="Phone / WhatsApp" data-i18n-ph="form.phone" required/>
+              <label for="fphone" data-i18n="form.phone">Phone / WhatsApp</label>
             </div>
             <div class="form-group">
-              <select id="fservice">
-                <option value="" data-i18n="form.service">Choose a service</option>
-                <option data-i18n="s1.name">Body Massage</option>
-                <option data-i18n="s2.name">Facial Care</option>
-                <option data-i18n="s3.name">SPA Rituals</option>
-                <option data-i18n="s4.name">Float Therapy</option>
-                <option data-i18n="s5.name">Body Sculpting</option>
-                <option data-i18n="s6.name">VIP Programs</option>
-              </select>
-              <label for="fservice" data-i18n="svc.label">Service</label>
+              <input type="email" id="femail" placeholder="Email" data-i18n-ph="form.email"/>
+              <label for="femail" data-i18n="form.email">Email</label>
             </div>
-            <div class="form-group">
-              <textarea id="fmsg" placeholder="Requests..." data-i18n-ph="form.msg" rows="3"></textarea>
-              <label for="fmsg" data-i18n="form.msg">Requests</label>
-            </div>
-            <button type="submit" class="btn-primary btn-full" data-i18n="form.btn">Send Request</button>
+            <button type="submit" class="btn-primary btn-full" data-i18n="form.btn">Request Demo →</button>
           </form>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- JARES AI Showcase -->
-  <section class="jares-showcase" id="jares">
+  <!-- ── JARES BRAND BAR ── -->
+  <div class="jares-bar">
     <div class="container">
-      <div class="jares-inner">
-        <div class="jares-text">
-          <p class="section-eyebrow" data-i18n="jares.eye">Powered by JARES AI</p>
-          <h2 class="section-title" data-i18n="jares.title">Meet <em>Luna</em> —<br>Your AI Beauty Consultant</h2>
-          <p class="jares-desc" data-i18n="jares.desc">Luna answers questions, suggests services and books appointments for your clients — 24/7 in any language. No waiting. No missed calls.</p>
-          <div class="jares-demo-note">
-            <span>💬</span>
-            <span data-i18n="jares.demo">You're experiencing a live demo of Luna. Click the widget in the bottom-left to start a conversation.</span>
-          </div>
-          <div class="jares-b2b">
-            <span class="jares-b2b-label" data-i18n="jares.b2b">Want Luna for your own salon?</span>
-            <a href="https://jares-ai.com" target="_blank" rel="noopener" class="jares-cta" data-i18n="jares.cta">Get a Custom AI Agent →</a>
-          </div>
-        </div>
-        <div class="jares-visual">
-          <div class="jares-card">
-            <div class="jares-card-icon">🗓</div>
-            <h4 data-i18n="jares.c1.title">24/7 Appointment Booking</h4>
-            <p data-i18n="jares.c1.desc">Luna books appointments while you sleep — never miss a client again.</p>
-          </div>
-          <div class="jares-card">
-            <div class="jares-card-icon">💬</div>
-            <h4 data-i18n="jares.c2.title">Service Recommendations</h4>
-            <p data-i18n="jares.c2.desc">Understands client needs and suggests the perfect treatment for them.</p>
-          </div>
-          <div class="jares-card">
-            <div class="jares-card-icon">🌍</div>
-            <h4 data-i18n="jares.c3.title">5 Languages</h4>
-            <p data-i18n="jares.c3.desc">Speaks English, German, French, Spanish and Russian fluently.</p>
-          </div>
-        </div>
-      </div>
-      <div class="jares-powered">
-        <p data-i18n="jares.footer">This demo is powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice technology by ElevenLabs · Get your custom AI agent in 48h</p>
-      </div>
+      <p data-i18n="jares.bar">Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs · Your AI agent in 48 hours</p>
     </div>
-  </section>
+  </div>
 
   <footer class="footer">
     <div class="footer-top">
@@ -545,7 +470,7 @@
   // ==========================================
   const i18n = {
     en: {
-      'nav.about':'About','nav.services':'Services','nav.gallery':'Gallery','nav.team':'Masters','nav.contact':'Contact','nav.cta':'Book Now',
+      'nav.about':'About','nav.services':'Services','nav.how':'How it works','nav.pricing':'Pricing','nav.contact':'Contact','nav.cta':'Get Demo',
       'hero.sub':'Premium Beauty &amp; Wellness',
       'hero.title':'<span>The Art</span><br><em>of Beauty</em><br><span>&amp; Harmony</span>',
       'hero.desc':'A premium beauty and massage studio. Your personal oasis of luxury.',
@@ -555,45 +480,38 @@
       'about.desc1':"LUMIÈRE is more than a salon. It is a philosophy of beauty embodied in every touch. We unite the world's finest techniques with an individual approach to each guest.",
       'about.desc2':'Our studio has become synonymous with true luxury and impeccable service for the most discerning clients, wherever they are.',
       'about.stat':'Years of Experience','about.f1':'Premium cosmetics','about.f2':'Signature programs','about.f3':'VIP suites',
-      'services.eye':'Our Services','services.title':'Beauty<br><em>Rituals</em>',
-      's1.name':'Body Massage','s1.desc':'Signature techniques that restore body-mind balance. Deep relaxation at the cellular level.','s1.price':'from €80','s1.link':'Book →',
-      's2.name':'Facial Care','s2.desc':'Exclusive rejuvenation rituals using gold and rare extracts. Visible results from the first session.','s2.price':'from €120','s2.link':'Book →',
-      's3.name':'SPA Rituals','s3.desc':'A complete immersion in luxury. Comprehensive programs for body, mind and soul with aromatherapy.','s3.price':'from €200','s3.link':'Book →',
-      's4.name':'Float Therapy','s4.desc':'Weightlessness and silence. Innovative sensory deprivation chamber for deep nervous system recovery.','s4.price':'from €150','s4.link':'Book →',
-      's5.name':'Body Sculpting','s5.desc':'A signature body contouring program. Professional lymphatic drainage and silhouette modelling techniques.','s5.price':'from €180','s5.link':'Book →',
-      's6.name':'VIP Programs','s6.desc':'Individually crafted total transformation programs. Private suite, champagne, unlimited service.','s6.price':'from €500','s6.link':'Book →',
-      'banner.eye':'LUMIÈRE Philosophy','banner.quote':'«Every&nbsp;woman<br><em>deserves</em>&nbsp;a masterpiece»','banner.btn':'Treat yourself to luxury',
-      'gallery.eye':'Our Atmosphere','gallery.title':'The World<br>of <em>LUMIÈRE</em>',
-      'g1':'Salon Interior','g2':'Massage Room','g3':'SPA Zone','g4':'Care Ritual','g5':'VIP Suite','g6':'Body Treatment',
-      'team.eye':'Our Masters','team.title':'Hands that<br>create <em>masterpieces</em>',
-      't1.name':'Anna Morozova','t1.role':'Head SPA Therapist','t1.exp':'15 years · Paris School Certificate',
-      't2.name':'Maria Constantinou','t2.role':'Aesthetic Cosmetologist','t2.exp':'12 years · Anti-age specialist',
-      't3.name':'Elena Lucas','t3.role':'Massage Therapist &amp; Rehabilitator','t3.exp':'10 years · Thai techniques',
-      'reviews.eye':'Reviews','reviews.title':'They trust us<br>with <em>their beauty</em>',
-      'r1.text':"«LUMIÈRE changed my perception of beauty. This isn't just a salon — it's a place where you feel like a goddess. The hot stone massage is absolutely incredible.»",
-      'r1.author':'Natalie K.','r1.label':'Regular client, 3 years',
-      "r2.text":"«I came for the VIP program on my birthday. It was the best gift to myself! The level of service exceeded all expectations. I'll definitely be back.»",
-      'r2.author':'Sophia M.','r2.label':'VIP program client',
-      "r3.text":"«The gold facial is pure magic. My skin glows like I'm 25 again! The masters are true professionals.»",
-      'r3.author':'Ekaterina V.','r3.label':'Client, 1.5 years',
-      'contact.eye':'Booking','contact.title':'Start your<br><em>ritual</em> today',
-      'addr.label':'Location','addr.val':'Your city · Premium district',
-      'phone.label':'Phone','phone.val':'+XX XXX XXX XXX',
-      'hours.label':'Hours','hours.val':'Daily 10:00 — 21:00',
-      'ig.label':'Instagram','ig.val':'@lumiere.beauty',
-      'form.title':'Book a Session','form.name':'Your name','form.phone':'Phone','form.service':'Choose a service','svc.label':'Service','form.msg':'Requests...','form.btn':'Send Request','form.sent':'Request sent ✓',
-      'jares.eye':'Powered by JARES AI','jares.title':'Meet <em>Luna</em> —<br>Your AI Beauty Consultant',
-      'jares.desc':'Luna answers questions, suggests services and books appointments for your clients — 24/7 in any language. No waiting. No missed calls.',
-      'jares.demo':"You're experiencing a live demo of Luna. Click the widget in the bottom-left to start a conversation.",
-      'jares.b2b':'Want Luna for your own salon?','jares.cta':'Get a Custom AI Agent →',
-      'jares.c1.title':'24/7 Appointment Booking','jares.c1.desc':'Luna books appointments while you sleep — never miss a client again.',
-      'jares.c2.title':'Service Recommendations','jares.c2.desc':'Understands client needs and suggests the perfect treatment for them.',
-      'jares.c3.title':'5 Languages','jares.c3.desc':'Speaks English, German, French, Spanish and Russian fluently.',
-      'jares.footer':'This demo is powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice technology by ElevenLabs · Get your custom AI agent in 48h',
+      'lt.text':'What Luna does for your salon — every hour, every day, in any language',
+      'pain.eye':'Sound familiar?','pain.title':'Your salon loses clients<br><em>every night</em>',
+      'p1.title':'No answer at 11 PM','p1.desc':'A client wrote at midnight — and booked with your competitor instead',
+      'p2.title':'Lost in WhatsApp','p2.desc':"The message was seen, the booking was forgotten. Client didn't show up",
+      'p3.title':'Language barrier','p3.desc':'International clients leave when no one replies in their language',
+      'p4.title':'Same questions all day','p4.desc':"30% of admin time goes to: «What's the price of a massage?»",
+      'p5.title':'No-shows &amp; forgotten bookings','p5.desc':"Without reminders, 25% of bookings simply don't arrive",
+      'p6.title':'Instagram with no sales','p6.desc':'You post every day — but bookings still come through calls only',
+      'banner.eye':'Luna — 24/7 AI consultant','banner.quote':'«Works while<br><em>you rest</em>»','banner.btn':'Get Luna for my salon',
+      'how.eye':'Simple process','how.title':'Up and running in<br><em>48 hours</em>',
+      'h1.title':'We configure Luna','h1.desc':'Our team sets up Luna specifically for your salon: services, pricing, languages, and your brand voice. You just answer a few questions.',
+      'h2.title':'Luna goes live','h2.desc':'Luna appears on your website and WhatsApp. She books appointments, answers questions 24/7 and sends automatic reminders.',
+      'h3.title':'You see results','h3.desc':'You get a simple dashboard with bookings, conversations and analytics. More clients, less admin work, zero missed leads.',
+      'stat1.label':'Works every hour, no days off',
+      'stat2.label':'Languages spoken fluently',
+      'stat3.label':'More bookings in the first month',
+      'stat4.label':'From agreement to launch',
+      'price.eye':'Pricing','price.title':'Simple.<br><em>Transparent.</em>',
+      'plan.mo':'/ month','plan.popular':'Most popular','plan.start':'Get started','plan.contact':'Contact us',
+      'plan1.sub':'For boutique salons','plan1.f1':'Luna AI voice assistant','plan1.f2':'Appointment booking 24/7','plan1.f3':'FAQ &amp; service info','plan1.f4':'1 language','plan1.f5':'Email support',
+      'plan2.sub':'For active salons','plan2.f1':'Everything in Starter','plan2.f2':'5 languages','plan2.f3':'Lead capture &amp; CRM sync','plan2.f4':'Automated reminders','plan2.f5':'Analytics dashboard',
+      'plan3.sub':'For spa centers &amp; chains','plan3.f1':'Everything in Growth','plan3.f2':'Multi-location setup','plan3.f3':'Custom integrations','plan3.f4':'Priority launch in 24h','plan3.f5':'Dedicated manager',
+      'price.note':'Setup fee one-time €299 · 14-day money-back guarantee · No contracts',
+      'demo.eye':'Get your demo','demo.title':'Launch <em>Luna</em><br>in your salon',
+      'demo.sub':"Fill in the form — we'll contact you within 24 hours and set up a personal demo for your salon",
+      'chip1':'48h setup','chip2':'5 languages','chip3':'24/7 works','chip4':'14-day guarantee',
+      'form.title':'Request a demo','form.salon':'Salon / Studio name','form.name':'Your name','form.phone':'Phone / WhatsApp','form.email':'Email','form.btn':'Request Demo →','form.sent':'Request sent ✓',
+      'jares.bar':'Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs · Your AI agent in 48 hours',
       'footer.tagline':'The art of beauty, wherever you are','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Crafted with a love for beauty',
     },
     de: {
-      'nav.about':'Über uns','nav.services':'Leistungen','nav.gallery':'Galerie','nav.team':'Meister','nav.contact':'Kontakt','nav.cta':'Jetzt buchen',
+      'nav.about':'Über uns','nav.services':'Leistungen','nav.how':'Wie es funktioniert','nav.pricing':'Preise','nav.contact':'Kontakt','nav.cta':'Demo anfragen',
       'hero.sub':'Premium Beauty &amp; Wellness',
       'hero.title':'<span>Die Kunst</span><br><em>der Schönheit</em><br><span>&amp; Harmonie</span>',
       'hero.desc':'Ein Premium Beauty- und Massagestudio. Ihre persönliche Oase des Luxus.',
@@ -603,45 +521,38 @@
       'about.desc1':'LUMIÈRE ist mehr als ein Salon. Es ist eine Philosophie der Schönheit, verkörpert in jeder Berührung. Wir vereinen die besten Welttechniken mit einem individuellen Ansatz für jeden Gast.',
       'about.desc2':'Unser Studio ist ein Synonym für wahren Luxus und makellosen Service für die anspruchsvollsten Kunden – überall auf der Welt.',
       'about.stat':'Jahre Erfahrung','about.f1':'Premium Kosmetik','about.f2':'Signature-Programme','about.f3':'VIP-Suiten',
-      'services.eye':'Unsere Leistungen','services.title':'Schönheits-<br><em>Rituale</em>',
-      's1.name':'Körpermassage','s1.desc':'Signature-Techniken, die das Gleichgewicht von Körper und Geist wiederherstellen. Tiefe Entspannung auf zellulärer Ebene.','s1.price':'ab €80','s1.link':'Buchen →',
-      's2.name':'Gesichtspflege','s2.desc':'Exklusive Verjüngungsrituale mit Gold und seltenen Extrakten. Sichtbare Ergebnisse ab der ersten Behandlung.','s2.price':'ab €120','s2.link':'Buchen →',
-      's3.name':'SPA-Rituale','s3.desc':'Vollständiges Eintauchen in Luxus. Umfassende Programme für Körper, Geist und Seele mit Aromatherapie.','s3.price':'ab €200','s3.link':'Buchen →',
-      's4.name':'Float-Therapie','s4.desc':'Schwerelosigkeit und Stille. Innovative sensorische Deprivationskammer für tiefe Erholung des Nervensystems.','s4.price':'ab €150','s4.link':'Buchen →',
-      's5.name':'Body-Sculpting','s5.desc':'Ein Signature-Körperformungsprogramm. Professionelle Lymphdrainage und Silhouetten-Modelliertechniken.','s5.price':'ab €180','s5.link':'Buchen →',
-      's6.name':'VIP-Programme','s6.desc':'Individuell entwickelte Transformationsprogramme. Privatsuite, Champagner, grenzenloser Service.','s6.price':'ab €500','s6.link':'Buchen →',
-      'banner.eye':'LUMIÈRE Philosophie','banner.quote':'«Jede&nbsp;Frau<br><em>verdient</em>&nbsp;ein Meisterwerk»','banner.btn':'Gönnen Sie sich Luxus',
-      'gallery.eye':'Unsere Atmosphäre','gallery.title':'Die Welt<br>von <em>LUMIÈRE</em>',
-      'g1':'Salon-Interieur','g2':'Massageraum','g3':'SPA-Bereich','g4':'Pflegeritual','g5':'VIP-Suite','g6':'Körperbehandlung',
-      'team.eye':'Unsere Meister','team.title':'Hände, die<br><em>Meisterwerke</em> schaffen',
-      't1.name':'Anna Morozova','t1.role':'Leitende SPA-Therapeutin','t1.exp':'15 Jahre · Pariser Schulzertifikat',
-      't2.name':'Maria Constantinou','t2.role':'Ästhetik-Kosmetologin','t2.exp':'12 Jahre · Anti-Age-Spezialistin',
-      't3.name':'Elena Lucas','t3.role':'Massage-Therapeutin &amp; Rehabilitatorin','t3.exp':'10 Jahre · Thailändische Techniken',
-      'reviews.eye':'Bewertungen','reviews.title':'Sie vertrauen uns<br>ihre <em>Schönheit</em> an',
-      'r1.text':'«LUMIÈRE hat meine Vorstellung von Schönheit verändert. Das ist nicht nur ein Salon – es ist ein Ort, wo man sich wie eine Göttin fühlt. Die Heißstein-Massage ist absolut unglaublich.»',
-      'r1.author':'Natalie K.','r1.label':'Stammkundin, 3 Jahre',
-      'r2.text':'«Ich kam zum VIP-Programm an meinem Geburtstag. Es war das beste Geschenk an mich selbst! Das Serviceniveau übertraf alle Erwartungen. Ich komme definitiv wieder.»',
-      'r2.author':'Sophia M.','r2.label':'VIP-Programmkundin',
-      'r3.text':'«Das Gold-Facial ist pure Magie. Meine Haut strahlt wie mit 25! Die Meister sind echte Profis.»',
-      'r3.author':'Ekaterina V.','r3.label':'Kundin, 1,5 Jahre',
-      'contact.eye':'Buchung','contact.title':'Starten Sie Ihr<br><em>Ritual</em> heute',
-      'addr.label':'Standort','addr.val':'Ihre Stadt · Premium-Viertel',
-      'phone.label':'Telefon','phone.val':'+XX XXX XXX XXX',
-      'hours.label':'Öffnungszeiten','hours.val':'Täglich 10:00 — 21:00',
-      'ig.label':'Instagram','ig.val':'@lumiere.beauty',
-      'form.title':'Eine Behandlung buchen','form.name':'Ihr Name','form.phone':'Telefon','form.service':'Behandlung wählen','svc.label':'Behandlung','form.msg':'Wünsche...','form.btn':'Anfrage senden','form.sent':'Anfrage gesendet ✓',
-      'jares.eye':'Unterstützt von JARES AI','jares.title':'Treffen Sie <em>Luna</em> —<br>Ihre KI-Schönheitsberaterin',
-      'jares.desc':'Luna beantwortet Fragen, empfiehlt Behandlungen und bucht Termine für Ihre Kunden – 24/7 in jeder Sprache. Keine Wartezeiten. Keine verpassten Anrufe.',
-      'jares.demo':'Sie erleben gerade eine Live-Demo von Luna. Klicken Sie auf das Widget unten links, um zu starten.',
-      'jares.b2b':'Luna für Ihren eigenen Salon?','jares.cta':'KI-Agenten bestellen →',
-      'jares.c1.title':'24/7 Terminbuchung','jares.c1.desc':'Luna bucht Termine, während Sie schlafen – verpassen Sie nie wieder einen Kunden.',
-      'jares.c2.title':'Behandlungsempfehlungen','jares.c2.desc':'Versteht Kundenwünsche und empfiehlt die perfekte Behandlung.',
-      'jares.c3.title':'5 Sprachen','jares.c3.desc':'Spricht fließend Englisch, Deutsch, Französisch, Spanisch und Russisch.',
-      'jares.footer':'Diese Demo wird unterstützt von <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Sprachtechnologie von ElevenLabs · Ihren KI-Agenten in 48h',
+      'lt.text':'Was Luna für Ihren Salon tut — jede Stunde, jeden Tag, in jeder Sprache',
+      'pain.eye':'Kommt Ihnen das bekannt vor?','pain.title':'Ihr Salon verliert Kunden<br><em>jede Nacht</em>',
+      'p1.title':'Keine Antwort um 23 Uhr','p1.desc':'Ein Kunde schrieb um Mitternacht — und buchte stattdessen bei Ihrem Konkurrenten',
+      'p2.title':'Verloren in WhatsApp','p2.desc':'Die Nachricht wurde gesehen, die Buchung vergessen. Der Kunde erschien nicht.',
+      'p3.title':'Sprachbarriere','p3.desc':'Internationale Kunden gehen, wenn niemand in ihrer Sprache antwortet',
+      'p4.title':'Dieselben Fragen den ganzen Tag','p4.desc':'30% der Administrationszeit geht für: «Was kostet eine Massage?»',
+      'p5.title':'Nichterscheinen &amp; vergessene Buchungen','p5.desc':'Ohne Erinnerungen erscheinen 25% der Buchungen einfach nicht',
+      'p6.title':'Instagram ohne Verkäufe','p6.desc':'Sie posten täglich — aber Buchungen kommen noch immer nur per Anruf',
+      'banner.eye':'Luna — 24/7 KI-Beraterin','banner.quote':'«Arbeitet während<br><em>Sie ruhen</em>»','banner.btn':'Luna für meinen Salon',
+      'how.eye':'Einfacher Prozess','how.title':'Betriebsbereit in<br><em>48 Stunden</em>',
+      'h1.title':'Wir konfigurieren Luna','h1.desc':'Unser Team richtet Luna speziell für Ihren Salon ein: Behandlungen, Preise, Sprachen und Ihre Markenstimme. Sie beantworten nur einige Fragen.',
+      'h2.title':'Luna geht live','h2.desc':'Luna erscheint auf Ihrer Website und WhatsApp. Sie bucht Termine, beantwortet Fragen 24/7 und sendet automatische Erinnerungen.',
+      'h3.title':'Sie sehen Ergebnisse','h3.desc':'Sie erhalten ein einfaches Dashboard mit Buchungen, Gesprächen und Analysen. Mehr Kunden, weniger Verwaltungsarbeit.',
+      'stat1.label':'Arbeitet jede Stunde, keine Ruhetage',
+      'stat2.label':'Sprachen fließend gesprochen',
+      'stat3.label':'Mehr Buchungen im ersten Monat',
+      'stat4.label':'Von der Vereinbarung bis zum Start',
+      'price.eye':'Preise','price.title':'Einfach.<br><em>Transparent.</em>',
+      'plan.mo':'/ Monat','plan.popular':'Am beliebtesten','plan.start':'Loslegen','plan.contact':'Kontaktieren',
+      'plan1.sub':'Für Boutique-Salons','plan1.f1':'Luna KI-Sprachassistentin','plan1.f2':'Terminbuchung 24/7','plan1.f3':'FAQ &amp; Behandlungsinfos','plan1.f4':'1 Sprache','plan1.f5':'E-Mail-Support',
+      'plan2.sub':'Für aktive Salons','plan2.f1':'Alles aus Starter','plan2.f2':'5 Sprachen','plan2.f3':'Lead-Erfassung &amp; CRM-Sync','plan2.f4':'Automatische Erinnerungen','plan2.f5':'Analytics-Dashboard',
+      'plan3.sub':'Für Spa-Zentren &amp; Ketten','plan3.f1':'Alles aus Growth','plan3.f2':'Multi-Standort-Setup','plan3.f3':'Individuelle Integrationen','plan3.f4':'Prioritätsstart in 24h','plan3.f5':'Dedizierter Manager',
+      'price.note':'Einmalige Einrichtungsgebühr €299 · 14-tägige Geld-zurück-Garantie · Keine Verträge',
+      'demo.eye':'Demo anfragen','demo.title':'<em>Luna</em> starten<br>in Ihrem Salon',
+      'demo.sub':'Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden und richten eine persönliche Demo für Ihren Salon ein',
+      'chip1':'Setup in 48h','chip2':'5 Sprachen','chip3':'24/7 verfügbar','chip4':'14-Tage-Garantie',
+      'form.title':'Demo anfragen','form.salon':'Salon / Studio Name','form.name':'Ihr Name','form.phone':'Telefon / WhatsApp','form.email':'E-Mail','form.btn':'Demo anfragen →','form.sent':'Anfrage gesendet ✓',
+      'jares.bar':'Unterstützt von <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Stimme von ElevenLabs · Ihr KI-Agent in 48 Stunden',
       'footer.tagline':'Die Kunst der Schönheit – überall','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Mit Liebe zur Schönheit geschaffen',
     },
     fr: {
-      'nav.about':'À propos','nav.services':'Services','nav.gallery':'Galerie','nav.team':'Experts','nav.contact':'Contact','nav.cta':'Réserver',
+      'nav.about':'À propos','nav.services':'Services','nav.how':'Comment ça marche','nav.pricing':'Tarifs','nav.contact':'Contact','nav.cta':'Démo',
       'hero.sub':'Beauté &amp; Bien-être Premium',
       'hero.title':"<span>L'Art</span><br><em>de la Beauté</em><br><span>&amp; de l'Harmonie</span>",
       'hero.desc':'Un studio de beauté et de massage premium. Votre oasis personnelle de luxe.',
@@ -651,45 +562,38 @@
       'about.desc1':"LUMIÈRE est bien plus qu'un salon. C'est une philosophie de la beauté incarnée dans chaque toucher. Nous unissons les meilleures techniques mondiales à une approche individuelle pour chaque cliente.",
       'about.desc2':"Notre studio est devenu synonyme de vrai luxe et de service impeccable pour les clients les plus exigeants, où qu'ils soient.",
       'about.stat':"Années d'expérience",'about.f1':'Cosmétiques premium','about.f2':'Programmes signature','about.f3':'Suites VIP',
-      'services.eye':'Nos Services','services.title':'Rituels<br><em>de Beauté</em>',
-      's1.name':'Massage du corps','s1.desc':"Techniques signature qui restaurent l'équilibre corps-esprit. Relaxation profonde au niveau cellulaire.",'s1.price':'à partir de €80','s1.link':'Réserver →',
-      's2.name':'Soin du visage','s2.desc':'Rituels de rajeunissement exclusifs à l\'or et aux extraits rares. Résultats visibles dès la première séance.','s2.price':'à partir de €120','s2.link':'Réserver →',
-      's3.name':'Rituels SPA','s3.desc':'Une immersion totale dans le luxe. Programmes complets corps, esprit et âme avec aromathérapie.','s3.price':'à partir de €200','s3.link':'Réserver →',
-      's4.name':'Flotation','s4.desc':'Apesanteur et silence. Caisson de privation sensorielle innovant pour une récupération profonde du système nerveux.','s4.price':'à partir de €150','s4.link':'Réserver →',
-      's5.name':'Sculpture du corps','s5.desc':'Un programme de remodelage corporel signature. Drainage lymphatique professionnel et techniques de modelage de la silhouette.','s5.price':'à partir de €180','s5.link':'Réserver →',
-      's6.name':'Programmes VIP','s6.desc':'Programmes de transformation totale créés sur mesure. Suite privée, champagne, service illimité.','s6.price':'à partir de €500','s6.link':'Réserver →',
-      'banner.eye':'Philosophie LUMIÈRE','banner.quote':"«Chaque&nbsp;femme<br><em>mérite</em>&nbsp;un chef-d'œuvre»",'banner.btn':'Offrez-vous le luxe',
-      'gallery.eye':'Notre Atmosphère','gallery.title':'Le Monde<br>de <em>LUMIÈRE</em>',
-      'g1':'Intérieur du salon','g2':'Salle de massage','g3':'Espace SPA','g4':'Rituel de soin','g5':'Suite VIP','g6':'Traitement corporel',
-      'team.eye':'Nos Experts','team.title':'Des mains qui<br>créent des <em>chefs-d\'œuvre</em>',
-      't1.name':'Anna Morozova','t1.role':'Thérapeute SPA en chef','t1.exp':'15 ans · Certificat École de Paris',
-      't2.name':'Maria Constantinou','t2.role':'Cosméticienne esthéticienne','t2.exp':'12 ans · Spécialiste anti-âge',
-      't3.name':'Elena Lucas','t3.role':'Masseuse-rééducatrice','t3.exp':'10 ans · Techniques thaïlandaises',
-      'reviews.eye':'Avis','reviews.title':'Elles nous confient<br><em>leur beauté</em>',
-      'r1.text':"«LUMIÈRE a changé ma vision de la beauté. Ce n'est pas qu'un salon — c'est un endroit où on se sent comme une déesse. Le massage aux pierres chaudes est absolument incroyable.»",
-      'r1.author':'Natalie K.','r1.label':'Cliente fidèle, 3 ans',
-      'r2.text':"«Je suis venue pour le programme VIP pour mon anniversaire. C'était le meilleur cadeau à moi-même! Le niveau de service a dépassé toutes mes attentes. Je reviendrai certainement.»",
-      'r2.author':'Sophia M.','r2.label':'Cliente programme VIP',
-      'r3.text':'«Le soin visage à l\'or est de la pure magie. Ma peau rayonne comme à 25 ans! Les experts sont de vrais professionnels.»',
-      'r3.author':'Ekaterina V.','r3.label':'Cliente, 1,5 an',
-      'contact.eye':'Réservation','contact.title':'Commencez votre<br><em>rituel</em> aujourd\'hui',
-      'addr.label':'Adresse','addr.val':'Votre ville · Quartier premium',
-      'phone.label':'Téléphone','phone.val':'+XX XXX XXX XXX',
-      'hours.label':'Horaires','hours.val':'Tous les jours 10h — 21h',
-      'ig.label':'Instagram','ig.val':'@lumiere.beauty',
-      'form.title':'Réserver une séance','form.name':'Votre nom','form.phone':'Téléphone','form.service':'Choisir un service','svc.label':'Service','form.msg':'Vos souhaits...','form.btn':'Envoyer la demande','form.sent':'Demande envoyée ✓',
-      'jares.eye':'Propulsé par JARES AI','jares.title':'Rencontrez <em>Luna</em> —<br>Votre consultante beauté IA',
-      'jares.desc':'Luna répond aux questions, recommande des soins et prend des rendez-vous pour vos clients — 24/7 dans toutes les langues. Sans attente. Sans appels manqués.',
-      'jares.demo':'Vous vivez une démonstration en direct de Luna. Cliquez sur le widget en bas à gauche pour commencer.',
-      'jares.b2b':'Luna pour votre propre salon?','jares.cta':'Obtenir un agent IA →',
-      'jares.c1.title':'Réservation 24/7','jares.c1.desc':'Luna prend des rendez-vous pendant que vous dormez — ne ratez plus jamais un client.',
-      'jares.c2.title':'Recommandations de soins','jares.c2.desc':'Comprend les besoins des clients et suggère le traitement parfait.',
-      'jares.c3.title':'5 langues','jares.c3.desc':'Parle couramment anglais, allemand, français, espagnol et russe.',
-      'jares.footer':'Cette démo est propulsée par <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Technologie vocale par ElevenLabs · Votre agent IA en 48h',
+      'lt.text':'Ce que Luna fait pour votre salon — à toute heure, chaque jour, dans toutes les langues',
+      'pain.eye':'Ça vous parle ?','pain.title':'Votre salon perd des clients<br><em>chaque nuit</em>',
+      'p1.title':'Pas de réponse à 23h','p1.desc':'Une cliente a écrit à minuit — et a réservé chez votre concurrent',
+      'p2.title':'Perdu dans WhatsApp','p2.desc':"Le message a été vu, la réservation oubliée. La cliente ne s'est pas présentée.",
+      'p3.title':'Barrière linguistique','p3.desc':'Les clients internationaux partent quand personne ne répond dans leur langue',
+      'p4.title':'Les mêmes questions toute la journée','p4.desc':"30% du temps admin va à : «Quel est le prix d'un massage ?»",
+      'p5.title':'Absences et réservations oubliées','p5.desc':'Sans rappels, 25% des réservations ne se présentent tout simplement pas',
+      'p6.title':'Instagram sans ventes','p6.desc':'Vous publiez chaque jour — mais les réservations arrivent encore par téléphone',
+      'banner.eye':'Luna — consultante IA 24/7','banner.quote':'«Travaille pendant<br><em>que vous vous reposez</em>»','banner.btn':'Luna pour mon salon',
+      'how.eye':'Processus simple','how.title':'Opérationnel en<br><em>48 heures</em>',
+      'h1.title':'Nous configurons Luna','h1.desc':'Notre équipe configure Luna spécifiquement pour votre salon : soins, tarifs, langues et voix de marque. Vous répondez simplement à quelques questions.',
+      'h2.title':'Luna est en ligne','h2.desc':'Luna apparaît sur votre site et WhatsApp. Elle réserve des rendez-vous, répond aux questions 24/7 et envoie des rappels automatiques.',
+      'h3.title':'Vous voyez les résultats','h3.desc':"Vous obtenez un tableau de bord simple avec réservations, conversations et analyses. Plus de clients, moins d'administration.",
+      'stat1.label':'Disponible chaque heure, sans jours de repos',
+      'stat2.label':'Langues parlées couramment',
+      'stat3.label':'Plus de réservations dès le premier mois',
+      'stat4.label':"De l'accord au lancement",
+      'price.eye':'Tarifs','price.title':'Simple.<br><em>Transparent.</em>',
+      'plan.mo':'/ mois','plan.popular':'Le plus populaire','plan.start':'Commencer','plan.contact':'Nous contacter',
+      'plan1.sub':'Pour les salons boutique','plan1.f1':'Assistante vocale IA Luna','plan1.f2':'Réservation de rendez-vous 24/7','plan1.f3':'FAQ &amp; infos soins','plan1.f4':'1 langue','plan1.f5':'Support par e-mail',
+      'plan2.sub':'Pour les salons actifs','plan2.f1':'Tout de Starter','plan2.f2':'5 langues','plan2.f3':'Capture de leads &amp; sync CRM','plan2.f4':'Rappels automatiques','plan2.f5':'Tableau de bord analytique',
+      'plan3.sub':'Pour spas &amp; chaînes','plan3.f1':'Tout de Growth','plan3.f2':'Configuration multi-sites','plan3.f3':'Intégrations personnalisées','plan3.f4':'Lancement prioritaire en 24h','plan3.f5':'Responsable dédié',
+      'price.note':'Frais de configuration uniques €299 · Garantie satisfait ou remboursé 14 jours · Sans contrat',
+      'demo.eye':'Obtenez votre démo','demo.title':'Lancez <em>Luna</em><br>dans votre salon',
+      'demo.sub':'Remplissez le formulaire — nous vous contacterons dans les 24 heures et organiserons une démo personnelle',
+      'chip1':'Setup en 48h','chip2':'5 langues','chip3':'24/7 disponible','chip4':'Garantie 14 jours',
+      'form.title':'Demander une démo','form.salon':'Nom du salon / studio','form.name':'Votre nom','form.phone':'Téléphone / WhatsApp','form.email':'E-mail','form.btn':'Demander une démo →','form.sent':'Demande envoyée ✓',
+      'jares.bar':'Propulsé par <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voix par ElevenLabs · Votre agent IA en 48 heures',
       'footer.tagline':'L\'art de la beauté, où que vous soyez','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Créé avec amour pour la beauté',
     },
     es: {
-      'nav.about':'Nosotros','nav.services':'Servicios','nav.gallery':'Galería','nav.team':'Maestros','nav.contact':'Contacto','nav.cta':'Reservar',
+      'nav.about':'Nosotros','nav.services':'Servicios','nav.how':'Cómo funciona','nav.pricing':'Precios','nav.contact':'Contacto','nav.cta':'Demo',
       'hero.sub':'Belleza &amp; Bienestar Premium',
       'hero.title':'<span>El Arte</span><br><em>de la Belleza</em><br><span>&amp; la Armonía</span>',
       'hero.desc':'Un estudio premium de belleza y masajes. Tu oasis personal de lujo.',
@@ -699,45 +603,38 @@
       'about.desc1':'LUMIÈRE es más que un salón. Es una filosofía de la belleza encarnada en cada toque. Unimos las mejores técnicas mundiales con un enfoque individual para cada cliente.',
       'about.desc2':'Nuestro estudio se ha convertido en sinónimo de verdadero lujo y servicio impecable para los clientes más exigentes, estén donde estén.',
       'about.stat':'Años de experiencia','about.f1':'Cosmética premium','about.f2':'Programas exclusivos','about.f3':'Suites VIP',
-      'services.eye':'Nuestros Servicios','services.title':'Rituales<br><em>de Belleza</em>',
-      's1.name':'Masaje corporal','s1.desc':'Técnicas exclusivas que restauran el equilibrio cuerpo-mente. Relajación profunda a nivel celular.','s1.price':'desde €80','s1.link':'Reservar →',
-      's2.name':'Cuidado facial','s2.desc':'Rituales de rejuvenecimiento exclusivos con oro y extractos raros. Resultados visibles desde la primera sesión.','s2.price':'desde €120','s2.link':'Reservar →',
-      's3.name':'Rituales SPA','s3.desc':'Una inmersión total en el lujo. Programas completos para cuerpo, mente y alma con aromaterapia.','s3.price':'desde €200','s3.link':'Reservar →',
-      's4.name':'Flotación terapéutica','s4.desc':'Ingravidez y silencio. Cámara innovadora de privación sensorial para una recuperación profunda del sistema nervioso.','s4.price':'desde €150','s4.link':'Reservar →',
-      's5.name':'Escultura corporal','s5.desc':'Un programa exclusivo de remodelación corporal. Drenaje linfático profesional y técnicas de modelado de silueta.','s5.price':'desde €180','s5.link':'Reservar →',
-      's6.name':'Programas VIP','s6.desc':'Programas de transformación total desarrollados individualmente. Suite privada, champán, servicio ilimitado.','s6.price':'desde €500','s6.link':'Reservar →',
-      'banner.eye':'Filosofía LUMIÈRE','banner.quote':'«Cada&nbsp;mujer<br><em>merece</em>&nbsp;una obra maestra»','banner.btn':'Regálate el lujo',
-      'gallery.eye':'Nuestra Atmósfera','gallery.title':'El Mundo<br>de <em>LUMIÈRE</em>',
-      'g1':'Interior del salón','g2':'Sala de masajes','g3':'Zona SPA','g4':'Ritual de cuidado','g5':'Suite VIP','g6':'Tratamiento corporal',
-      'team.eye':'Nuestros Maestros','team.title':'Manos que<br>crean <em>obras maestras</em>',
-      't1.name':'Anna Morozova','t1.role':'Terapeuta SPA principal','t1.exp':'15 años · Certificado Escuela de París',
-      't2.name':'Maria Constantinou','t2.role':'Cosmetóloga estética','t2.exp':'12 años · Especialista anti-edad',
-      't3.name':'Elena Lucas','t3.role':'Terapeuta de masaje &amp; Rehabilitadora','t3.exp':'10 años · Técnicas tailandesas',
-      'reviews.eye':'Reseñas','reviews.title':'Confían en nosotros<br>su <em>belleza</em>',
-      'r1.text':'«LUMIÈRE cambió mi percepción de la belleza. No es solo un salón — es un lugar donde te sientes como una diosa. El masaje de piedras calientes es absolutamente increíble.»',
-      'r1.author':'Natalie K.','r1.label':'Clienta habitual, 3 años',
-      'r2.text':'«Vine al programa VIP en mi cumpleaños. ¡Fue el mejor regalo para mí misma! El nivel de servicio superó todas las expectativas. Definitivamente volveré.»',
-      'r2.author':'Sophia M.','r2.label':'Clienta programa VIP',
-      'r3.text':'«El facial de oro es pura magia. ¡Mi piel brilla como a los 25! Los maestros son verdaderos profesionales.»',
-      'r3.author':'Ekaterina V.','r3.label':'Clienta, 1,5 años',
-      'contact.eye':'Reservas','contact.title':'Comienza tu<br><em>ritual</em> hoy',
-      'addr.label':'Ubicación','addr.val':'Tu ciudad · Zona premium',
-      'phone.label':'Teléfono','phone.val':'+XX XXX XXX XXX',
-      'hours.label':'Horario','hours.val':'Diario 10:00 — 21:00',
-      'ig.label':'Instagram','ig.val':'@lumiere.beauty',
-      'form.title':'Reservar una sesión','form.name':'Tu nombre','form.phone':'Teléfono','form.service':'Elegir un servicio','svc.label':'Servicio','form.msg':'Tus solicitudes...','form.btn':'Enviar solicitud','form.sent':'Solicitud enviada ✓',
-      'jares.eye':'Potenciado por JARES AI','jares.title':'Conoce a <em>Luna</em> —<br>Tu consultora de belleza IA',
-      'jares.desc':'Luna responde preguntas, recomienda servicios y reserva citas para tus clientes — 24/7 en cualquier idioma. Sin espera. Sin llamadas perdidas.',
-      'jares.demo':'Estás viviendo una demo en vivo de Luna. Haz clic en el widget abajo a la izquierda para comenzar.',
-      'jares.b2b':'¿Luna para tu propio salón?','jares.cta':'Obtener un agente IA →',
-      'jares.c1.title':'Reservas 24/7','jares.c1.desc':'Luna reserva citas mientras duermes — nunca pierdas un cliente.',
-      'jares.c2.title':'Recomendaciones de servicios','jares.c2.desc':'Entiende las necesidades del cliente y sugiere el tratamiento perfecto.',
-      'jares.c3.title':'5 idiomas','jares.c3.desc':'Habla con fluidez inglés, alemán, francés, español y ruso.',
-      'jares.footer':'Esta demo está impulsada por <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Tecnología de voz por ElevenLabs · Tu agente IA en 48h',
+      'lt.text':'Lo que Luna hace por tu salón — cada hora, cada día, en cualquier idioma',
+      'pain.eye':'¿Te suena familiar?','pain.title':'Tu salón pierde clientes<br><em>cada noche</em>',
+      'p1.title':'Sin respuesta a las 11 PM','p1.desc':'Una clienta escribió a medianoche — y reservó con tu competidor',
+      'p2.title':'Perdido en WhatsApp','p2.desc':'El mensaje fue visto, la reserva olvidada. La clienta no apareció.',
+      'p3.title':'Barrera del idioma','p3.desc':'Los clientes internacionales se van cuando nadie responde en su idioma',
+      'p4.title':'Las mismas preguntas todo el día','p4.desc':"El 30% del tiempo admin va a: «¿Cuánto cuesta un masaje?»",
+      'p5.title':'Ausencias y citas olvidadas','p5.desc':'Sin recordatorios, el 25% de las reservas simplemente no aparece',
+      'p6.title':'Instagram sin ventas','p6.desc':'Publicas cada día — pero las reservas siguen llegando solo por teléfono',
+      'banner.eye':'Luna — consultora IA 24/7','banner.quote':'«Trabaja mientras<br><em>descansas</em>»','banner.btn':'Luna para mi salón',
+      'how.eye':'Proceso simple','how.title':'En funcionamiento en<br><em>48 horas</em>',
+      'h1.title':'Configuramos Luna','h1.desc':'Nuestro equipo configura Luna específicamente para tu salón: servicios, precios, idiomas y tu voz de marca. Solo respondes algunas preguntas.',
+      'h2.title':'Luna entra en acción','h2.desc':'Luna aparece en tu web y WhatsApp. Reserva citas, responde preguntas 24/7 y envía recordatorios automáticos.',
+      'h3.title':'Ves los resultados','h3.desc':'Obtienes un panel sencillo con reservas, conversaciones y análisis. Más clientes, menos trabajo administrativo.',
+      'stat1.label':'Disponible cada hora, sin días libres',
+      'stat2.label':'Idiomas hablados con fluidez',
+      'stat3.label':'Más reservas en el primer mes',
+      'stat4.label':'Del acuerdo al lanzamiento',
+      'price.eye':'Precios','price.title':'Simple.<br><em>Transparente.</em>',
+      'plan.mo':'/ mes','plan.popular':'Más popular','plan.start':'Empezar','plan.contact':'Contáctanos',
+      'plan1.sub':'Para salones boutique','plan1.f1':'Asistente de voz IA Luna','plan1.f2':'Reservas 24/7','plan1.f3':'FAQ e info de servicios','plan1.f4':'1 idioma','plan1.f5':'Soporte por email',
+      'plan2.sub':'Para salones activos','plan2.f1':'Todo de Starter','plan2.f2':'5 idiomas','plan2.f3':'Captación de leads &amp; sync CRM','plan2.f4':'Recordatorios automáticos','plan2.f5':'Panel de analíticas',
+      'plan3.sub':'Para spas y cadenas','plan3.f1':'Todo de Growth','plan3.f2':'Configuración multi-sede','plan3.f3':'Integraciones personalizadas','plan3.f4':'Lanzamiento prioritario en 24h','plan3.f5':'Manager dedicado',
+      'price.note':'Tarifa de configuración única €299 · Garantía de devolución 14 días · Sin contratos',
+      'demo.eye':'Obtén tu demo','demo.title':'Lanza <em>Luna</em><br>en tu salón',
+      'demo.sub':'Rellena el formulario — te contactaremos en 24 horas y organizaremos una demo personal para tu salón',
+      'chip1':'Setup en 48h','chip2':'5 idiomas','chip3':'24/7 disponible','chip4':'Garantía 14 días',
+      'form.title':'Solicitar demo','form.salon':'Nombre del salón / estudio','form.name':'Tu nombre','form.phone':'Teléfono / WhatsApp','form.email':'Email','form.btn':'Solicitar Demo →','form.sent':'Solicitud enviada ✓',
+      'jares.bar':'Desarrollado por <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voz por ElevenLabs · Tu agente IA en 48 horas',
       'footer.tagline':'El arte de la belleza, donde quieras','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Creado con amor por la belleza',
     },
     ru: {
-      'nav.about':'О нас','nav.services':'Услуги','nav.gallery':'Галерея','nav.team':'Мастера','nav.contact':'Контакты','nav.cta':'Записаться',
+      'nav.about':'О нас','nav.services':'Услуги','nav.how':'Как это работает','nav.pricing':'Цены','nav.contact':'Контакты','nav.cta':'Демо',
       'hero.sub':'Premium Beauty &amp; Wellness',
       'hero.title':'<span>Искусство</span><br><em>Красоты</em><br><span>&amp; Гармонии</span>',
       'hero.desc':'Премиальный салон красоты и массажа. Ваш персональный оазис роскоши.',
@@ -747,41 +644,34 @@
       'about.desc1':'LUMIÈRE — это не просто салон. Это философия красоты, воплощённая в каждом прикосновении. Мы объединяем лучшие мировые техники с индивидуальным подходом к каждой гостье.',
       'about.desc2':'Наш салон стал синонимом истинной роскоши и безупречного сервиса для самых взыскательных клиентов — где бы они ни находились.',
       'about.stat':'Лет опыта','about.f1':'Премиум косметика','about.f2':'Авторские программы','about.f3':'VIP кабинеты',
-      'services.eye':'Наши услуги','services.title':'Ритуалы<br><em>Красоты</em>',
-      's1.name':'Массаж тела','s1.desc':'Авторские техники, восстанавливающие баланс тела и духа. Глубокое расслабление на клеточном уровне.','s1.price':'от 80€','s1.link':'Записаться →',
-      's2.name':'Уход за лицом','s2.desc':'Эксклюзивные ритуалы омоложения с использованием золота и редких экстрактов. Видимый результат с первой процедуры.','s2.price':'от 120€','s2.link':'Записаться →',
-      's3.name':'SPA-ритуалы','s3.desc':'Полное погружение в мир роскоши. Комплексные программы для тела, разума и души с ароматерапией.','s3.price':'от 200€','s3.link':'Записаться →',
-      's4.name':'Флоатинг-терапия','s4.desc':'Невесомость и тишина. Инновационная камера сенсорной депривации для глубокого восстановления нервной системы.','s4.price':'от 150€','s4.link':'Записаться →',
-      's5.name':'Скульптурирование тела','s5.desc':'Авторская программа коррекции фигуры. Профессиональные техники лимфодренажа и моделирования силуэта.','s5.price':'от 180€','s5.link':'Записаться →',
-      's6.name':'VIP-программы','s6.desc':'Индивидуально разработанные программы полного преображения. Закрытый кабинет, шампанское, безграничный сервис.','s6.price':'от 500€','s6.link':'Записаться →',
-      'banner.eye':'Философия LUMIÈRE','banner.quote':'«Каждая&nbsp;женщина<br><em>заслуживает</em>&nbsp;шедевра»','banner.btn':'Подарить себе роскошь',
-      'gallery.eye':'Наша атмосфера','gallery.title':'Мир<br><em>LUMIÈRE</em>',
-      'g1':'Интерьер салона','g2':'Кабинет массажа','g3':'SPA-зона','g4':'Ритуал ухода','g5':'VIP-кабинет','g6':'Процедура тела',
-      'team.eye':'Наши мастера','team.title':'Руки, создающие<br><em>шедевры</em>',
-      't1.name':'Анна Морозова','t1.role':'Главный SPA-терапевт','t1.exp':'15 лет · Сертификат Парижской школы',
-      't2.name':'Мария Константину','t2.role':'Косметолог-эстетист','t2.exp':'12 лет · Специалист по anti-age',
-      't3.name':'Елена Лукас','t3.role':'Массажист-реабилитолог','t3.exp':'10 лет · Тайские техники',
-      'reviews.eye':'Отзывы','reviews.title':'Они доверяют нам<br><em>свою красоту</em>',
-      'r1.text':'«LUMIÈRE изменил моё представление о красоте. Это не просто салон — это место, где ты чувствуешь себя богиней. Массаж горячими камнями — это нечто невероятное.»',
-      'r1.author':'Наталья К.','r1.label':'Постоянная клиентка, 3 года',
-      'r2.text':'«Приходила на VIP-программу по случаю дня рождения. Это был лучший подарок себе! Уровень сервиса превзошёл все ожидания. Обязательно вернусь.»',
-      'r2.author':'Sophia M.','r2.label':'Клиентка VIP-программы',
-      'r3.text':'«Уход за лицом с золотом — это просто магия. Кожа сияет так, будто мне снова 25! Мастера настоящие профессионалы своего дела.»',
-      'r3.author':'Екатерина В.','r3.label':'Клиентка, 1.5 года',
-      'contact.eye':'Запись','contact.title':'Начните свой<br><em>ритуал</em> сегодня',
-      'addr.label':'Адрес','addr.val':'Ваш город · Премиум-район',
-      'phone.label':'Телефон','phone.val':'+XX XXX XXX XXX',
-      'hours.label':'Часы работы','hours.val':'Ежедневно 10:00 — 21:00',
-      'ig.label':'Instagram','ig.val':'@lumiere.beauty',
-      'form.title':'Записаться на процедуру','form.name':'Ваше имя','form.phone':'Телефон','form.service':'Выберите услугу','svc.label':'Услуга','form.msg':'Пожелания...','form.btn':'Отправить заявку','form.sent':'Заявка отправлена ✓',
-      'jares.eye':'Работает на JARES AI','jares.title':'Знакомьтесь — <em>Luna</em>,<br>ваш ИИ-консультант по красоте',
-      'jares.desc':'Luna отвечает на вопросы, рекомендует услуги и записывает клиентов — 24/7 на любом языке. Никаких ожиданий. Никаких пропущенных звонков.',
-      'jares.demo':'Вы видите живое демо Luna. Нажмите на виджет внизу слева, чтобы начать разговор.',
-      'jares.b2b':'Хотите Luna для своего салона?','jares.cta':'Получить ИИ-агента →',
-      'jares.c1.title':'Запись 24/7','jares.c1.desc':'Luna записывает клиентов пока вы спите — больше никаких пропусков.',
-      'jares.c2.title':'Рекомендации услуг','jares.c2.desc':'Понимает потребности клиента и предлагает идеальную процедуру.',
-      'jares.c3.title':'5 языков','jares.c3.desc':'Свободно говорит на английском, немецком, французском, испанском и русском.',
-      'jares.footer':'Демо работает на платформе <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Голосовые технологии ElevenLabs · Ваш ИИ-агент за 48 часов',
+      'lt.text':'Что Луна делает для вашего салона — каждый час, каждый день, на любом языке',
+      'pain.eye':'Знакомо?','pain.title':'Ваш салон теряет клиентов<br><em>каждую ночь</em>',
+      'p1.title':'Нет ответа в 23:00','p1.desc':'Клиент написал в полночь — и записался к конкурентам вместо вас',
+      'p2.title':'Потеряно в WhatsApp','p2.desc':'Сообщение увидели, запись забыли. Клиент не пришёл.',
+      'p3.title':'Языковой барьер','p3.desc':'Иностранные клиенты уходят, когда никто не отвечает на их языке',
+      'p4.title':'Одни и те же вопросы весь день','p4.desc':'30% времени администратора уходит на: «Сколько стоит массаж?»',
+      'p5.title':'Неявки и забытые записи','p5.desc':'Без напоминаний 25% записей просто не приходят',
+      'p6.title':'Instagram без продаж','p6.desc':'Постите каждый день — а запись всё равно идёт только по телефону',
+      'banner.eye':'Луна — ИИ-консультант 24/7','banner.quote':'«Работает пока<br><em>вы отдыхаете</em>»','banner.btn':'Хочу Луну для своего салона',
+      'how.eye':'Простой процесс','how.title':'Запуск за<br><em>48 часов</em>',
+      'h1.title':'Мы настраиваем Луну','h1.desc':'Наша команда настраивает Луну под ваш салон: услуги, цены, языки и голос вашего бренда. Вы просто отвечаете на несколько вопросов.',
+      'h2.title':'Луна выходит в эфир','h2.desc':'Луна появляется на вашем сайте и в WhatsApp. Записывает клиентов, отвечает на вопросы 24/7 и отправляет напоминания.',
+      'h3.title':'Вы видите результаты','h3.desc':'Вы получаете простую панель с записями, разговорами и аналитикой. Больше клиентов, меньше рутины, ноль пропущенных лидов.',
+      'stat1.label':'Работает каждый час, без выходных',
+      'stat2.label':'Языков говорит свободно',
+      'stat3.label':'Больше записей в первый месяц',
+      'stat4.label':'От договорённости до запуска',
+      'price.eye':'Цены','price.title':'Просто.<br><em>Прозрачно.</em>',
+      'plan.mo':'/ мес','plan.popular':'Самый популярный','plan.start':'Начать','plan.contact':'Связаться',
+      'plan1.sub':'Для небольших салонов','plan1.f1':'ИИ голосовой ассистент Луна','plan1.f2':'Запись клиентов 24/7','plan1.f3':'FAQ и информация об услугах','plan1.f4':'1 язык','plan1.f5':'Email поддержка',
+      'plan2.sub':'Для активных салонов','plan2.f1':'Всё из Starter','plan2.f2':'5 языков','plan2.f3':'Сбор лидов и синхронизация CRM','plan2.f4':'Автоматические напоминания','plan2.f5':'Аналитика и дашборд',
+      'plan3.sub':'Для спа-центров и сетей','plan3.f1':'Всё из Growth','plan3.f2':'Настройка для нескольких точек','plan3.f3':'Кастомные интеграции','plan3.f4':'Приоритетный запуск за 24ч','plan3.f5':'Персональный менеджер',
+      'price.note':'Единовременная плата за настройку €299 · Гарантия возврата 14 дней · Без контрактов',
+      'demo.eye':'Получить демо','demo.title':'Запустить <em>Луну</em><br>в вашем салоне',
+      'demo.sub':'Заполните форму — мы свяжемся в течение 24 часов и проведём персональное демо для вашего салона',
+      'chip1':'Запуск за 48ч','chip2':'5 языков','chip3':'Работает 24/7','chip4':'Гарантия 14 дней',
+      'form.title':'Запросить демо','form.salon':'Название салона / студии','form.name':'Ваше имя','form.phone':'Телефон / WhatsApp','form.email':'Email','form.btn':'Запросить демо →','form.sent':'Заявка отправлена ✓',
+      'jares.bar':'Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Голос — ElevenLabs · Ваш ИИ-агент за 48 часов',
       'footer.tagline':'Искусство красоты — где бы вы ни были','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Создано с любовью к красоте',
     },
   };

@@ -1949,3 +1949,237 @@ body::before {
   background-size: cover, cover !important;
   background-position: center, center !important;
 }
+
+/* ==========================================
+   LUNA B2B SECTIONS
+   ========================================== */
+
+/* Transition strip */
+.luna-transition {
+  background: linear-gradient(90deg, transparent, rgba(200,147,15,0.06), transparent);
+  border-top: 1px solid rgba(200,147,15,0.12);
+  border-bottom: 1px solid rgba(200,147,15,0.12);
+  padding: 22px 0;
+  text-align: center;
+}
+.lt-inner {
+  display: flex; align-items: center; justify-content: center; gap: 20px;
+  max-width: 700px; margin: 0 auto; padding: 0 24px;
+}
+.lt-inner p {
+  color: rgba(242,216,144,0.55); font-family: var(--font-body);
+  font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.lt-star { color: var(--gold); font-size: 0.9rem; flex-shrink: 0; }
+
+/* Pain points */
+.luna-pain { padding: 100px 0; background: var(--choco-dark); position: relative; overflow: hidden; }
+.luna-pain::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(200,147,15,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.pain-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-top: 56px;
+}
+.pain-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(200,147,15,0.1);
+  border-radius: 20px; padding: 32px 26px;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.pain-card:hover {
+  border-color: rgba(200,147,15,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+.pain-icon { font-size: 1.7rem; margin-bottom: 18px; display: block; }
+.pain-card h3 {
+  font-family: var(--font-display); font-size: 1.18rem; font-weight: 400;
+  color: var(--cream); margin: 0 0 10px; letter-spacing: 0.01em;
+}
+.pain-card p {
+  font-family: var(--font-body); font-size: 0.86rem;
+  color: rgba(255,255,255,0.4); line-height: 1.75; margin: 0;
+}
+
+/* How it works */
+.luna-how { padding: 100px 0; }
+.how-steps {
+  display: flex; align-items: flex-start; gap: 0;
+  margin-top: 64px;
+}
+.how-step { flex: 1; text-align: center; padding: 0 32px; }
+.how-connector {
+  width: 80px; flex-shrink: 0;
+  height: 1px; align-self: stretch; margin-top: 52px;
+  background: linear-gradient(90deg, rgba(200,147,15,0.15), rgba(200,147,15,0.5), rgba(200,147,15,0.15));
+}
+.how-num {
+  font-family: var(--font-display); font-size: 4rem; font-weight: 300;
+  color: rgba(200,147,15,0.18); line-height: 1; margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+.how-step h3 {
+  font-family: var(--font-display); font-size: 1.35rem; font-weight: 400;
+  color: var(--cream); margin: 0 0 14px;
+}
+.how-step p {
+  font-family: var(--font-body); font-size: 0.87rem;
+  color: rgba(255,255,255,0.45); line-height: 1.75;
+}
+
+/* Results numbers */
+.luna-results {
+  padding: 72px 0;
+  background: linear-gradient(135deg, rgba(18,10,5,0.95) 0%, rgba(30,15,8,0.9) 100%);
+  border-top: 1px solid rgba(200,147,15,0.1);
+  border-bottom: 1px solid rgba(200,147,15,0.1);
+}
+.results-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 32px; text-align: center;
+}
+.result-num {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 12px;
+}
+.result-label {
+  font-family: var(--font-body); font-size: 0.82rem;
+  color: rgba(255,255,255,0.4); letter-spacing: 0.04em; line-height: 1.5;
+}
+
+/* Pricing */
+.luna-pricing { padding: 100px 0; }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px; align-items: start;
+}
+.price-plan {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(200,147,15,0.15);
+  border-radius: 24px; padding: 40px 32px;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.price-plan:hover { border-color: rgba(200,147,15,0.35); }
+.price-plan--popular {
+  border-color: rgba(200,147,15,0.45);
+  background: rgba(200,147,15,0.05);
+  transform: translateY(-10px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35), 0 0 0 1px rgba(200,147,15,0.1);
+}
+.plan-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  color: #120a05; font-family: var(--font-body);
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 5px 18px; border-radius: 100px;
+  white-space: nowrap;
+}
+.plan-name {
+  font-family: var(--font-body); font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.plan-price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+.plan-price {
+  font-family: var(--font-display); font-size: 3rem; font-weight: 300;
+  color: var(--cream); line-height: 1;
+}
+.plan-mo {
+  font-family: var(--font-body); font-size: 0.9rem;
+  color: rgba(255,255,255,0.35);
+}
+.plan-sub {
+  font-family: var(--font-body); font-size: 0.82rem;
+  color: rgba(255,255,255,0.38); margin: 6px 0 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(200,147,15,0.1);
+}
+.plan-features {
+  list-style: none; margin: 0 0 32px; padding: 0;
+  display: flex; flex-direction: column; gap: 13px;
+}
+.plan-features li {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-body); font-size: 0.84rem;
+  color: rgba(255,255,255,0.6);
+}
+.plan-features li::before { content: '✦'; color: var(--gold); font-size: 0.55rem; flex-shrink: 0; }
+.plan-cta {
+  display: block; text-align: center; padding: 14px 20px;
+  border-radius: 100px; font-family: var(--font-body);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none;
+  transition: all 0.25s ease; cursor: pointer;
+}
+.plan-cta--primary {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  color: #120a05;
+}
+.plan-cta--primary:hover {
+  box-shadow: 0 8px 32px rgba(200,147,15,0.45);
+  transform: translateY(-2px);
+}
+.plan-cta--outline {
+  border: 1px solid rgba(200,147,15,0.35);
+  color: var(--gold);
+}
+.plan-cta--outline:hover { background: rgba(200,147,15,0.08); }
+.pricing-note {
+  text-align: center; margin-top: 40px;
+  font-family: var(--font-body); font-size: 0.8rem;
+  color: rgba(255,255,255,0.28); letter-spacing: 0.04em;
+}
+
+/* Demo contact additions */
+.contact-sub {
+  font-family: var(--font-body); font-size: 0.95rem;
+  color: rgba(255,255,255,0.45); line-height: 1.75;
+  margin: 16px 0 28px;
+}
+.demo-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.demo-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(200,147,15,0.08);
+  border: 1px solid rgba(200,147,15,0.22);
+  border-radius: 100px; padding: 7px 16px;
+  font-family: var(--font-body); font-size: 0.78rem;
+  color: rgba(242,216,144,0.65);
+}
+
+/* JARES brand bar */
+.jares-bar {
+  background: var(--choco-dark);
+  border-top: 1px solid rgba(200,147,15,0.12);
+  padding: 24px 0; text-align: center;
+}
+.jares-bar p {
+  font-family: var(--font-body); font-size: 0.8rem;
+  color: rgba(255,255,255,0.28); letter-spacing: 0.04em;
+}
+.jares-bar a { color: var(--gold); text-decoration: none; }
+.jares-bar a:hover { text-decoration: underline; }
+
+/* Responsive — B2B sections */
+@media (max-width: 900px) {
+  .pain-grid { grid-template-columns: repeat(2, 1fr); }
+  .results-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .price-plan--popular { transform: none; }
+}
+@media (max-width: 600px) {
+  .pain-grid { grid-template-columns: 1fr; }
+  .how-steps { flex-direction: column; align-items: center; gap: 0; }
+  .how-step { padding: 0 16px; }
+  .how-connector {
+    width: 1px; height: 40px; margin: 0;
+    background: linear-gradient(180deg, rgba(200,147,15,0.15), rgba(200,147,15,0.5), rgba(200,147,15,0.15));
+  }
+  .lt-inner { flex-direction: column; gap: 8px; }
+  .lt-inner p { font-size: 0.75rem; }
+}
