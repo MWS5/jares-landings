@@ -355,14 +355,18 @@ document.querySelectorAll('.team-card').forEach(card => {
 });
 
 // ==========================================
-// LUNA WIDGET — gold styling + text sync
+// LUNA WIDGET — language sync + pill styling
+// Agent theming (colors, border-radius) set via ElevenLabs API — no shadow DOM needed for that.
+// Shadow DOM injection: ONLY for action-text pill + hide branding.
 // ==========================================
+
+// Creative multilingual labels for the action-text pill
 const LUNA_LABELS = {
-  en: 'Luna listens',
-  de: 'Luna hört zu',
-  fr: 'Luna vous écoute',
-  es: 'Luna te escucha',
-  ru: 'Луна слушает',
+  en: '✦ Speak with Luna',
+  de: '✦ Mit Luna sprechen',
+  fr: '✦ Parler à Luna',
+  es: '✦ Hablar con Luna',
+  ru: '✦ Говорить с Луной',
 };
 
 const LUNA_FIRST_MSG = {
@@ -373,166 +377,61 @@ const LUNA_FIRST_MSG = {
   ru: "Добро пожаловать в LUMIÈRE. Я Луна — ваш личный beauty-консультант. Чем могу помочь?",
 };
 
-
-function updateLunaLanguage(lang) {
-  const widget = document.querySelector('elevenlabs-convai');
-  if (!widget) return;
-  widget.setAttribute('override-language', lang);
-  widget.setAttribute('override-first-message', LUNA_FIRST_MSG[lang] || LUNA_FIRST_MSG.en);
-}
-
-function styleLunaWidget(widget) {
-  if (!widget) return;
-  widget.setAttribute('avatar-orb-color-1', '#e0b845');
-  widget.setAttribute('avatar-orb-color-2', '#7a3f0a');
-
-  function injectStyle() {
-    if (!widget.shadowRoot) return;
-    const existing = widget.shadowRoot.getElementById('luna-custom-style');
-    if (existing) existing.remove(); // always refresh
-    const s = document.createElement('style');
-    s.id = 'luna-custom-style';
-    // Chocolate-gold palette:
-    // bg: warm dark chocolate #2c1005 → #3d1608
-    // border: gold #c8930f at 70% opacity
-    // accent text: pale gold #f2d890
-    // CTA button: gold gradient
-    s.textContent = `
-      /* ── Reset all backgrounds to chocolate ── */
-      * {
-        box-sizing: border-box;
-      }
-
-      /* ── FAB trigger button (closed state) ── */
-      button[part="button"] {
-        background: linear-gradient(135deg, #b8820d 0%, #e0b845 100%) !important;
-        border: 2px solid rgba(224,184,69,0.5) !important;
-        border-radius: 100px !important;
-        box-shadow:
-          0 4px 28px rgba(200,147,15,0.55),
-          0 0 0 3px rgba(200,147,15,0.18) !important;
-        color: #120a05 !important;
-      }
-
-      /* ── Expanded card — catch by position/display heuristic ── */
-      div:not([class*="button"]):not([class*="btn"]) {
-        background-color: transparent;
-      }
-
-      /* Main popup/card wrapper — large divs with padding */
-      [style*="border-radius"],
-      [style*="background"],
-      [style*="padding"] {
-        border-radius: 28px !important;
-      }
-
-      /* ── Nuclear approach: style the :host element ── */
-      :host {
-        --widget-bg: #2c1005;
-        --widget-border: rgba(200,147,15,0.65);
-        --widget-radius: 28px;
-        --gold: #c8930f;
-        --gold-light: #e0b845;
-        --gold-pale: #f2d890;
-        --text: rgba(242,216,144,0.85);
-      }
-
-      /* ── Action-text label pill ── */
-      [class*="action"], [class*="Action"],
-      [class*="prompt"], [class*="Prompt"],
-      [class*="label"], [class*="Label"],
-      [class*="tooltip"], [class*="Tooltip"],
-      [class*="hint"], [class*="Hint"],
-      [class*="text-button"], [class*="TextButton"] {
-        background: rgba(28,10,2,0.94) !important;
-        color: #e0b845 !important;
-        border: 1px solid rgba(200,147,15,0.55) !important;
-        border-radius: 100px !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        font-weight: 500 !important;
-        letter-spacing: 0.05em !important;
-        padding: 9px 20px !important;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.4) !important;
-      }
-
-      /* ── Expanded card container ── */
-      [class*="widget"], [class*="Widget"],
-      [class*="card"], [class*="Card"],
-      [class*="panel"], [class*="Panel"],
-      [class*="container"], [class*="Container"],
-      [class*="popup"], [class*="Popup"],
-      [class*="modal"], [class*="Modal"],
-      [class*="overlay"], [class*="Overlay"],
-      [class*="window"], [class*="Window"],
-      [class*="expanded"], [class*="Expanded"],
-      [class*="open"], [class*="Open"],
-      [class*="sheet"], [class*="Sheet"],
-      [class*="drawer"], [class*="Drawer"],
-      [class*="conversation"], [class*="Conversation"] {
-        background: linear-gradient(150deg, #3d1608 0%, #2c1005 60%, #1e0b04 100%) !important;
-        border: 2px solid rgba(200,147,15,0.65) !important;
-        border-radius: 28px !important;
-        box-shadow:
-          0 16px 64px rgba(0,0,0,0.7),
-          0 0 0 1px rgba(224,184,69,0.1),
-          inset 0 1px 0 rgba(224,184,69,0.07) !important;
-        color: #f2d890 !important;
-      }
-
-      /* ── "Start a call" button inside card ── */
-      button:not([part="button"]),
-      [class*="call"], [class*="Call"],
-      [class*="start"], [class*="Start"],
-      [class*="cta"], [class*="Cta"],
-      [class*="connect"], [class*="Connect"],
-      [class*="begin"], [class*="Begin"] {
-        background: linear-gradient(135deg, #c8930f 0%, #e0b845 100%) !important;
-        color: #120a05 !important;
-        border: none !important;
-        border-radius: 100px !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.06em !important;
-        box-shadow: 0 4px 20px rgba(200,147,15,0.45) !important;
-      }
-
-      /* ── Text colors ── */
-      h1, h2, h3, h4, h5, p, span:not([class*="icon"]) {
-        color: #f2d890 !important;
-      }
-
-      /* ── Hide branding ── */
-      a[href*="elevenlabs"], [class*="powered"], [class*="Powered"],
-      [class*="branding"], [class*="Branding"], [class*="logo"]:not([class*="avatar"]) {
-        display: none !important;
-      }
-
-      /* ── Avatar/orb area ── */
-      [class*="avatar"], [class*="Avatar"],
-      [class*="orb"], [class*="Orb"] {
-        border-radius: 50% !important;
-      }
-    `;
-    widget.shadowRoot.appendChild(s);
-  }
-
-  injectStyle();
-  [200, 600, 1500, 3000, 6000].forEach(t => setTimeout(injectStyle, t));
+function injectLunaPillStyle(widget) {
+  if (!widget.shadowRoot) return;
+  if (widget.shadowRoot.getElementById('luna-pill-style')) return;
+  const s = document.createElement('style');
+  s.id = 'luna-pill-style';
+  // Only style the action-text pill (collapsed trigger) + hide branding.
+  // Card colors are set natively via ElevenLabs agent API (bg_color, btn_color etc.)
+  s.textContent = `
+    /* ── Action-text pill — matches landing "ЗАПИСАТЬСЯ" pill button ── */
+    [class*="action-text"], [class*="ActionText"],
+    [class*="prompt-text"], [class*="PromptText"],
+    [data-testid="action-text"],
+    button[part="action-text"] {
+      background: rgba(18, 8, 2, 0.92) !important;
+      color: #e0b845 !important;
+      border: 1px solid rgba(200,147,15,0.6) !important;
+      border-radius: 100px !important;
+      letter-spacing: 0.08em !important;
+      font-weight: 500 !important;
+      padding: 10px 22px !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,147,15,0.15) !important;
+      white-space: nowrap !important;
+    }
+    /* ── Hide ElevenLabs branding ── */
+    a[href*="elevenlabs"], [class*="powered" i], [class*="branding" i] {
+      display: none !important;
+    }
+  `;
+  widget.shadowRoot.appendChild(s);
 }
 
 function syncLunaLabel(lang) {
   const widget = document.querySelector('elevenlabs-convai');
   if (!widget) return;
+
+  // 1. Multilingual label on the pill button
   widget.setAttribute('action-text', LUNA_LABELS[lang] || LUNA_LABELS.en);
-  updateLunaLanguage(lang);
-  styleLunaWidget(widget);
+
+  // 2. Language override — Luna responds in the correct language
+  widget.setAttribute('override-language', lang);
+
+  // 3. First message in the correct language (enabled via ElevenLabs API)
+  widget.setAttribute('override-first-message', LUNA_FIRST_MSG[lang] || LUNA_FIRST_MSG.en);
+
+  // 4. Inject pill style (minimal — one-time)
+  injectLunaPillStyle(widget);
 }
 
-// Expose so index.html applyLang can call it
 window.syncLunaLabel = syncLunaLabel;
 
 window.addEventListener('load', () => {
-  syncLunaLabel(window.currentLang || 'en');
+  // Small delay to let ElevenLabs widget initialize
+  setTimeout(() => syncLunaLabel(window.currentLang || 'en'), 400);
 });
 // Also retry after ElevenLabs widget script initialises
 setTimeout(() => syncLunaLabel(window.currentLang || 'en'), 1500);
