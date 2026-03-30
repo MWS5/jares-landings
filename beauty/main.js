@@ -72,7 +72,9 @@ const navBurger = document.getElementById('navBurger');
 const mobileOverlay = document.createElement('div');
 mobileOverlay.className = 'mobile-nav-overlay';
 mobileOverlay.innerHTML = `
-  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&#x2715;</button>
+  <div class="mobile-nav-close-zone" id="mobileCloseZone" role="button" tabindex="0" aria-label="Close menu">
+    <div class="mobile-nav-close" aria-hidden="true">&#x2715;</div>
+  </div>
   <div class="mobile-lang-switcher">
     <button class="mobile-lang-btn" data-lang="en">EN</button>
     <button class="mobile-lang-btn" data-lang="de">DE</button>
@@ -91,26 +93,48 @@ document.body.appendChild(mobileOverlay);
 
 const lunaWrap = document.querySelector('.luna-widget-wrap');
 
+const EL_SELECTOR = 'elevenlabs-convai, [class*="elevenlabs"], iframe[src*="elevenlabs"]';
+
 function closeMobileNav() {
   mobileOverlay.classList.remove('open');
+  document.body.classList.remove('mobile-nav-open');
   if (lunaWrap) lunaWrap.style.display = '';
+  // Imperatively restore any manually hidden ElevenLabs elements
+  document.querySelectorAll(EL_SELECTOR).forEach(el => {
+    el.style.visibility = '';
+    el.style.pointerEvents = '';
+  });
 }
 
 function openMobileNav() {
-  // Hide Luna widget so it can't intercept touch events over the overlay
+  // body class drives CSS: display:none !important on all ElevenLabs elements
+  document.body.classList.add('mobile-nav-open');
   if (lunaWrap) lunaWrap.style.display = 'none';
+  // Extra imperative kill for shadow-DOM injected elements
+  document.querySelectorAll(EL_SELECTOR).forEach(el => {
+    el.style.visibility = 'hidden';
+    el.style.pointerEvents = 'none';
+  });
   mobileOverlay.classList.add('open');
 }
 
-const mobileNavClose = document.getElementById('mobileNavClose');
-mobileNavClose.addEventListener('pointerup', (e) => { e.stopPropagation(); closeMobileNav(); });
-mobileNavClose.addEventListener('click', (e) => { e.stopPropagation(); closeMobileNav(); });
+// Close zone — 140×140px in top-right, catches ALL touch/click events
+const closeZone = document.getElementById('mobileCloseZone');
+['pointerdown', 'touchstart', 'click'].forEach(evt => {
+  closeZone.addEventListener(evt, (e) => {
+    e.stopPropagation();
+    if (evt === 'touchstart') e.preventDefault();
+    closeMobileNav();
+  }, evt === 'touchstart' ? { passive: false } : undefined);
+});
 
 navBurger.addEventListener('click', openMobileNav);
 
-// tap on dark backdrop (not on content) also closes
-mobileOverlay.addEventListener('click', (e) => { if (e.target === mobileOverlay) closeMobileNav(); });
-mobileOverlay.addEventListener('touchend', (e) => { if (e.target === mobileOverlay) { e.preventDefault(); closeMobileNav(); } }, { passive: false });
+// Tapping dark backdrop also closes
+mobileOverlay.addEventListener('pointerdown', (e) => { if (e.target === mobileOverlay) closeMobileNav(); });
+mobileOverlay.addEventListener('touchend', (e) => {
+  if (e.target === mobileOverlay) { e.preventDefault(); closeMobileNav(); }
+}, { passive: false });
 
 mobileOverlay.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', closeMobileNav);
@@ -285,7 +309,7 @@ if (testimonialCards.length > 0) {
 //     1. Go to https://web3forms.com
 //     2. Enter info@jares-ai.com → Get access key
 //     3. Paste below
-const W3F_KEY = 'YOUR_WEB3FORMS_KEY';
+const W3F_KEY = '1fb778bd-80cc-4c24-be65-904282e7b356';
 
 const FORM_LOAD_TIME = Date.now();
 const RATE_KEY = 'lumiere_last_submit';
@@ -342,6 +366,13 @@ document.getElementById('demoForm').addEventListener('submit', async (e) => {
 
     if (json.success) {
       localStorage.setItem(RATE_KEY, Date.now().toString());
+      // Save to Supabase CRM (fire-and-forget)
+      saveToCRM({
+        source: 'form',
+        name, phone, salon_name: salon,
+        email: form.querySelector('#femail').value.trim() || null,
+        lang: window.currentLang || 'en',
+      });
       btn.textContent = t('form.sent', 'Request sent ✓');
       btn.style.background = 'linear-gradient(135deg,#2d6a2d,#3e9e3e)';
       btn.disabled = false;
@@ -356,6 +387,91 @@ document.getElementById('demoForm').addEventListener('submit', async (e) => {
     setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 4000);
   }
 });
+
+// ==========================================
+// CRM — Supabase beauty_leads
+// ==========================================
+const SUPA_URL = 'https://jdvivkzggloetuakbqky.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impkdml2a3pnZ2xvZXR1YWticWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNTk4MjYsImV4cCI6MjA4OTczNTgyNn0.HGVDXVwW4skDFjbdiN-eOoThnQRNS0Mwa84Wm6oEQws';
+
+async function saveToCRM(data) {
+  try {
+    await fetch(`${SUPA_URL}/rest/v1/beauty_leads`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': `Bearer ${SUPA_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({ ...data, page_url: 'jares-ai.com/beauty' }),
+    });
+  } catch (err) {
+    console.warn('[CRM] Supabase save failed:', err);
+  }
+}
+
+// ==========================================
+// ELEVENLABS CLIENT TOOL — save_lead
+// ==========================================
+// Register client tool handler on the Luna widget
+// This fires when Luna AI calls save_lead() during conversation
+function initLunaClientTools() {
+  const widget = document.querySelector('elevenlabs-convai');
+  if (!widget) return;
+
+  // ElevenLabs web component API: widget.clientTools = { toolName: async (params) => result }
+  widget.clientTools = {
+    save_lead: async (params) => {
+      console.log('[Luna] save_lead called:', params);
+      const { client_name, phone, salon_name, interest, lang } = params || {};
+
+      // Save to Supabase CRM
+      await saveToCRM({
+        source: 'luna_voice',
+        name: client_name || null,
+        phone: phone || null,
+        salon_name: salon_name || null,
+        interest: interest || null,
+        lang: lang || window.currentLang || 'en',
+      });
+
+      // Pre-fill & show the demo form for final confirmation
+      if (client_name) {
+        const nameField = document.getElementById('fname');
+        if (nameField && !nameField.value) nameField.value = client_name;
+      }
+      if (phone) {
+        const phoneField = document.getElementById('fphone');
+        if (phoneField && !phoneField.value) phoneField.value = phone;
+      }
+      if (salon_name) {
+        const salonField = document.getElementById('fsalon');
+        if (salonField && !salonField.value) salonField.value = salon_name;
+      }
+
+      // Smooth scroll to form
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        setTimeout(() => {
+          contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 600);
+      }
+
+      return {
+        success: true,
+        message: 'Contact information saved. Our team will reach out within 24 hours!',
+      };
+    },
+  };
+}
+
+// Init after widget is defined (custom element may load async)
+if (customElements.get('elevenlabs-convai')) {
+  initLunaClientTools();
+} else {
+  customElements.whenDefined('elevenlabs-convai').then(initLunaClientTools);
+}
 
 // ==========================================
 // SMOOTH ANCHOR NAVIGATION

@@ -1639,16 +1639,31 @@ body.cursor-hidden .cursor-follower { opacity: 0; }
 /* ==========================================
    MOBILE NAV OVERLAY
    ========================================== */
+/* Kill ALL third-party fixed widgets when mobile nav is open */
+body.mobile-nav-open .luna-widget-wrap,
+body.mobile-nav-open elevenlabs-convai,
+body.mobile-nav-open [class*="elevenlabs"],
+body.mobile-nav-open [id*="elevenlabs"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
 .mobile-nav-overlay {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(26, 14, 7, 0.97);
-  z-index: 99999;
+  /* max possible z-index — above any third-party widget */
+  z-index: 2147483647;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 32px;
+  /* create isolated stacking context */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .mobile-nav-overlay.open { display: flex; }
@@ -1663,24 +1678,39 @@ body.cursor-hidden .cursor-follower { opacity: 0; }
 }
 
 .mobile-nav-overlay a:hover { color: var(--gold-light); }
-.mobile-nav-close {
+
+/* Invisible close zone — covers entire top-right corner (catches all stray taps) */
+.mobile-nav-close-zone {
   position: absolute;
   top: 0; right: 0;
-  font-size: 1.4rem;
+  width: 140px; height: 140px;
+  z-index: 2;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.mobile-nav-close {
+  position: absolute;
+  top: 8px; right: 8px;
+  font-size: 1.5rem;
   color: var(--gold);
-  background: rgba(255,255,255,0.04);
-  border: none;
-  border-bottom-left-radius: 20px;
-  width: 88px; height: 88px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(200,147,15,0.25);
+  border-radius: 50%;
+  width: 52px; height: 52px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: none;
   -webkit-tap-highlight-color: transparent;
-  z-index: 1;
-  transition: background 0.2s;
+  pointer-events: none; /* clicks handled by close-zone above */
+  z-index: 3;
+  transition: background 0.15s;
 }
-.mobile-nav-close:active, .mobile-nav-close:hover {
-  background: rgba(200,147,15,0.12);
+.mobile-nav-close-zone:active .mobile-nav-close,
+.mobile-nav-close-zone:hover .mobile-nav-close {
+  background: rgba(200,147,15,0.18);
+  border-color: rgba(200,147,15,0.5);
 }
 
 /* ==========================================
