@@ -441,6 +441,10 @@
         </div>
         <div class="contact-form-wrap reveal-up">
           <form class="contact-form" id="demoForm">
+            <!-- Anti-spam honeypot -->
+            <div class="hpot" aria-hidden="true">
+              <input type="text" id="hpotField" name="website" tabindex="-1" autocomplete="off"/>
+            </div>
             <h3 data-i18n="form.title">Request a demo</h3>
             <div class="form-group">
               <input type="text" id="fsalon" placeholder="Salon name" data-i18n-ph="form.salon" required/>
@@ -468,7 +472,16 @@
   <!-- ── JARES BRAND BAR ── -->
   <div class="jares-bar">
     <div class="container">
-      <p data-i18n="jares.bar">Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs · Your AI agent in 48 hours</p>
+      <div class="jares-bar-inner">
+        <div class="jares-bar-contact">
+          <span class="jares-bar-label" data-i18n="contact.label">Questions about Luna?</span>
+          <a href="mailto:info@jares-ai.com" class="jares-bar-email">
+            ✉ info@jares-ai.com
+          </a>
+        </div>
+        <div class="jares-bar-sep"></div>
+        <p class="jares-bar-powered" data-i18n="jares.bar">Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs</p>
+      </div>
     </div>
   </div>
 
@@ -542,7 +555,7 @@
       'demo.sub':"Fill in the form — we'll contact you within 24 hours and set up a personal demo for your salon",
       'chip1':'48h setup','chip2':'5 languages','chip3':'24/7 works','chip4':'14-day guarantee',
       'form.title':'Request a demo','form.salon':'Salon / Studio name','form.name':'Your name','form.phone':'Phone / WhatsApp','form.email':'Email','form.btn':'Request Demo →','form.sent':'Request sent ✓',
-      'jares.bar':'Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs · Your AI agent in 48 hours',
+      'contact.label':'Questions about Luna?','jares.bar':'Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs',
       'footer.tagline':'The art of beauty, wherever you are','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Crafted with a love for beauty',
     },
     de: {
@@ -585,7 +598,7 @@
       'demo.sub':'Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden und richten eine persönliche Demo für Ihren Salon ein',
       'chip1':'Setup in 48h','chip2':'5 Sprachen','chip3':'24/7 verfügbar','chip4':'14-Tage-Garantie',
       'form.title':'Demo anfragen','form.salon':'Salon / Studio Name','form.name':'Ihr Name','form.phone':'Telefon / WhatsApp','form.email':'E-Mail','form.btn':'Demo anfragen →','form.sent':'Anfrage gesendet ✓',
-      'jares.bar':'Unterstützt von <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Stimme von ElevenLabs · Ihr KI-Agent in 48 Stunden',
+      'contact.label':'Fragen zu Luna?','jares.bar':'Unterstützt von <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Stimme von ElevenLabs',
       'footer.tagline':'Die Kunst der Schönheit – überall','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Mit Liebe zur Schönheit geschaffen',
     },
     fr: {
@@ -628,7 +641,7 @@
       'demo.sub':'Remplissez le formulaire — nous vous contacterons dans les 24 heures et organiserons une démo personnelle',
       'chip1':'Setup en 48h','chip2':'5 langues','chip3':'24/7 disponible','chip4':'Garantie 14 jours',
       'form.title':'Demander une démo','form.salon':'Nom du salon / studio','form.name':'Votre nom','form.phone':'Téléphone / WhatsApp','form.email':'E-mail','form.btn':'Demander une démo →','form.sent':'Demande envoyée ✓',
-      'jares.bar':'Propulsé par <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voix par ElevenLabs · Votre agent IA en 48 heures',
+      'contact.label':'Des questions sur Luna ?','jares.bar':'Propulsé par <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voix par ElevenLabs',
       'footer.tagline':'L\'art de la beauté, où que vous soyez','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Créé avec amour pour la beauté',
     },
     es: {
@@ -671,7 +684,7 @@
       'demo.sub':'Rellena el formulario — te contactaremos en 24 horas y organizaremos una demo personal para tu salón',
       'chip1':'Setup en 48h','chip2':'5 idiomas','chip3':'24/7 disponible','chip4':'Garantía 14 días',
       'form.title':'Solicitar demo','form.salon':'Nombre del salón / estudio','form.name':'Tu nombre','form.phone':'Teléfono / WhatsApp','form.email':'Email','form.btn':'Solicitar Demo →','form.sent':'Solicitud enviada ✓',
-      'jares.bar':'Desarrollado por <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voz por ElevenLabs · Tu agente IA en 48 horas',
+      'contact.label':'¿Preguntas sobre Luna?','jares.bar':'Desarrollado por <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voz por ElevenLabs',
       'footer.tagline':'El arte de la belleza, donde quieras','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Creado con amor por la belleza',
     },
     ru: {
@@ -714,7 +727,7 @@
       'demo.sub':'Заполните форму — мы свяжемся в течение 24 часов и проведём персональное демо для вашего салона',
       'chip1':'Запуск за 48ч','chip2':'5 языков','chip3':'Работает 24/7','chip4':'Гарантия 14 дней',
       'form.title':'Запросить демо','form.salon':'Название салона / студии','form.name':'Ваше имя','form.phone':'Телефон / WhatsApp','form.email':'Email','form.btn':'Запросить демо →','form.sent':'Заявка отправлена ✓',
-      'jares.bar':'Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Голос — ElevenLabs · Ваш ИИ-агент за 48 часов',
+      'contact.label':'Вопросы о Луне?','jares.bar':'Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Голос — ElevenLabs',
       'footer.tagline':'Искусство красоты — где бы вы ни были','footer.copy':'© 2025 LUMIÈRE Beauty &amp; Wellness','footer.love':'Создано с любовью к красоте',
     },
   };

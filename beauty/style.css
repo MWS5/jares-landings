@@ -1665,23 +1665,22 @@ body.cursor-hidden .cursor-follower { opacity: 0; }
 .mobile-nav-overlay a:hover { color: var(--gold-light); }
 .mobile-nav-close {
   position: absolute;
-  top: 12px; right: 18px;
+  top: 0; right: 0;
   font-size: 1.4rem;
   color: var(--gold);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(200,147,15,0.3);
-  border-radius: 50%;
-  width: 60px; height: 60px;
+  background: rgba(255,255,255,0.04);
+  border: none;
+  border-bottom-left-radius: 20px;
+  width: 88px; height: 88px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   z-index: 1;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s;
 }
-.mobile-nav-close:active {
-  background: rgba(200,147,15,0.2);
-  border-color: rgba(200,147,15,0.6);
+.mobile-nav-close:active, .mobile-nav-close:hover {
+  background: rgba(200,147,15,0.12);
 }
 
 /* ==========================================
@@ -2223,14 +2222,41 @@ body::before {
 .jares-bar {
   background: var(--choco-dark);
   border-top: 1px solid rgba(200,147,15,0.12);
-  padding: 24px 0; text-align: center;
+  padding: 28px 0;
 }
-.jares-bar p {
-  font-family: var(--font-body); font-size: 0.8rem;
-  color: rgba(255,255,255,0.28); letter-spacing: 0.04em;
+.jares-bar-inner {
+  display: flex; align-items: center; justify-content: center;
+  gap: 28px; flex-wrap: wrap;
 }
-.jares-bar a { color: var(--gold); text-decoration: none; }
-.jares-bar a:hover { text-decoration: underline; }
+.jares-bar-contact {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+}
+.jares-bar-label {
+  font-family: var(--font-body); font-size: 0.78rem;
+  color: rgba(255,255,255,0.36); letter-spacing: 0.04em;
+}
+.jares-bar-email {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 500;
+  color: var(--gold); text-decoration: none;
+  border: 1px solid rgba(200,147,15,0.3); border-radius: 100px;
+  padding: 6px 16px; transition: all 0.2s;
+}
+.jares-bar-email:hover { background: rgba(200,147,15,0.1); border-color: rgba(200,147,15,0.55); }
+.jares-bar-sep {
+  width: 1px; height: 22px;
+  background: rgba(200,147,15,0.18);
+}
+.jares-bar-powered {
+  font-family: var(--font-body); font-size: 0.74rem;
+  color: rgba(255,255,255,0.2); letter-spacing: 0.04em;
+}
+.jares-bar-powered a { color: rgba(200,147,15,0.5); text-decoration: none; }
+.jares-bar-powered a:hover { color: var(--gold); text-decoration: underline; }
+
+/* Honeypot anti-spam */
+.hpot { opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 
 /* Responsive — B2B sections */
 @media (max-width: 900px) {

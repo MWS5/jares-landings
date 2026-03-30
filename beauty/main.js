@@ -110,6 +110,7 @@ navBurger.addEventListener('click', openMobileNav);
 
 // tap on dark backdrop (not on content) also closes
 mobileOverlay.addEventListener('click', (e) => { if (e.target === mobileOverlay) closeMobileNav(); });
+mobileOverlay.addEventListener('touchend', (e) => { if (e.target === mobileOverlay) { e.preventDefault(); closeMobileNav(); } }, { passive: false });
 
 mobileOverlay.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', closeMobileNav);
@@ -278,16 +279,82 @@ if (testimonialCards.length > 0) {
 }
 
 // ==========================================
-// CONTACT FORM
+// CONTACT FORM — Web3Forms + Anti-spam
 // ==========================================
-document.getElementById('demoForm').addEventListener('submit', (e) => {
+// ⚠️  Replace with your Web3Forms key:
+//     1. Go to https://web3forms.com
+//     2. Enter info@jares-ai.com → Get access key
+//     3. Paste below
+const W3F_KEY = 'YOUR_WEB3FORMS_KEY';
+
+const FORM_LOAD_TIME = Date.now();
+const RATE_KEY = 'lumiere_last_submit';
+const RATE_MS  = 20 * 60 * 1000; // 20 min
+
+document.getElementById('demoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const btn = e.target.querySelector('.btn-primary');
-  const orig = btn.textContent;
+  const form = e.target;
+  const btn  = form.querySelector('.btn-primary');
   const dict = (window.i18n && window.currentLang) ? window.i18n[window.currentLang] : null;
-  btn.textContent = (dict && dict['form.sent']) || 'Request sent ✓';
-  btn.style.background = 'linear-gradient(135deg, var(--gold-dark), var(--gold-light))';
-  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; e.target.reset(); }, 3500);
+  const t = (k, fb) => (dict && dict[k]) || fb;
+
+  // 1. Honeypot
+  if (form.querySelector('#hpotField').value !== '') return;
+
+  // 2. Timing (bots submit immediately)
+  if (Date.now() - FORM_LOAD_TIME < 4000) return;
+
+  // 3. Rate limit
+  const last = localStorage.getItem(RATE_KEY);
+  if (last && (Date.now() - parseInt(last)) < RATE_MS) {
+    btn.textContent = t('form.rateLimit', 'Please wait 20 min before resubmitting');
+    setTimeout(() => { btn.textContent = t('form.btn', 'Request Demo →'); }, 4000);
+    return;
+  }
+
+  // 4. Required fields
+  const salon = form.querySelector('#fsalon').value.trim();
+  const name  = form.querySelector('#fname').value.trim();
+  const phone = form.querySelector('#fphone').value.trim();
+  if (!salon || !name || !phone) return;
+
+  // Loading state
+  const orig = btn.textContent;
+  btn.textContent = '⏳';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: W3F_KEY,
+        subject: `🌹 Новая заявка на демо LUNA — ${salon}`,
+        from_name: 'LUMIÈRE Luna Demo Form',
+        salon, name, phone,
+        email: form.querySelector('#femail').value.trim() || '—',
+        source: 'jares-ai.com/beauty',
+        lang: window.currentLang || 'en',
+        botcheck: '',
+      })
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      localStorage.setItem(RATE_KEY, Date.now().toString());
+      btn.textContent = t('form.sent', 'Request sent ✓');
+      btn.style.background = 'linear-gradient(135deg,#2d6a2d,#3e9e3e)';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; form.reset(); }, 4500);
+    } else {
+      throw new Error('api');
+    }
+  } catch {
+    btn.textContent = t('form.error', 'Error — try again');
+    btn.style.background = 'linear-gradient(135deg,#7a1f1f,#b03030)';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 4000);
+  }
 });
 
 // ==========================================
