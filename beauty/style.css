@@ -1679,12 +1679,13 @@ body.mobile-nav-open [id*="elevenlabs"] {
 
 .mobile-nav-overlay a:hover { color: var(--gold-light); }
 
-/* Invisible close zone — covers entire top-right corner (catches all stray taps) */
+/* Invisible close zone — tightly wraps the X button (52px + 8px padding = 68px).
+   Deliberately small so it never overlaps language selector buttons. */
 .mobile-nav-close-zone {
   position: absolute;
   top: 0; right: 0;
-  width: 140px; height: 140px;
-  z-index: 2;
+  width: 68px; height: 68px;
+  z-index: 10;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
@@ -1711,6 +1712,37 @@ body.mobile-nav-open [id*="elevenlabs"] {
 .mobile-nav-close-zone:hover .mobile-nav-close {
   background: rgba(200,147,15,0.18);
   border-color: rgba(200,147,15,0.5);
+}
+
+/* Language switcher inside mobile nav — always above close zone */
+.mobile-lang-switcher {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  z-index: 20;   /* above close-zone z-index:10 */
+}
+
+.mobile-lang-btn {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(200,147,15,0.25);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  touch-action: manipulation;   /* prevents 300ms delay on mobile */
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto !important;  /* never block from parent */
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.mobile-lang-btn:hover,
+.mobile-lang-btn.active {
+  background: rgba(200,147,15,0.22);
+  border-color: rgba(200,147,15,0.6);
+  color: var(--gold-light);
 }
 
 /* ==========================================
