@@ -412,66 +412,82 @@ async function saveToCRM(data) {
 }
 
 // ==========================================
+// ==========================================
 // ELEVENLABS CLIENT TOOL — save_lead
 // ==========================================
-// Register client tool handler on the Luna widget
-// This fires when Luna AI calls save_lead() during conversation
-function initLunaClientTools() {
-  const widget = document.querySelector('elevenlabs-convai');
-  if (!widget) return;
+// Luna calls save_lead() when client shows booking intent or provides contacts.
+// clientTools must be registered on the widget INSTANCE before the tool fires.
+// We use 3 layers: immediate + whenDefined + interval poll (most reliable).
 
-  // ElevenLabs web component API: widget.clientTools = { toolName: async (params) => result }
-  widget.clientTools = {
+function _lunaToolHandlers() {
+  return {
     save_lead: async (params) => {
+      const { client_name, phone, email, salon_name, interest, lang } = params || {};
       console.log('[Luna] save_lead called:', params);
-      const { client_name, phone, salon_name, interest, lang } = params || {};
 
       // Save to Supabase CRM
-      await saveToCRM({
-        source: 'luna_voice',
-        name: client_name || null,
-        phone: phone || null,
-        salon_name: salon_name || null,
-        interest: interest || null,
-        lang: lang || window.currentLang || 'en',
-      });
-
-      // Pre-fill & show the demo form for final confirmation
-      if (client_name) {
-        const nameField = document.getElementById('fname');
-        if (nameField && !nameField.value) nameField.value = client_name;
-      }
-      if (phone) {
-        const phoneField = document.getElementById('fphone');
-        if (phoneField && !phoneField.value) phoneField.value = phone;
-      }
-      if (salon_name) {
-        const salonField = document.getElementById('fsalon');
-        if (salonField && !salonField.value) salonField.value = salon_name;
+      try {
+        await saveToCRM({
+          source:     'luna_voice',
+          name:       client_name  || null,
+          phone:      phone        || null,
+          email:      email        || null,
+          salon_name: salon_name   || null,
+          interest:   interest     || null,
+          lang:       lang || window.currentLang || 'en',
+        });
+        console.log('[Luna] CRM saved OK');
+      } catch (e) {
+        console.error('[Luna] CRM save failed:', e);
       }
 
-      // Smooth scroll to form
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        setTimeout(() => {
-          contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 600);
-      }
+      // Pre-fill form fields (in case client finishes on the form)
+      const fill = (id, val) => {
+        if (!val) return;
+        const el = document.getElementById(id);
+        if (el && !el.value) el.value = val;
+      };
+      fill('fname',  client_name);
+      fill('fphone', phone);
+      fill('femail', email);
+      fill('fsalon', salon_name);
 
       return {
         success: true,
-        message: 'Contact information saved. Our team will reach out within 24 hours!',
+        message: 'Contact information saved. Our team will reach out within a few hours!',
       };
     },
   };
 }
 
-// Init after widget is defined (custom element may load async)
-if (customElements.get('elevenlabs-convai')) {
-  initLunaClientTools();
-} else {
-  customElements.whenDefined('elevenlabs-convai').then(initLunaClientTools);
+function initLunaClientTools() {
+  const widget = document.querySelector('elevenlabs-convai');
+  if (!widget) return false;
+  widget.clientTools = _lunaToolHandlers();
+  console.log('[Luna] clientTools registered on widget');
+  return true;
 }
+
+// Layer 1 — immediate (if element already exists and is ready)
+if (!initLunaClientTools()) {
+  // Layer 2 — whenDefined (fires when custom element class is registered)
+  customElements.whenDefined('elevenlabs-convai').then(() => {
+    if (!initLunaClientTools()) {
+      // Layer 3 — interval poll until widget appears in DOM (handles lazy load)
+      let attempts = 0;
+      const poll = setInterval(() => {
+        attempts++;
+        if (initLunaClientTools() || attempts > 40) clearInterval(poll);
+      }, 300);
+    }
+  });
+}
+
+// Re-register on every conversation start (widget can re-init between calls)
+document.addEventListener('elevenlabs-convai:call_started', () => {
+  initLunaClientTools();
+  console.log('[Luna] clientTools re-registered on call_started');
+});
 
 // ==========================================
 // SMOOTH ANCHOR NAVIGATION
