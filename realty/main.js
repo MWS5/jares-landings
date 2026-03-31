@@ -10,19 +10,19 @@ window.currentLang = currentLang;
 
 // ── Aria widget labels (i18n) ─────────────────────────────────────────────────
 const ARIA_LABELS = {
-  en: '✦ Speak with Aria',
-  de: '✦ Mit Aria sprechen',
-  fr: '✦ Parler à Aria',
-  es: '✦ Hablar con Aria',
-  ru: '✦ Говорить с Арией',
+  en: '✦ Consult with Aria',
+  de: '✦ Beratung mit Aria',
+  fr: '✦ Consulter Aria',
+  es: '✦ Consultar con Aria',
+  ru: '✦ Консультация с Aria',
 };
 
 const ARIA_FIRST_MSG = {
-  en: "Hello! I'm Aria — your personal property consultant for Cyprus. Whether you're looking to buy, invest, or just explore, I'm here to help. So... what kind of property are you dreaming of?",
-  de: "Hallo! Ich bin Aria — Ihre persönliche Immobilienberaterin für Zypern. Kaufen, investieren oder einfach schauen? Erzählen Sie mir, was Sie sich vorstellen!",
-  fr: "Bonjour! Je suis Aria — votre conseillère immobilière personnelle pour Chypre. Achat, investissement ou simple exploration? Dites-moi, quel type de bien vous intéresse?",
-  es: "¡Hola! Soy Aria — su consultora inmobiliaria personal para Chipre. Ya sea para comprar, invertir o explorar, estoy aquí. ¿Qué tipo de propiedad tiene en mente?",
-  ru: "Здравствуйте! Я Aria — ваш персональный консультант по недвижимости на Кипре. Покупаете, инвестируете или просто изучаете варианты? Расскажите — о чём мечтаете?",
+  en: "Good day. My name is Aria, and I am a property consultant with MERIDIAN in Cyprus. I would be happy to assist you — whether you are looking to purchase, invest, or explore relocation options. How may I help you today?",
+  de: "Guten Tag. Mein Name ist Aria, ich bin Immobilienberaterin bei MERIDIAN auf Zypern. Ich helfe Ihnen gerne weiter — egal ob Kauf, Investition oder Umzug. Womit kann ich Ihnen behilflich sein?",
+  fr: "Bonjour. Je m'appelle Aria, conseillère immobilière chez MERIDIAN à Chypre. Je suis à votre disposition — que ce soit pour un achat, un investissement ou un projet de relocalisation. Comment puis-je vous aider?",
+  es: "Buenos días. Me llamo Aria, consultora inmobiliaria en MERIDIAN, Chipre. Estaré encantada de asistirle — ya sea para comprar, invertir o explorar opciones de reubicación. ¿En qué puedo ayudarle?",
+  ru: "Добрый день. Меня зовут Aria, я консультант по недвижимости агентства MERIDIAN на Кипре. Готова помочь вам — с покупкой, инвестициями или переездом. Чем могу быть полезна?",
 };
 
 // ══════════════════════════════════════════════════════════════════════════════
