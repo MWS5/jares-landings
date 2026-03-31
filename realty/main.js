@@ -18,11 +18,11 @@ const ARIA_LABELS = {
 };
 
 const ARIA_FIRST_MSG = {
-  en: "Welcome to MERIDIAN. I'm Aria — your personal property consultant. Are you looking to buy, invest, or explore our portfolio?",
-  de: "Willkommen bei MERIDIAN. Ich bin Aria — Ihre persönliche Immobilienberaterin. Suchen Sie nach einer Immobilie zum Kauf oder zur Investition?",
-  fr: "Bienvenue chez MERIDIAN. Je suis Aria — votre conseillère immobilière personnelle. Vous cherchez à acheter, investir ou explorer notre portfolio?",
-  es: "Bienvenido a MERIDIAN. Soy Aria — su consultora inmobiliaria personal. ¿Busca comprar, invertir o explorar nuestro portfolio?",
-  ru: "Добро пожаловать в MERIDIAN. Я Ария — ваш персональный консультант по недвижимости. Вы хотите купить, инвестировать или ознакомиться с нашим портфолио?",
+  en: "Hello! I'm Aria — your personal property consultant for Cyprus. Whether you're looking to buy, invest, or just explore, I'm here to help. So... what kind of property are you dreaming of?",
+  de: "Hallo! Ich bin Aria — Ihre persönliche Immobilienberaterin für Zypern. Kaufen, investieren oder einfach schauen? Erzählen Sie mir, was Sie sich vorstellen!",
+  fr: "Bonjour! Je suis Aria — votre conseillère immobilière personnelle pour Chypre. Achat, investissement ou simple exploration? Dites-moi, quel type de bien vous intéresse?",
+  es: "¡Hola! Soy Aria — su consultora inmobiliaria personal para Chipre. Ya sea para comprar, invertir o explorar, estoy aquí. ¿Qué tipo de propiedad tiene en mente?",
+  ru: "Здравствуйте! Я Aria — ваш персональный консультант по недвижимости на Кипре. Покупаете, инвестируете или просто изучаете варианты? Расскажите — о чём мечтаете?",
 };
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -608,6 +608,157 @@ document.addEventListener('click', e => {
     }).onfinish = () => p.remove();
   }
 });
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Aria Voice Status Indicator — live state badge near the widget
+// ══════════════════════════════════════════════════════════════════════════════
+(function initAriaStatusBadge() {
+  // Inject the badge into the page
+  const badge = document.createElement('div');
+  badge.id = 'ariaStatusBadge';
+  badge.setAttribute('aria-live', 'polite');
+  badge.style.cssText = `
+    position: fixed;
+    bottom: 92px;
+    right: 28px;
+    z-index: 9989;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 10px;
+    background: rgba(10, 37, 64, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 159, 213, 0.30);
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.88);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(6px);
+    opacity: 0;
+  `;
+
+  // Dot element
+  const dot = document.createElement('span');
+  dot.id = 'ariaStatusDot';
+  dot.style.cssText = `
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4A9FD5;
+    flex-shrink: 0;
+  `;
+
+  const label = document.createElement('span');
+  label.id = 'ariaStatusLabel';
+
+  badge.appendChild(dot);
+  badge.appendChild(label);
+  document.body.appendChild(badge);
+
+  // Waveform bars (shown only during speaking)
+  const barsWrap = document.createElement('span');
+  barsWrap.id = 'ariaWaveBars';
+  barsWrap.style.cssText = 'display:inline-flex;gap:2px;align-items:center;margin-left:2px;';
+  for (let i = 0; i < 4; i++) {
+    const bar = document.createElement('span');
+    bar.style.cssText = `
+      display: inline-block;
+      width: 2.5px;
+      background: #4A9FD5;
+      border-radius: 2px;
+      animation: ariaWaveBar ${0.5 + i * 0.13}s ease-in-out infinite alternate;
+      animation-delay: ${i * 0.08}s;
+    `;
+    barsWrap.appendChild(bar);
+  }
+  badge.appendChild(barsWrap);
+
+  // Inject keyframes for waveform animation
+  if (!document.getElementById('aria-wave-kf')) {
+    const kfStyle = document.createElement('style');
+    kfStyle.id = 'aria-wave-kf';
+    kfStyle.textContent = `
+      @keyframes ariaWaveBar {
+        from { height: 3px; }
+        to   { height: 13px; }
+      }
+      @keyframes ariaStatusDotPulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.35; }
+      }
+    `;
+    document.head.appendChild(kfStyle);
+  }
+
+  // Status text by language
+  const STATUS_LABELS = {
+    listening: { en: 'Aria is listening', de: 'Aria hört zu',   fr: 'Aria vous écoute', es: 'Aria escucha', ru: 'Aria слушает' },
+    thinking:  { en: 'Aria is thinking',  de: 'Aria denkt nach', fr: 'Aria réfléchit',   es: 'Aria piensa',  ru: 'Aria думает'  },
+    speaking:  { en: 'Aria is speaking',  de: 'Aria spricht',    fr: 'Aria parle',       es: 'Aria habla',   ru: 'Aria говорит' },
+  };
+
+  function showBadge(state) {
+    const lang  = window.currentLang || 'en';
+    const texts = STATUS_LABELS[state] || STATUS_LABELS.listening;
+    label.textContent = texts[lang] || texts.en;
+
+    // Dot + bars styling per state
+    const isSpeaking  = state === 'speaking';
+    const isThinking  = state === 'thinking';
+    dot.style.background = isSpeaking ? '#C9A96E'
+                         : isThinking ? '#A8D4F0'
+                         : '#4A9FD5';
+    dot.style.animation  = isThinking
+      ? 'ariaStatusDotPulse 1s ease-in-out infinite'
+      : 'none';
+    barsWrap.style.display  = isSpeaking ? 'inline-flex' : 'none';
+
+    badge.style.display   = 'flex';
+    // Force reflow for transition
+    badge.getBoundingClientRect();
+    badge.style.opacity   = '1';
+    badge.style.transform = 'translateY(0)';
+  }
+
+  function hideBadge() {
+    badge.style.opacity   = '0';
+    badge.style.transform = 'translateY(6px)';
+    setTimeout(() => { badge.style.display = 'none'; }, 320);
+  }
+
+  // Listen to ElevenLabs Convai events
+  document.addEventListener('elevenlabs-convai:call_started',   () => showBadge('listening'));
+  document.addEventListener('elevenlabs-convai:call_ended',     () => hideBadge());
+  document.addEventListener('elevenlabs-convai:listening',      () => showBadge('listening'));
+  document.addEventListener('elevenlabs-convai:processing',     () => showBadge('thinking'));
+  document.addEventListener('elevenlabs-convai:speaking',       () => showBadge('speaking'));
+
+  // Also watch for user_transcript / agent_response events via MutationObserver
+  // on the widget's shadow DOM conversation events (fallback)
+  document.addEventListener('elevenlabs-convai:user_transcript',  () => showBadge('thinking'));
+  document.addEventListener('elevenlabs-convai:agent_response',   () => showBadge('speaking'));
+
+  // Graceful fallback: watch widget's custom events via the element
+  function attachWidgetEvents(widget) {
+    if (!widget || widget._ariaEventsAttached) return;
+    widget._ariaEventsAttached = true;
+
+    widget.addEventListener('user_transcript',  () => showBadge('thinking'));
+    widget.addEventListener('agent_response',   () => showBadge('speaking'));
+    widget.addEventListener('conversation_initiation_metadata', () => showBadge('listening'));
+  }
+
+  const checkWidget = setInterval(() => {
+    const w = document.getElementById('ariaWidget') || document.querySelector('elevenlabs-convai');
+    if (w) { attachWidgetEvents(w); clearInterval(checkWidget); }
+  }, 800);
+})();
 
 // ══════════════════════════════════════════════════════════════════════════════
 // Init
