@@ -967,10 +967,10 @@ body.cursor-hidden .cursor, body.cursor-hidden .cursor-follower { opacity: 0; }
 }
 .footer-bottom a { color: var(--sky-light); }
 
-/* ─── Aria Widget — Mediterranean White ─── */
+/* ─── Aria Widget ─── */
 .aria-widget-wrap {
-  position: fixed; bottom: 28px; left: 28px; z-index: 9990;
-  filter: drop-shadow(0 8px 32px rgba(10, 37, 64, 0.10));
+  position: fixed; bottom: 28px; right: 28px; z-index: 9990;
+  /* NOTE: never add filter here — it breaks position:fixed on the ElevenLabs child */
 }
 
 /* ─── Reveal Animations ─── */
