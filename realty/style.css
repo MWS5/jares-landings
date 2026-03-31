@@ -833,8 +833,17 @@ body.cursor-hidden .cursor, body.cursor-hidden .cursor-follower { opacity: 0; }
 .price-plan--popular .plan-price { color: var(--white); }
 .plan-mo { font-size: 0.85rem; color: var(--text-light); }
 .price-plan--popular .plan-mo { color: rgba(255,255,255,0.5); }
-.plan-sub { font-size: 0.82rem; color: var(--text-mid); margin-bottom: 28px; }
+.plan-sub { font-size: 0.82rem; color: var(--text-mid); margin-bottom: 6px; }
 .price-plan--popular .plan-sub { color: rgba(255,255,255,0.6); }
+.plan-setup {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em;
+  color: var(--sky); margin-bottom: 22px;
+  padding: 4px 12px; display: inline-block;
+  background: rgba(74,159,213,0.1); border-radius: 20px;
+}
+.price-plan--popular .plan-setup {
+  color: var(--gold); background: rgba(201,169,110,0.15);
+}
 .plan-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
 .plan-features li {
   font-size: 0.85rem; color: var(--text-mid);
