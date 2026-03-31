@@ -967,9 +967,10 @@ body.cursor-hidden .cursor, body.cursor-hidden .cursor-follower { opacity: 0; }
 }
 .footer-bottom a { color: var(--sky-light); }
 
-/* ─── Aria Widget ─── */
+/* ─── Aria Widget — Mediterranean White ─── */
 .aria-widget-wrap {
   position: fixed; bottom: 28px; left: 28px; z-index: 9990;
+  filter: drop-shadow(0 8px 32px rgba(10, 37, 64, 0.10));
 }
 
 /* ─── Reveal Animations ─── */

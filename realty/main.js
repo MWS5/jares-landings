@@ -71,65 +71,122 @@ function syncAriaLabel(lang) {
 
 function injectAriaPillStyle(widget) {
   if (!widget || !widget.shadowRoot) return;
-  if (widget.shadowRoot.getElementById('aria-pill-style')) return;
+  // Remove old style if exists so we can re-apply (language switch may re-call)
+  const existing = widget.shadowRoot.getElementById('aria-pill-style');
+  if (existing) return;
   const s = document.createElement('style');
   s.id = 'aria-pill-style';
   s.textContent = `
-    /* ── Collapsed pill (action-text) ── */
+    /* ═══════════════════════════════════════════════════
+       ARIA WIDGET — Mediterranean White Design
+       Palette: white + ocean #0A2540 + sky #4A9FD5
+    ═══════════════════════════════════════════════════ */
+
+    /* ── 1. Collapsed pill trigger ── */
     [class*="action-text"], [class*="ActionText"],
     [class*="prompt-text"], [class*="PromptText"],
     [data-testid="action-text"],
     button[part="action-text"] {
-      background: rgba(10, 37, 64, 0.92) !important;
-      color: #C9A96E !important;
-      border: 1px solid rgba(201,169,110,0.5) !important;
+      background: rgba(255, 255, 255, 0.97) !important;
+      color: #0A2540 !important;
+      border: 1.5px solid rgba(74, 159, 213, 0.45) !important;
       border-radius: 100px !important;
-      letter-spacing: 0.08em !important;
+      letter-spacing: 0.07em !important;
       font-weight: 500 !important;
-      padding: 10px 22px !important;
-      backdrop-filter: blur(12px) !important;
-      -webkit-backdrop-filter: blur(12px) !important;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,169,110,0.15) !important;
+      font-size: 0.82rem !important;
+      padding: 11px 22px 11px 18px !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      box-shadow:
+        0 4px 20px rgba(10, 37, 64, 0.12),
+        0 1px 4px rgba(74, 159, 213, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
       white-space: nowrap !important;
+      transition: all 0.25s ease !important;
     }
-    /* ── Expanded widget card / panel ── */
-    [class*="widget"], [class*="Widget"],
-    [class*="card"]:not([class*="text"]), [class*="Card"]:not([class*="text"]),
-    [class*="panel"], [class*="Panel"],
-    [class*="container"]:not(html):not(body), [class*="Container"] {
-      background: linear-gradient(160deg, #0A2540 0%, #1B4B7A 100%) !important;
-      border: 1px solid rgba(201,169,110,0.25) !important;
+    [class*="action-text"]:hover, [class*="ActionText"]:hover,
+    button[part="action-text"]:hover {
+      background: rgba(240, 247, 255, 0.99) !important;
+      border-color: rgba(74, 159, 213, 0.7) !important;
+      box-shadow:
+        0 6px 28px rgba(10, 37, 64, 0.16),
+        0 2px 8px rgba(74, 159, 213, 0.25) !important;
+      transform: translateY(-1px) !important;
     }
-    /* ── "Start a call" / call button inside widget ── */
+
+    /* ── 2. Expanded widget card / panel ── */
+    [class*="widget"]:not([id]):not([class*="wrap"]),
+    [class*="Widget"]:not([id]),
+    [class*="card"]:not([class*="text"]):not([class*="property"]),
+    [class*="Card"]:not([class*="text"]),
+    [class*="panel"]:not([class*="wrap"]),
+    [class*="Panel"],
+    [class*="container"]:not(html):not(body):not([class*="wrap"]) {
+      background: #ffffff !important;
+      border: 1px solid rgba(74, 159, 213, 0.18) !important;
+      border-radius: 20px !important;
+      box-shadow:
+        0 24px 64px rgba(10, 37, 64, 0.14),
+        0 4px 16px rgba(74, 159, 213, 0.08) !important;
+      overflow: hidden !important;
+    }
+
+    /* ── 3. Sky-blue top accent line on expanded card ── */
+    [class*="card"]:not([class*="text"]):not([class*="property"])::before,
+    [class*="Card"]:not([class*="text"])::before,
+    [class*="panel"]::before, [class*="Panel"]::before {
+      content: '' !important;
+      display: block !important;
+      height: 3px !important;
+      background: linear-gradient(90deg, #4A9FD5 0%, #0A2540 100%) !important;
+      border-radius: 20px 20px 0 0 !important;
+    }
+
+    /* ── 4. "Start a call" button ── */
     button[class*="call"], button[class*="Call"],
-    button[class*="start"], button[class*="Start"],
+    button[class*="start"]:not([class*="action"]),
+    button[class*="Start"]:not([class*="action"]),
     [class*="start-call"], [class*="StartCall"],
     [class*="call-btn"], [class*="CallBtn"],
     button[part*="call"], [data-testid*="call"] {
       background: linear-gradient(135deg, #1B4B7A 0%, #0A2540 100%) !important;
-      color: #C9A96E !important;
-      border: 1px solid rgba(201,169,110,0.4) !important;
+      color: #ffffff !important;
+      border: none !important;
       border-radius: 100px !important;
-      box-shadow: 0 4px 24px rgba(10,37,64,0.5) !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.06em !important;
+      box-shadow: 0 6px 20px rgba(10, 37, 64, 0.35) !important;
+      transition: all 0.25s ease !important;
     }
     button[class*="call"]:hover, button[class*="Call"]:hover,
     button[class*="start"]:hover, button[class*="Start"]:hover {
       background: linear-gradient(135deg, #4A9FD5 0%, #1B4B7A 100%) !important;
-      color: #fff !important;
+      box-shadow: 0 8px 28px rgba(74, 159, 213, 0.4) !important;
+      transform: translateY(-1px) !important;
     }
-    /* ── Orb / avatar ── */
+
+    /* ── 5. Orb ring ── */
     [class*="orb"], [class*="Orb"],
     [class*="avatar"], [class*="Avatar"] {
-      border-color: rgba(201,169,110,0.4) !important;
+      border-color: rgba(74, 159, 213, 0.35) !important;
+      box-shadow: 0 0 0 3px rgba(74, 159, 213, 0.12) !important;
     }
-    /* ── Text inside expanded card ── */
-    [class*="title" i], [class*="name" i] {
-      color: #C9A96E !important;
+
+    /* ── 6. Text inside expanded card ── */
+    [class*="title" i] { color: #0A2540 !important; font-weight: 600 !important; }
+    [class*="subtitle" i], [class*="description" i], p { color: #3A5A7A !important; }
+
+    /* ── 7. Mic / waveform elements ── */
+    [class*="mic"], [class*="Mic"],
+    [class*="wave"], [class*="Wave"],
+    [class*="pulse"], [class*="Pulse"] {
+      color: #4A9FD5 !important;
+      background-color: rgba(74, 159, 213, 0.08) !important;
     }
-    /* ── Hide branding ── */
-    a[href*="elevenlabs"], [class*="powered" i], [class*="branding" i] {
-      display: none !important;
-    }
+
+    /* ── 8. Hide ElevenLabs branding ── */
+    a[href*="elevenlabs"], [class*="powered" i], [class*="branding" i],
+    [class*="logo" i]:not([class*="meridian"]) { display: none !important; }
   `;
   widget.shadowRoot.appendChild(s);
 }
