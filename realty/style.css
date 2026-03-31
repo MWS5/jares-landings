@@ -516,6 +516,9 @@ body.cursor-hidden .cursor, body.cursor-hidden .cursor-follower { opacity: 0; }
 .filter-btn:hover, .filter-btn.active {
   background: var(--ocean); border-color: var(--ocean); color: var(--white);
 }
+.filter-btn--inactive {
+  opacity: 0.35; cursor: default !important; pointer-events: none;
+}
 .properties-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
 .property-card {
   background: var(--white); border-radius: var(--radius-lg);
@@ -919,6 +922,15 @@ body.cursor-hidden .cursor, body.cursor-hidden .cursor-follower { opacity: 0; }
 .jares-bar p { font-size: 0.82rem; color: rgba(255,255,255,0.5); text-align: center; }
 .jares-bar a { color: var(--sky-light); transition: color 0.2s; }
 .jares-bar a:hover { color: var(--white); }
+.jares-bar-contact {
+  font-size: 0.82rem; color: rgba(255,255,255,0.65) !important;
+  letter-spacing: 0.04em;
+}
+.jares-bar-contact a {
+  color: var(--gold) !important; font-weight: 500;
+  border-bottom: 1px solid rgba(201,169,110,0.35); padding-bottom: 1px;
+}
+.jares-bar-contact a:hover { color: var(--white) !important; border-bottom-color: var(--white); }
 
 /* ─── Footer (ANTIGRAVITY) ─── */
 .footer { background: var(--ocean); color: var(--white); padding: 72px 0 32px; }

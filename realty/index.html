@@ -163,9 +163,9 @@
 
       <div class="properties-filter reveal-up">
         <button class="filter-btn active" data-filter="all" data-i18n="filter.all">All</button>
-        <button class="filter-btn" data-filter="villa" data-i18n="filter.villa">Villas</button>
-        <button class="filter-btn" data-filter="apartment" data-i18n="filter.apt">Apartments</button>
-        <button class="filter-btn" data-filter="penthouse" data-i18n="filter.ph">Penthouses</button>
+        <button class="filter-btn filter-btn--inactive" disabled data-i18n="filter.villa">Villas</button>
+        <button class="filter-btn filter-btn--inactive" disabled data-i18n="filter.apt">Apartments</button>
+        <button class="filter-btn filter-btn--inactive" disabled data-i18n="filter.ph">Penthouses</button>
       </div>
 
       <div class="properties-grid">
@@ -264,7 +264,7 @@
       </div>
 
       <div class="section-cta reveal-up">
-        <a href="#contact" class="btn btn--primary" data-i18n="prop.cta">View Full Portfolio</a>
+        <span class="btn btn--primary btn--inactive" data-i18n="prop.cta" style="opacity:0.45;cursor:default;pointer-events:none;">View Full Portfolio</span>
       </div>
     </div>
   </section>
@@ -392,63 +392,6 @@
     </div>
   </section>
 
-  <!-- ═══════════════════ LOCATIONS ═══════════════════ -->
-  <section class="section locations" id="locations">
-    <div class="container">
-      <div class="section-header reveal-up">
-        <p class="section-eyebrow" data-i18n="loc.eye">Prime Destinations</p>
-        <h2 class="section-title" data-i18n="loc.title">Where to<br/><em>Find Your Estate</em></h2>
-        <p class="section-desc" data-i18n="loc.desc">Cyprus's finest addresses — each with its own character, each offering an unmatched quality of life.</p>
-      </div>
-      <div class="locations-grid">
-        <div class="location-card reveal-up">
-          <div class="location-image">
-            <img src="/realty/property_villa_limassol.png" alt="Limassol" loading="lazy"/>
-            <div class="location-gradient"></div>
-          </div>
-          <div class="location-content">
-            <h3 class="location-name">Limassol</h3>
-            <p class="location-desc" data-i18n="loc1.desc">The cosmopolitan heart of Cyprus. Marina, fine dining, and a vibrant business hub surrounded by beachfront estates.</p>
-            <div class="location-stats">
-              <span data-i18n="loc1.count">42 listings</span>
-              <span data-i18n="loc1.from">From €1.8M</span>
-            </div>
-            <a href="#contact" class="location-link" data-i18n="loc.explore">Explore →</a>
-          </div>
-        </div>
-        <div class="location-card reveal-up">
-          <div class="location-image">
-            <img src="/realty/property_paphos_villa.png" alt="Paphos" loading="lazy"/>
-            <div class="location-gradient"></div>
-          </div>
-          <div class="location-content">
-            <h3 class="location-name">Paphos</h3>
-            <p class="location-desc" data-i18n="loc2.desc">UNESCO heritage, legendary sunsets, and some of Cyprus's most dramatic cliffside villas overlooking the sea.</p>
-            <div class="location-stats">
-              <span data-i18n="loc2.count">38 listings</span>
-              <span data-i18n="loc2.from">From €2.1M</span>
-            </div>
-            <a href="#contact" class="location-link" data-i18n="loc.explore">Explore →</a>
-          </div>
-        </div>
-        <div class="location-card reveal-up">
-          <div class="location-image">
-            <img src="/realty/property_penthouse.png" alt="Larnaca" loading="lazy"/>
-            <div class="location-gradient"></div>
-          </div>
-          <div class="location-content">
-            <h3 class="location-name">Larnaca</h3>
-            <p class="location-desc" data-i18n="loc3.desc">An emerging luxury destination with long golden beaches, an international airport, and exceptional investment upside.</p>
-            <div class="location-stats">
-              <span data-i18n="loc3.count">28 listings</span>
-              <span data-i18n="loc3.from">From €1.2M</span>
-            </div>
-            <a href="#contact" class="location-link" data-i18n="loc.explore">Explore →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
   <section class="aria-how section" id="how">
@@ -647,6 +590,7 @@
   <div class="jares-bar">
     <div class="container">
       <p data-i18n="jares.bar">Powered by <a href="https://jares-ai.com" target="_blank" rel="noopener">JARES AI</a> · Voice by ElevenLabs · Your AI agent in 48 hours</p>
+      <p class="jares-bar-contact">✉ <a href="mailto:info@jares-ai.com">info@jares-ai.com</a></p>
     </div>
   </div>
 
@@ -711,7 +655,7 @@
 
   <!-- i18n Dictionary -->
   <script>
-  const REALTY_I18N = {
+  window.REALTY_I18N = {
     en: {
       'nav.about':'About','nav.properties':'Properties','nav.services':'Services','nav.how':'How it works','nav.pricing':'Pricing','nav.contact':'Contact','nav.cta':'Get Demo',
       'hero.sub':'Cyprus · Mediterranean Luxury',
@@ -929,21 +873,21 @@
       'hero.sub':'Кипр · Средиземноморский люкс',
       'hero.title':'Владейте своей<br/><em>Средиземноморской</em><br/>Мечтой',
       'hero.desc':'Премиальная недвижимость в самых востребованных локациях мира. Под руководством экспертов. На базе ИИ.',
-      'hero.btn1':'Смотреть объекты','hero.btn2':'Говорить с Арией','hero.scroll':'Прокрутите',
+      'hero.btn1':'Смотреть объекты','hero.btn2':'Говорить с Aria','hero.scroll':'Прокрутите',
       'stat.listings':'Эксклюзивных объектов','stat.transactions':'Сделок','stat.years':'Лет экспертизы',
-      'quote.1':'Премиальная недвижимость ✦','quote.2':'Глобальный охват ✦','quote.3':'Исключительный сервис ✦','quote.4':'Ария ИИ 24/7 ✦',
+      'quote.1':'Премиальная недвижимость ✦','quote.2':'Глобальный охват ✦','quote.3':'Исключительный сервис ✦','quote.4':'Aria AI 24/7 ✦',
       'about.eye':'О нас','about.title':'Где <em>исключительная</em><br>недвижимость находит хозяина',
       'about.desc1':'MERIDIAN переопределил рынок элитной недвижимости. Более десяти лет мы соединяем взыскательных международных покупателей с выдающимися объектами.',
-      'about.desc2':'Теперь Ария, наш ИИ-консультант по недвижимости, гарантирует, что ни один запрос не останется без ответа — на любом языке, в любое время.',
+      'about.desc2':'Теперь Aria, наш AI-консультант по недвижимости, гарантирует, что ни один запрос не останется без ответа — на любом языке, в любое время.',
       'about.stat':'Проданных объектов','about.f1':'5 языков, ноль задержек','about.f2':'Мгновенный подбор объектов','about.f3':'Показы 24/7',
       'prop.eye':'Кураторская коллекция','prop.title':'Исключительные объекты','prop.desc':'Отборные поместья на лучших побережьях Кипра.','prop.cta':'Смотреть всё портфолио',
       'filter.all':'Все','filter.villa':'Виллы','filter.apt':'Апартаменты','filter.ph':'Пентхаусы',
       'why.eye':'Преимущество MERIDIAN','why.title':'Почему клиенты<br/><em>нам доверяют</em>',
       'why1.title':'Эксклюзивные объекты','why1.text':'Доступ к объектам, никогда не выставленным публично. Наша сеть даёт клиентам первый взгляд.',
       'why2.title':'Надёжные инвестиции','why2.text':'Кипрская недвижимость стабильно даёт 8–12% годовой доходности.',
-      'why3.title':'ИИ-консультант Ария','why3.text':'Ария обрабатывает запросы 24/7 на 5 языках — ни один лид не упущен.',
+      'why3.title':'AI-консультант Aria','why3.text':'Aria обрабатывает запросы 24/7 на 5 языках — ни один лид не упущен.',
       'why4.title':'Персональный сервис','why4.text':'Персональный советник для каждого клиента. Слушаем, понимаем, подбираем.',
-      'lt.text':'Что Ария делает для вашего агентства — каждый запрос, каждый язык, каждую ночную минуту',
+      'lt.text':'Что Aria делает для вашего агентства — каждый запрос, каждый язык, каждую ночную минуту',
       'pain.eye':'Узнаёте ситуацию?','pain.title':'Ваше агентство теряет покупателей<br><em>каждую ночь</em>',
       'p1.title':'Нет ответа в полночь','p1.desc':'Международный покупатель написал в 23:00 о пентхаусе — и позвонил конкуренту утром',
       'p2.title':'Языковой барьер','p2.desc':'Русские, арабские, китайские покупатели уходят, когда никто не отвечает на их языке',
@@ -951,7 +895,7 @@
       'p4.title':'Пропущенные показы','p4.desc':'Покупатели хотят показ сегодня — но встреча так и не была подтверждена',
       'p5.title':'Неквалифицированные лиды','p5.desc':'Агенты тратят время на любопытных, пока серьёзные покупатели ждут ответа',
       'p6.title':'CRM никогда не обновляется','p6.desc':'Никто не логирует переговоры. Лиды теряются, воронка остаётся невидимой',
-      'life.eye':'Средиземноморский образ жизни','life.title':'Жизнь — это<br/><em>настоящая роскошь</em>','life.text':'Представьте пробуждение с запахом морского воздуха и звуком волн. Это Кипр. Это то, что Ария помогает вашим клиентам найти.','life.btn':'Начать путешествие',
+      'life.eye':'Средиземноморский образ жизни','life.title':'Жизнь — это<br/><em>настоящая роскошь</em>','life.text':'Представьте пробуждение с запахом морского воздуха и звуком волн. Это Кипр. Это то, что Aria помогает вашим клиентам найти.','life.btn':'Начать путешествие',
       'lf1':'340 солнечных дней','lf2':'Пляжи голубого флага','lf3':'Доступ к частной марине','lf4':'ИИ-сервис 24/7',
       'loc.eye':'Лучшие направления','loc.title':'Где найти<br/><em>своё поместье</em>','loc.desc':'Лучшие адреса Кипра.',
       'loc1.desc':'Космополитическое сердце Кипра. Марина, гастрономия и виллы у моря.','loc1.count':'42 объекта','loc1.from':'От €1,8M',
@@ -959,19 +903,19 @@
       'loc3.desc':'Развивающийся люксовый курорт с золотыми пляжами и сильным инвестпотенциалом.','loc3.count':'28 объектов','loc3.from':'От €1,2M',
       'loc.explore':'Смотреть →',
       'how.eye':'Простой процесс','how.title':'Запуск за<br><em>48 часов</em>',
-      'h1.title':'Мы настраиваем Арию','h1.desc':'Наша команда обучает Арию на вашем портфолио: типы объектов, локации, цены, языки и голос бренда.',
-      'h2.title':'Ария запускается','h2.desc':'Ария обрабатывает запросы на сайте, WhatsApp и email. Квалифицирует покупателей и назначает показы.',
+      'h1.title':'Мы настраиваем Aria','h1.desc':'Наша команда обучает Aria на вашем портфолио: типы объектов, локации, цены, языки и голос бренда.',
+      'h2.title':'Aria запускается','h2.desc':'Aria обрабатывает запросы на сайте, WhatsApp и email. Квалифицирует покупателей и назначает показы.',
       'h3.title':'Команда закрывает сделки','h3.desc':'Агенты получают предквалифицированных покупателей с полным контекстом.',
       'stat1.label':'Обрабатывает запросы круглосуточно','stat2.label':'Языков говорит мгновенно','stat3.label':'Больше квалифицированных лидов в первый месяц','stat4.label':'От брифа до запуска',
-      'sq1.text':'"Ария ответила на 23 запроса за одну ночь. Три стали показами. Один — продажей на €2,4M."','sq1.name':'Маркус Т.','sq1.role':'Директор, T&A Property Group · Кипр',
+      'sq1.text':'"Aria ответила на 23 запроса за одну ночь. Три стали показами. Один — продажей на €2,4M."','sq1.name':'Маркус Т.','sq1.role':'Директор, T&A Property Group · Кипр',
       'sq2.text':'"Наши русские и китайские покупатели теперь получают мгновенные ответы на своём языке. Конверсия выросла на 40%."','sq2.name':'Елена В.','sq2.role':'CEO, Prestige Realty · Дубай',
       'price.eye':'Цены','price.title':'Просто.<br><em>Прозрачно.</em>',
       'plan.mo':'/ месяц','plan.popular':'Самый популярный','plan.start':'Начать','plan.contact':'Связаться',
-      'plan1.sub':'Для бутик-агентств','plan1.f1':'ИИ голосовой консультант Ария','plan1.f2':'Обработка запросов 24/7','plan1.f3':'Базовый подбор объектов','plan1.f4':'1 язык','plan1.f5':'Email поддержка',
+      'plan1.sub':'Для бутик-агентств','plan1.f1':'AI голосовой консультант Aria','plan1.f2':'Обработка запросов 24/7','plan1.f3':'Базовый подбор объектов','plan1.f4':'1 язык','plan1.f5':'Email поддержка',
       'plan2.sub':'Для активных агентств','plan2.f1':'Всё из Starter','plan2.f2':'5 языков','plan2.f3':'Квалификация лидов & CRM','plan2.f4':'Бронирование показов','plan2.f5':'Аналитика',
       'plan3.sub':'Для крупных агентств','plan3.f1':'Всё из Growth','plan3.f2':'Мультифилиальная настройка','plan3.f3':'Кастомные интеграции','plan3.f4':'Приоритетный запуск 24ч','plan3.f5':'Персональный менеджер',
       'price.note':'Разовая настройка €499 · Гарантия возврата 14 дней · Без контрактов',
-      'demo.eye':'Получить демо','demo.title':'Запустить <em>Арию</em><br>в вашем агентстве','demo.sub':'Заполните форму — мы свяжемся с вами в течение 24 часов и настроим персональное демо',
+      'demo.eye':'Получить демо','demo.title':'Запустить <em>Aria</em><br>в вашем агентстве','demo.sub':'Заполните форму — мы свяжемся с вами в течение 24 часов и настроим персональное демо',
       'chip1':'Настройка 48ч','chip2':'5 языков','chip3':'24/7 активна','chip4':'Гарантия 14 дней',
       'form.title':'Запросить демо','form.agency':'Название агентства','form.name':'Ваше имя','form.phone':'Телефон / WhatsApp','form.email':'Email','form.btn':'Запросить демо →',
       'jares.bar':'Работает на JARES AI · Голос от ElevenLabs · Ваш ИИ-агент за 48 часов',

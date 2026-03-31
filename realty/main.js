@@ -75,6 +75,7 @@ function injectAriaPillStyle(widget) {
   const s = document.createElement('style');
   s.id = 'aria-pill-style';
   s.textContent = `
+    /* ── Collapsed pill (action-text) ── */
     [class*="action-text"], [class*="ActionText"],
     [class*="prompt-text"], [class*="PromptText"],
     [data-testid="action-text"],
@@ -91,6 +92,41 @@ function injectAriaPillStyle(widget) {
       box-shadow: 0 2px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,169,110,0.15) !important;
       white-space: nowrap !important;
     }
+    /* ── Expanded widget card / panel ── */
+    [class*="widget"], [class*="Widget"],
+    [class*="card"]:not([class*="text"]), [class*="Card"]:not([class*="text"]),
+    [class*="panel"], [class*="Panel"],
+    [class*="container"]:not(html):not(body), [class*="Container"] {
+      background: linear-gradient(160deg, #0A2540 0%, #1B4B7A 100%) !important;
+      border: 1px solid rgba(201,169,110,0.25) !important;
+    }
+    /* ── "Start a call" / call button inside widget ── */
+    button[class*="call"], button[class*="Call"],
+    button[class*="start"], button[class*="Start"],
+    [class*="start-call"], [class*="StartCall"],
+    [class*="call-btn"], [class*="CallBtn"],
+    button[part*="call"], [data-testid*="call"] {
+      background: linear-gradient(135deg, #1B4B7A 0%, #0A2540 100%) !important;
+      color: #C9A96E !important;
+      border: 1px solid rgba(201,169,110,0.4) !important;
+      border-radius: 100px !important;
+      box-shadow: 0 4px 24px rgba(10,37,64,0.5) !important;
+    }
+    button[class*="call"]:hover, button[class*="Call"]:hover,
+    button[class*="start"]:hover, button[class*="Start"]:hover {
+      background: linear-gradient(135deg, #4A9FD5 0%, #1B4B7A 100%) !important;
+      color: #fff !important;
+    }
+    /* ── Orb / avatar ── */
+    [class*="orb"], [class*="Orb"],
+    [class*="avatar"], [class*="Avatar"] {
+      border-color: rgba(201,169,110,0.4) !important;
+    }
+    /* ── Text inside expanded card ── */
+    [class*="title" i], [class*="name" i] {
+      color: #C9A96E !important;
+    }
+    /* ── Hide branding ── */
     a[href*="elevenlabs"], [class*="powered" i], [class*="branding" i] {
       display: none !important;
     }
