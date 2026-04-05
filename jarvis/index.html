@@ -324,9 +324,25 @@
 
 <script>
   // ─── CONFIGURATION ───────────────────────────────
-  // Измени PIN здесь (строка из 4+ цифр):
   const CORRECT_PIN = '10818';
   // ─────────────────────────────────────────────────
+
+  function getGreeting() {
+    const h = new Date().getHours();
+    if (h >= 5  && h < 12) return 'Доброе утро';
+    if (h >= 12 && h < 17) return 'Добрый день';
+    if (h >= 17 && h < 23) return 'Добрый вечер';
+    return 'Ночной режим, Эд';
+  }
+
+  function applyGreeting() {
+    const widget = document.querySelector('elevenlabs-convai');
+    if (widget) {
+      widget.setAttribute('dynamic-variables',
+        JSON.stringify({ greeting: getGreeting() })
+      );
+    }
+  }
 
   const SESSION_KEY = 'jarvis_auth';
 
@@ -363,6 +379,7 @@
 
   function unlock() {
     sessionStorage.setItem(SESSION_KEY, '1');
+    applyGreeting();
     pinScreen.classList.add('hidden');
     mainScreen.classList.add('visible');
   }
@@ -419,6 +436,7 @@
 
   // Check session on load (no re-enter during same browser session)
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    applyGreeting();
     unlock();
   }
 </script>
