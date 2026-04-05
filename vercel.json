@@ -6,6 +6,9 @@
     { "source": "/hotel", "destination": "/hotel/index.html" },
     { "source": "/realty", "destination": "/realty/index.html" },
     { "source": "/jarvis", "destination": "/jarvis/index.html" },
+    { "source": "/jarvis/manifest.json", "destination": "/jarvis/manifest.json" },
+    { "source": "/jarvis/icon-192.png", "destination": "/jarvis/icon-192.png" },
+    { "source": "/jarvis/icon-512.png", "destination": "/jarvis/icon-512.png" },
     { "source": "/((?!.*\\.).*)", "destination": "/index.html" }
   ]
 }
