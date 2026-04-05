@@ -5,6 +5,7 @@
     { "source": "/clinic", "destination": "/clinic/index.html" },
     { "source": "/hotel", "destination": "/hotel/index.html" },
     { "source": "/realty", "destination": "/realty/index.html" },
+    { "source": "/jarvis", "destination": "/jarvis/index.html" },
     { "source": "/((?!.*\\.).*)", "destination": "/index.html" }
   ]
 }

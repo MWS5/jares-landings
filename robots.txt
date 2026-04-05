@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /jarvis
+Disallow: /jarvis/
+
+# JARVIS OS — private access only

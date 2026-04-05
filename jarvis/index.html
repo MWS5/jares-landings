@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>JARVIS</title>
+  <!-- Block search engines -->
+  <meta name="robots" content="noindex, nofollow, noarchive"/>
+  <meta name="googlebot" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #007AFF;
+      --blue-dim: rgba(0,122,255,0.15);
+      --bg: #000;
+      --surface: #111;
+      --border: rgba(255,255,255,0.08);
+      --text: #fff;
+      --text-dim: rgba(255,255,255,0.4);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
+    }
+
+    /* ─── PIN SCREEN ─── */
+    #pin-screen {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0;
+      z-index: 100;
+      background: var(--bg);
+      transition: opacity 0.4s ease;
+    }
+    #pin-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .pin-logo {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .pin-title {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+    }
+
+    /* dots */
+    .pin-dots {
+      display: flex; gap: 16px;
+      margin-bottom: 48px;
+    }
+    .pin-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      background: transparent;
+      transition: all 0.15s ease;
+    }
+    .pin-dot.filled {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+    .pin-dot.error {
+      background: #FF3B30;
+      border-color: #FF3B30;
+    }
+
+    /* numpad */
+    .pin-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 72px);
+      grid-template-rows: repeat(4, 72px);
+      gap: 12px;
+    }
+    .pin-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: background 0.1s ease, transform 0.08s ease;
+      display: flex; align-items: center; justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .pin-btn:active {
+      background: rgba(255,255,255,0.18);
+      transform: scale(0.93);
+    }
+    .pin-btn.action {
+      background: transparent;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    .pin-btn.action:active {
+      background: rgba(255,255,255,0.06);
+    }
+    .pin-btn.delete-btn {
+      font-size: 1.2rem;
+    }
+
+    .pin-error-msg {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #FF3B30;
+      height: 20px;
+      transition: opacity 0.2s;
+      opacity: 0;
+    }
+    .pin-error-msg.visible { opacity: 1; }
+
+    /* ─── MAIN SCREEN ─── */
+    #main-screen {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      background: var(--bg);
+    }
+    #main-screen.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .jarvis-header {
+      position: absolute;
+      top: env(safe-area-inset-top, 20px);
+      left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 0;
+    }
+    .jarvis-brand {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: var(--blue);
+      text-transform: uppercase;
+    }
+    .jarvis-lock {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+    .jarvis-lock:hover { color: var(--text); }
+
+    .jarvis-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* animated ring */
+    .jarvis-ring {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .jarvis-ring::before {
+      content: '';
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-top-color: var(--blue);
+      border-right-color: rgba(0,122,255,0.3);
+      animation: spin 3s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .jarvis-initial {
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--blue);
+      letter-spacing: 0.05em;
+    }
+
+    .jarvis-name {
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+    .jarvis-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ElevenLabs widget container */
+    .widget-wrapper {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .widget-hint {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* Override ElevenLabs widget button to match dark theme */
+    elevenlabs-convai {
+      --elevenlabs-convai-button-background: var(--blue);
+      --elevenlabs-convai-button-size: 68px;
+    }
+
+    /* Status bar area for iPhone */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      .jarvis-header {
+        padding-top: calc(env(safe-area-inset-top) + 12px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PIN SCREEN
+═══════════════════════════════════════ -->
+<div id="pin-screen">
+  <div class="pin-logo">JARES OS</div>
+  <div class="pin-title">Enter PIN</div>
+
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+    <div class="pin-dot" id="d4"></div>
+  </div>
+
+  <div class="pin-pad">
+    <button class="pin-btn" data-n="1">1</button>
+    <button class="pin-btn" data-n="2">2</button>
+    <button class="pin-btn" data-n="3">3</button>
+    <button class="pin-btn" data-n="4">4</button>
+    <button class="pin-btn" data-n="5">5</button>
+    <button class="pin-btn" data-n="6">6</button>
+    <button class="pin-btn" data-n="7">7</button>
+    <button class="pin-btn" data-n="8">8</button>
+    <button class="pin-btn" data-n="9">9</button>
+    <button class="pin-btn action"></button>
+    <button class="pin-btn" data-n="0">0</button>
+    <button class="pin-btn action delete-btn" id="del-btn">⌫</button>
+  </div>
+
+  <div class="pin-error-msg" id="pin-error">Неверный PIN</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     MAIN SCREEN
+═══════════════════════════════════════ -->
+<div id="main-screen">
+
+  <div class="jarvis-header">
+    <div class="jarvis-brand">JARVIS OS</div>
+    <div class="jarvis-lock" id="lock-btn" title="Lock">🔒</div>
+  </div>
+
+  <div class="jarvis-center">
+    <div class="jarvis-ring">
+      <div class="jarvis-initial">J</div>
+    </div>
+    <div class="jarvis-name">JARVIS</div>
+    <div class="jarvis-subtitle">Personal AI — Voice Mode</div>
+  </div>
+
+  <div class="widget-wrapper">
+    <div class="widget-hint">Нажми кнопку и говори</div>
+    <!-- ↓↓↓ ЗАМЕНИ agent-id на свой после создания агента в ElevenLabs ↓↓↓ -->
+    <elevenlabs-convai agent-id="agent_7401knfmaqexevpv9cchbmgag486"></elevenlabs-convai>
+  </div>
+
+</div>
+
+<script src="https://elevenlabs.io/convai-widget/index.js" async></script>
+
+<script>
+  // ─── CONFIGURATION ───────────────────────────────
+  // Измени PIN здесь (строка из 4+ цифр):
+  const CORRECT_PIN = '10818';
+  // ─────────────────────────────────────────────────
+
+  const SESSION_KEY = 'jarvis_auth';
+
+  let entered = '';
+
+  const pinScreen = document.getElementById('pin-screen');
+  const mainScreen = document.getElementById('main-screen');
+  const errorMsg = document.getElementById('pin-error');
+
+  function updateDots() {
+    for (let i = 0; i < 5; i++) {
+      document.getElementById('d' + i).classList.toggle('filled', i < entered.length);
+      document.getElementById('d' + i).classList.remove('error');
+    }
+  }
+
+  function showError() {
+    for (let i = 0; i < 5; i++) {
+      document.getElementById('d' + i).classList.add('error');
+      document.getElementById('d' + i).classList.remove('filled');
+    }
+    errorMsg.classList.add('visible');
+    // Вибрация (Android)
+    if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+    setTimeout(() => {
+      errorMsg.classList.remove('visible');
+      for (let i = 0; i < 4; i++) {
+        document.getElementById('d' + i).classList.remove('error');
+      }
+    }, 1200);
+    entered = '';
+    updateDots();
+  }
+
+  function unlock() {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    pinScreen.classList.add('hidden');
+    mainScreen.classList.add('visible');
+  }
+
+  function lock() {
+    sessionStorage.removeItem(SESSION_KEY);
+    entered = '';
+    updateDots();
+    mainScreen.classList.remove('visible');
+    pinScreen.classList.remove('hidden');
+  }
+
+  function pressDigit(n) {
+    if (entered.length >= CORRECT_PIN.length) return;
+    entered += n;
+    updateDots();
+
+    if (entered.length === CORRECT_PIN.length) {
+      setTimeout(() => {
+        if (entered === CORRECT_PIN) {
+          unlock();
+        } else {
+          showError();
+        }
+      }, 120);
+    }
+  }
+
+  // Numpad buttons
+  document.querySelectorAll('.pin-btn[data-n]').forEach(btn => {
+    btn.addEventListener('click', () => pressDigit(btn.dataset.n));
+  });
+
+  // Delete
+  document.getElementById('del-btn').addEventListener('click', () => {
+    if (entered.length > 0) {
+      entered = entered.slice(0, -1);
+      updateDots();
+    }
+  });
+
+  // Lock button
+  document.getElementById('lock-btn').addEventListener('click', lock);
+
+  // Keyboard support (desktop)
+  document.addEventListener('keydown', e => {
+    if (mainScreen.classList.contains('visible')) return;
+    if (e.key >= '0' && e.key <= '9') pressDigit(e.key);
+    if (e.key === 'Backspace') {
+      entered = entered.slice(0, -1);
+      updateDots();
+    }
+  });
+
+  // Check session on load (no re-enter during same browser session)
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    unlock();
+  }
+</script>
+
+</body>
+</html>
