@@ -7,6 +7,7 @@
   <!-- Block search engines -->
   <meta name="robots" content="noindex, nofollow, noarchive"/>
   <meta name="googlebot" content="noindex, nofollow"/>
+  <!-- This page is deprecated. Access JARVIS via Telegram bot /voice command. -->
 
   <!-- PWA -->
   <link rel="manifest" href="/jarvis/manifest.json"/>
@@ -433,6 +434,16 @@
       updateDots();
     }
   });
+
+  // ── Redirect to Telegram if opened in browser directly ──
+  // Real access is via Telegram Mini App (/voice command in @JARESAssistantBot)
+  if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) {
+    document.getElementById('pin-screen').innerHTML =
+      '<div style="color:#007AFF;font-size:.7rem;letter-spacing:.2em;font-family:Inter,sans-serif;text-align:center;padding:40px">' +
+      'JARES OS<br><br>' +
+      '<span style="color:rgba(255,255,255,0.4);font-size:.8rem;letter-spacing:.05em">' +
+      'Доступ через Telegram<br>@JARESAssistantBot → /voice</span></div>';
+  }
 
   // Check session on load (no re-enter during same browser session)
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
