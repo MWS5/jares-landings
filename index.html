@@ -365,6 +365,79 @@
       z-index: 9998;
     }
 
+    /* ── DEMO RATE LIMIT ORB (replaces widget when 3/day exhausted) ── */
+    #demo-limit-orb {
+      display: none;
+      position: fixed;
+      bottom: 48px;
+      left: 28px;
+      z-index: 9998;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
+      cursor: pointer;
+      box-shadow: 0 4px 22px rgba(0,122,255,0.45);
+      animation: demo-orb-pulse 2.6s ease-in-out infinite;
+      align-items: center; justify-content: center;
+      font-size: 24px; line-height: 56px; text-align: center;
+    }
+    @keyframes demo-orb-pulse {
+      0%,100% { box-shadow: 0 4px 22px rgba(0,122,255,0.45); transform: scale(1); }
+      50%      { box-shadow: 0 6px 30px rgba(0,122,255,0.65); transform: scale(1.07); }
+    }
+    /* ── DEMO LIMIT MODAL ── */
+    #demo-limit-modal {
+      display: none;
+      position: fixed;
+      bottom: 120px;
+      left: 28px;
+      width: 292px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.16);
+      padding: 26px 20px 20px;
+      z-index: 9999;
+      animation: demo-popup-up 0.33s cubic-bezier(.34,1.56,.64,1);
+    }
+    #demo-limit-modal .dlm-close {
+      position: absolute; top: 12px; right: 14px;
+      background: none; border: none; font-size: 15px; cursor: pointer;
+      color: var(--gray); line-height: 1;
+    }
+    #demo-limit-modal .dlm-icon { font-size: 34px; text-align: center; margin-bottom: 8px; }
+    #demo-limit-modal .dlm-title {
+      font-size: 0.97rem; font-weight: 700; color: var(--black);
+      text-align: center; margin-bottom: 6px;
+    }
+    #demo-limit-modal .dlm-sub {
+      font-size: 0.80rem; color: var(--gray); text-align: center;
+      line-height: 1.5; margin-bottom: 14px;
+    }
+    #demo-limit-modal .dlm-btn {
+      display: block; width: 100%;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: 12px; padding: 12px 10px;
+      font-size: 0.87rem; font-weight: 600; cursor: pointer;
+      text-align: center; text-decoration: none;
+      transition: background .18s;
+    }
+    #demo-limit-modal .dlm-btn:hover { background: var(--blue-mid); }
+    #demo-limit-modal .dlm-dots {
+      display: flex; justify-content: center; gap: 5px; margin: 12px 0 4px;
+    }
+    #demo-limit-modal .dlm-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue); opacity: 0.25;
+    }
+    #demo-limit-modal .dlm-dot.used { opacity: 1; }
+    #demo-limit-modal .dlm-counter {
+      text-align: center; font-size: 0.71rem; color: rgba(0,0,0,0.28); margin-top: 10px;
+    }
+    @keyframes demo-popup-up {
+      from { opacity:0; transform:translateY(14px) scale(.95); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
     /* ── LEAD POPUP — slides up above ElevenLabs widget ── */
     #lead-popup {
       display: none;
@@ -844,6 +917,24 @@
     avatar-orb-color-2="#0062CC"
   ></elevenlabs-convai>
   <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
+
+  <!-- DEMO LIMIT ORB — appears when 3 free demos used today -->
+  <div id="demo-limit-orb" onclick="toggleDemoLimitModal()" role="button" aria-label="Talk to Jares">💬</div>
+
+  <!-- DEMO LIMIT MODAL — shown when daily demo quota exhausted -->
+  <div id="demo-limit-modal">
+    <button class="dlm-close" onclick="closeDemoLimitModal()" aria-label="Close">✕</button>
+    <div class="dlm-icon">⏳</div>
+    <div class="dlm-title" id="dlm-title">Demo limit reached</div>
+    <div class="dlm-sub"   id="dlm-sub">You've used your 3 free demos today. Come back tomorrow — or get your own AI agent!</div>
+    <div class="dlm-dots">
+      <div class="dlm-dot used" id="dlm-d1"></div>
+      <div class="dlm-dot used" id="dlm-d2"></div>
+      <div class="dlm-dot used" id="dlm-d3"></div>
+    </div>
+    <a class="dlm-btn" href="#contacts" onclick="closeDemoLimitModal()" id="dlm-btn">Get your own agent →</a>
+    <div class="dlm-counter" id="dlm-counter">Resets in 24 hours</div>
+  </div>
 
   <!-- LEAD CAPTURE POPUP — slides up after conversation ends / scroll / exit intent -->
   <div id="lead-popup">
@@ -1330,6 +1421,143 @@
 
   /* Lead popup disabled — access via Telegram Mini App */
   // setTimeout(showLeadPopup, 5500);
+
+  /* ══════════════════════════════════════════════════════
+     DEMO RATE LIMITER — 3 conversations / 24h / device
+     Counts on call_started (protects tokens immediately)
+     Stores in localStorage — resets automatically after 24h
+  ══════════════════════════════════════════════════════ */
+  const DEMO_LIMIT       = 3;
+  const DEMO_RESET_MS    = 24 * 3600 * 1000;
+  const DEMO_STORAGE_KEY = 'jares_demo_v1';
+
+  /* i18n for the limit modal */
+  const DEMO_I18N = {
+    en: {
+      title:   'Demo limit reached',
+      sub:     'You\'ve used your 3 free demos today.\nCome back tomorrow — or get your own AI agent!',
+      btn:     'Get your own agent →',
+      counter: 'Resets in {h} hours'
+    },
+    de: {
+      title:   'Demo-Limit erreicht',
+      sub:     'Sie haben heute Ihre 3 kostenlosen Demos genutzt.\nMorgen wieder verfügbar — oder starten Sie mit Ihrem eigenen KI-Agenten!',
+      btn:     'Eigenen Agenten anfragen →',
+      counter: 'Setzt sich in {h} Std. zurück'
+    },
+    fr: {
+      title:   'Limite démo atteinte',
+      sub:     'Vous avez utilisé vos 3 démos gratuites aujourd\'hui.\nRevenez demain — ou obtenez votre propre agent IA !',
+      btn:     'Obtenir votre agent →',
+      counter: 'Réinitialisation dans {h} heures'
+    },
+    es: {
+      title:   'Límite de demo alcanzado',
+      sub:     'Has usado tus 3 demos gratuitas hoy.\n¡Vuelve mañana — o consigue tu propio agente IA!',
+      btn:     'Conseguir tu agente →',
+      counter: 'Se restablece en {h} horas'
+    },
+    ru: {
+      title:   'Лимит демо исчерпан',
+      sub:     'Вы использовали все 3 бесплатных демо сегодня.\nВозвращайтесь завтра — или получите своего AI-агента!',
+      btn:     'Получить своего агента →',
+      counter: 'Сброс через {h} ч.'
+    }
+  };
+
+  function _getDemoData() {
+    try {
+      const raw = localStorage.getItem(DEMO_STORAGE_KEY);
+      const d   = raw ? JSON.parse(raw) : {};
+      if (!d.start || (Date.now() - d.start) >= DEMO_RESET_MS) {
+        return { count: 0, start: Date.now() };
+      }
+      return d;
+    } catch { return { count: 0, start: Date.now() }; }
+  }
+
+  function _saveDemoData(d) {
+    try { localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(d)); } catch {}
+  }
+
+  function _isDemoLimited() { return _getDemoData().count >= DEMO_LIMIT; }
+
+  function _getDemoResetHours() {
+    const d   = _getDemoData();
+    const rem = (d.start + DEMO_RESET_MS) - Date.now();
+    return Math.max(1, Math.ceil(rem / 3600000));
+  }
+
+  function _incrementDemo() {
+    const d = _getDemoData();
+    d.count = (d.count || 0) + 1;
+    _saveDemoData(d);
+    if (_isDemoLimited()) _activateDemoLimit();
+  }
+
+  function _activateDemoLimit() {
+    const w   = document.getElementById('jares-widget');
+    const orb = document.getElementById('demo-limit-orb');
+    if (w)   { w.style.display   = 'none'; }
+    if (orb) { orb.style.display = 'flex'; }
+    _updateDemoModalLang(typeof currentLang !== 'undefined' ? currentLang : 'en');
+  }
+
+  function _updateDemoModalLang(lang) {
+    const t = DEMO_I18N[lang] || DEMO_I18N.en;
+    const h = _getDemoResetHours();
+    const $ = (id) => document.getElementById(id);
+    if ($('dlm-title'))   $('dlm-title').textContent   = t.title;
+    if ($('dlm-sub'))     $('dlm-sub').textContent     = t.sub;
+    if ($('dlm-btn'))     $('dlm-btn').textContent     = t.btn;
+    if ($('dlm-counter')) $('dlm-counter').textContent = t.counter.replace('{h}', h);
+    /* fill dots based on current count */
+    const cnt = Math.min(_getDemoData().count, DEMO_LIMIT);
+    [1,2,3].forEach(i => {
+      const dot = $('dlm-d' + i);
+      if (dot) dot.classList.toggle('used', i <= cnt);
+    });
+  }
+
+  function toggleDemoLimitModal() {
+    const m = document.getElementById('demo-limit-modal');
+    if (!m) return;
+    if (m.style.display === 'block') { closeDemoLimitModal(); }
+    else {
+      _updateDemoModalLang(typeof currentLang !== 'undefined' ? currentLang : 'en');
+      m.style.display = 'block';
+    }
+  }
+  function closeDemoLimitModal() {
+    const m = document.getElementById('demo-limit-modal');
+    if (m) m.style.display = 'none';
+  }
+
+  /* Sync modal language when visitor switches language */
+  const _origApplyLang = typeof applyLang === 'function' ? applyLang : null;
+  if (_origApplyLang) {
+    applyLang = function(lang) {
+      _origApplyLang(lang);
+      _updateDemoModalLang(lang);
+    };
+  }
+
+  /* Init — called after widget script has loaded */
+  function _initDemoLimiter() {
+    if (_isDemoLimited()) {
+      _activateDemoLimit();
+      return;
+    }
+    /* Count on call_started = protect tokens from first second */
+    const w = document.getElementById('jares-widget');
+    if (!w) return;
+    ['elevenlabs-convai:call_started', 'call_started', 'callstarted'].forEach(evt => {
+      w.addEventListener(evt, function onStart() {
+        _incrementDemo();
+      });
+    });
+  }
+  window.addEventListener('load', () => setTimeout(_initDemoLimiter, 900));
   </script>
 </body>
 </html>
