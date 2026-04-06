@@ -449,6 +449,50 @@
     .lp-success-text { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
     .lp-divider { font-size: 0.7rem; color: #d0d0d8; text-align: center; margin: 4px 0 8px; letter-spacing: 0.03em; }
 
+    /* ── SERVICES GRID ── */
+    .svcs {
+      max-width: 980px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+    }
+    .svc {
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 40px 32px; display: flex; flex-direction: column; gap: 12px;
+      background: var(--white); transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .svc:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.07); transform: translateY(-4px); }
+    .svc-icon { font-size: 2rem; }
+    .svc-name { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .svc-desc { font-size: 0.88rem; color: var(--gray); line-height: 1.55; flex: 1; }
+    .svc-from { font-size: 0.82rem; font-weight: 600; color: var(--blue); margin-top: 8px; }
+
+    /* ── PRICING SIMPLE ── */
+    .price-simple { max-width: 660px; margin: 0 auto; text-align: center; }
+    .price-simple-inner {
+      border: 1px solid var(--border); border-radius: 24px;
+      padding: 72px 60px; background: var(--white);
+    }
+    .price-from-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 20px;
+    }
+    .price-from-num {
+      font-size: clamp(2.8rem, 8vw, 5rem); font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1; margin-bottom: 24px;
+    }
+    .price-from-num span { color: var(--blue); }
+    .price-from-desc {
+      font-size: 1rem; color: var(--gray); line-height: 1.65;
+      max-width: 440px; margin: 0 auto 44px;
+    }
+    .price-from-items {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 10px;
+      text-align: left; max-width: 460px; margin: 0 auto 48px;
+    }
+    .pfi {
+      font-size: 0.85rem; color: var(--gray); padding: 11px 15px;
+      background: var(--light); border-radius: 10px; font-weight: 500;
+    }
+
     /* ── SCROLL REVEAL ── */
     .r { opacity:0; transform: translateY(22px); transition: opacity 0.85s ease, transform 0.85s ease; }
     .r.in { opacity:1; transform: none; }
@@ -463,11 +507,13 @@
       nav { padding: 0 20px; }
       .nav-links { display: none; }
       #hero, .sec, #trust, #cta, footer { padding-left: 24px; padding-right: 24px; }
-      .wgrid, .cards, .steps, .plans { grid-template-columns: 1fr; }
+      .wgrid, .cards, .steps, .plans, .svcs { grid-template-columns: 1fr; }
       .step { border-right: none; border-bottom: 1px solid var(--border); }
       .step:last-child { border-bottom: none; }
       elevenlabs-convai { bottom: 20px !important; left: 16px !important; }
       #lead-popup { left: 16px; width: calc(100vw - 32px); bottom: 144px; }
+      .price-simple-inner { padding: 48px 28px; }
+      .price-from-items { grid-template-columns: 1fr; max-width: 100%; }
     }
 
     /* ── NO CURSOR ON MOBILE / TABLET ── */
@@ -546,6 +592,53 @@
   <section id="trust">
     <div class="trust-label" data-i18n="trust.label">Deployed across real estate, hospitality, healthcare and retail</div>
     <div class="trust-stat" data-i18n="trust.stat">AI agents working <em>24/7</em> in <em>5</em> languages — ready in <em>48 hours</em></div>
+  </section>
+
+  <!-- SERVICES — What We Build -->
+  <section id="services" class="sec alt">
+    <div class="sec-head r">
+      <div class="sec-eye" data-i18n="services.eye">Solutions</div>
+      <h2 class="sec-title" data-i18n="services.title">AI for Any Business</h2>
+      <p class="sec-sub" data-i18n="services.sub">From a single chatbot to a full AI office — built and launched end to end</p>
+    </div>
+    <div class="svcs r">
+      <div class="svc">
+        <div class="svc-icon">🤖</div>
+        <div class="svc-name" data-i18n="svc.n1">AI Agents for Business</div>
+        <div class="svc-desc" data-i18n="svc.d1">Digital employees that communicate with clients 24/7, process leads, close sales and automate support — without a team</div>
+        <div class="svc-from" data-i18n="svc.f1">from €350</div>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">🧠</div>
+        <div class="svc-name" data-i18n="svc.n2">Custom AI Assistants</div>
+        <div class="svc-desc" data-i18n="svc.d2">Personal AI built for your business — manages tasks and processes, works with CRM and databases, helps make decisions faster</div>
+        <div class="svc-from" data-i18n="svc.f2">from €500</div>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">⚙️</div>
+        <div class="svc-name" data-i18n="svc.n3">Business Automation</div>
+        <div class="svc-desc" data-i18n="svc.d3">Automate sales, lead processing, client support, marketing and internal operations — cut manual work by up to 40%</div>
+        <div class="svc-from" data-i18n="svc.f3">from €700</div>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">💬</div>
+        <div class="svc-name" data-i18n="svc.n4">Chatbots &amp; Voice Bots</div>
+        <div class="svc-desc" data-i18n="svc.d4">Telegram, WhatsApp, website and voice AI operators — handle calls, book clients and answer questions around the clock</div>
+        <div class="svc-from" data-i18n="svc.f4">from €400</div>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">🔗</div>
+        <div class="svc-name" data-i18n="svc.n5">AI Integration</div>
+        <div class="svc-desc" data-i18n="svc.d5">Connect AI to your CRM, website, database and external APIs — seamlessly, without disrupting existing workflows</div>
+        <div class="svc-from" data-i18n="svc.f5">from €300</div>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">🏷️</div>
+        <div class="svc-name" data-i18n="svc.n6">White Label / SaaS</div>
+        <div class="svc-desc" data-i18n="svc.d6">Launch an AI product under your own brand — your platform, SaaS with subscription, full white-label delivery from day one</div>
+        <div class="svc-from" data-i18n="svc.f6">from €1,500</div>
+      </div>
+    </div>
   </section>
 
   <!-- AGENTS -->
@@ -628,27 +721,20 @@
       <div class="sec-eye" data-i18n="pricing.eye">Pricing</div>
       <h2 class="sec-title" data-i18n="pricing.title">Simple &amp; Transparent</h2>
     </div>
-    <div class="plans r">
-      <div class="plan">
-        <div class="plan-tier">Starter</div>
-        <div class="plan-price">€49</div>
-        <div class="plan-hint" data-i18n="pricing.mo">/ month</div>
-        <div class="plan-desc" data-i18n="pricing.d1">1 AI agent · booking & FAQ · Telegram & WhatsApp · 3 languages</div>
-        <a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener" class="plan-btn" data-i18n="pricing.btn1">Get Started</a>
-      </div>
-      <div class="plan pro">
-        <div class="plan-tier">Growth</div>
-        <div class="plan-price">€149</div>
-        <div class="plan-hint" data-i18n="pricing.mo">/ month</div>
-        <div class="plan-desc" data-i18n="pricing.d2">1 voice AI agent · lead scoring · 5 languages · analytics · priority setup</div>
-        <a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener" class="plan-btn" data-i18n="pricing.btn2">Get Started</a>
-      </div>
-      <div class="plan">
-        <div class="plan-tier">Enterprise</div>
-        <div class="plan-price">€499<span style="font-size:1.5rem;font-weight:500">+</span></div>
-        <div class="plan-hint">&nbsp;</div>
-        <div class="plan-desc" data-i18n="pricing.d3">Multi-agent suite · custom integrations · white label · dedicated manager</div>
-        <a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener" class="plan-btn" data-i18n="pricing.btn3">Contact Us</a>
+    <div class="price-simple r">
+      <div class="price-simple-inner">
+        <div class="price-from-eyebrow" data-i18n="pricing.from_eye">Investment</div>
+        <div class="price-from-num">from <span>€350</span></div>
+        <p class="price-from-desc" data-i18n="pricing.from_desc">The final price depends on the scope of your task, required integrations and level of automation. We calculate your cost within 24 hours — free of charge.</p>
+        <div class="price-from-items">
+          <div class="pfi">🤖 AI Agents — from €350</div>
+          <div class="pfi">🧠 AI Assistants — from €500</div>
+          <div class="pfi">⚙️ Automation — from €700</div>
+          <div class="pfi">💬 Chatbots &amp; Voice — from €400</div>
+          <div class="pfi">🔗 Integrations — from €300</div>
+          <div class="pfi">🏷️ White Label — from €1,500</div>
+        </div>
+        <a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener" class="btn-fill" data-i18n="pricing.cta">Get a Custom Quote →</a>
       </div>
     </div>
   </section>
@@ -736,11 +822,19 @@
       "roi.answer":"AI agents eliminate these losses <span>completely</span>",
       "how.eye":"Process","how.title":"Three Steps to Launch",
       "how.s1":"Choose your agent","how.s2":"We configure it for you","how.s3":"Get leads on autopilot",
-      "pricing.eye":"Pricing","pricing.title":"Simple &amp; Transparent","pricing.mo":"/ month",
-      "pricing.d1":"1 AI agent · booking &amp; FAQ · Telegram &amp; WhatsApp · 3 languages",
-      "pricing.d2":"1 voice AI agent · lead scoring · 5 languages · analytics · priority setup",
-      "pricing.d3":"Multi-agent suite · custom integrations · white label · dedicated manager",
-      "pricing.btn1":"Get Started","pricing.btn2":"Get Started","pricing.btn3":"Contact Us",
+      "services.eye":"Solutions",
+      "services.title":"AI for Any Business",
+      "services.sub":"From a single chatbot to a full AI office — built and launched end to end",
+      "svc.n1":"AI Agents for Business","svc.d1":"Digital employees that communicate with clients 24/7, process leads, close sales and automate support — without a team","svc.f1":"from €350",
+      "svc.n2":"Custom AI Assistants","svc.d2":"Personal AI built for your business — manages tasks, works with CRM and databases, helps make faster decisions","svc.f2":"from €500",
+      "svc.n3":"Business Automation","svc.d3":"Automate sales, lead processing, support, marketing and internal operations — cut manual work by up to 40%","svc.f3":"from €700",
+      "svc.n4":"Chatbots &amp; Voice Bots","svc.d4":"Telegram, WhatsApp, website and voice AI operators — handle calls, book clients and answer questions around the clock","svc.f4":"from €400",
+      "svc.n5":"AI Integration","svc.d5":"Connect AI to your CRM, website, database and external APIs — seamlessly, without disrupting existing workflows","svc.f5":"from €300",
+      "svc.n6":"White Label / SaaS","svc.d6":"Launch an AI product under your own brand — your platform, SaaS with subscription, full white-label delivery from day one","svc.f6":"from €1,500",
+      "pricing.eye":"Pricing","pricing.title":"Simple &amp; Transparent",
+      "pricing.from_eye":"Investment",
+      "pricing.from_desc":"The final price depends on the scope of your task, required integrations and level of automation. We calculate your cost within 24 hours — free of charge.",
+      "pricing.cta":"Get a Custom Quote →",
       "cta.title":"Launch Your AI Team","cta.sub":"Increase revenue and cut costs this month",
       "cta.btn1":"Start Free Trial in Telegram","cta.btn2":"Browse Agents",
       "footer.contact":"Contact",
@@ -769,11 +863,19 @@
       "roi.answer":"KI-Agenten beseitigen diese Verluste <span>vollständig</span>",
       "how.eye":"Prozess","how.title":"Drei Schritte zum Start",
       "how.s1":"Agenten auswählen","how.s2":"Wir konfigurieren ihn","how.s3":"Leads auf Autopilot",
-      "pricing.eye":"Preise","pricing.title":"Einfach &amp; transparent","pricing.mo":"/ Monat",
-      "pricing.d1":"1 KI-Agent · Buchung &amp; FAQ · Telegram &amp; WhatsApp · 3 Sprachen",
-      "pricing.d2":"1 Sprach-KI-Agent · Lead-Scoring · 5 Sprachen · Analytics · Priority-Setup",
-      "pricing.d3":"Multi-Agenten-Suite · individuelle Integrationen · White Label · dedizierter Manager",
-      "pricing.btn1":"Loslegen","pricing.btn2":"Loslegen","pricing.btn3":"Kontakt",
+      "services.eye":"Lösungen",
+      "services.title":"KI für jedes Unternehmen",
+      "services.sub":"Vom einfachen Chatbot bis zum vollständigen KI-Büro — komplett entwickelt und in Betrieb genommen",
+      "svc.n1":"KI-Agenten für Unternehmen","svc.d1":"Digitale Mitarbeiter, die rund um die Uhr mit Kunden kommunizieren, Leads bearbeiten, Verkäufe abschließen und den Support automatisieren","svc.f1":"ab €350",
+      "svc.n2":"Individuelle KI-Assistenten","svc.d2":"Persönliche KI, maßgeschneidert für Ihr Unternehmen — verwaltet Aufgaben, arbeitet mit CRM und Datenbanken, beschleunigt Entscheidungen","svc.f2":"ab €500",
+      "svc.n3":"Geschäftsprozess-Automatisierung","svc.d3":"Automatisieren Sie Vertrieb, Lead-Bearbeitung, Kundensupport, Marketing und interne Abläufe — bis zu 40 % weniger Handarbeit","svc.f3":"ab €700",
+      "svc.n4":"Chatbots &amp; Sprachbots","svc.d4":"Telegram, WhatsApp, Website und KI-Sprachoperatoren — nehmen Anrufe entgegen, buchen Kunden und beantworten Fragen rund um die Uhr","svc.f4":"ab €400",
+      "svc.n5":"KI-Integration","svc.d5":"Verbinden Sie KI mit Ihrem CRM, Ihrer Website, Datenbank und externen APIs — nahtlos, ohne bestehende Abläufe zu unterbrechen","svc.f5":"ab €300",
+      "svc.n6":"White Label / SaaS","svc.d6":"Starten Sie ein KI-Produkt unter Ihrer eigenen Marke — Ihre Plattform, SaaS mit Abo, vollständige White-Label-Lieferung von Anfang an","svc.f6":"ab €1.500",
+      "pricing.eye":"Preise","pricing.title":"Einfach &amp; transparent",
+      "pricing.from_eye":"Investition",
+      "pricing.from_desc":"Der Endpreis hängt vom Umfang Ihrer Aufgabe, den erforderlichen Integrationen und dem Automatisierungsgrad ab. Wir berechnen Ihre Kosten innerhalb von 24 Stunden — kostenlos.",
+      "pricing.cta":"Individuelles Angebot anfordern →",
       "cta.title":"KI-Team starten","cta.sub":"Umsatz steigern und Kosten noch diesen Monat senken",
       "cta.btn1":"Kostenlos in Telegram starten","cta.btn2":"Agenten entdecken",
       "footer.contact":"Kontakt",
@@ -802,11 +904,19 @@
       "roi.answer":"Les agents IA éliminent ces pertes <span>complètement</span>",
       "how.eye":"Processus","how.title":"Trois étapes pour lancer",
       "how.s1":"Choisir votre agent","how.s2":"Nous le configurons","how.s3":"Leads en automatique",
-      "pricing.eye":"Tarifs","pricing.title":"Simple &amp; transparent","pricing.mo":"/ mois",
-      "pricing.d1":"1 agent IA · réservation &amp; FAQ · Telegram &amp; WhatsApp · 3 langues",
-      "pricing.d2":"1 agent vocal IA · scoring leads · 5 langues · analytics · setup prioritaire",
-      "pricing.d3":"Suite multi-agents · intégrations sur mesure · marque blanche · manager dédié",
-      "pricing.btn1":"Commencer","pricing.btn2":"Commencer","pricing.btn3":"Nous contacter",
+      "services.eye":"Solutions",
+      "services.title":"L'IA pour toute entreprise",
+      "services.sub":"Du simple chatbot à un bureau IA complet — développé et mis en ligne de A à Z",
+      "svc.n1":"Agents IA pour entreprises","svc.d1":"Des employés numériques qui communiquent avec vos clients 24h/24, traitent les leads, closent des ventes et automatisent le support","svc.f1":"dès €350",
+      "svc.n2":"Assistants IA sur mesure","svc.d2":"Une IA personnelle conçue pour votre entreprise — gère les tâches, travaille avec votre CRM et vos bases de données, accélère les décisions","svc.f2":"dès €500",
+      "svc.n3":"Automatisation des processus","svc.d3":"Automatisez les ventes, le traitement des leads, le support, le marketing et les opérations internes — jusqu'à 40 % de travail manuel en moins","svc.f3":"dès €700",
+      "svc.n4":"Chatbots &amp; bots vocaux","svc.d4":"Telegram, WhatsApp, site web et opérateurs IA vocaux — prennent des appels, réservent des clients et répondent aux questions 24h/24","svc.f4":"dès €400",
+      "svc.n5":"Intégration IA","svc.d5":"Connectez l'IA à votre CRM, site, base de données et APIs externes — sans perturber vos processus existants","svc.f5":"dès €300",
+      "svc.n6":"White Label / SaaS","svc.d6":"Lancez un produit IA sous votre propre marque — votre plateforme, SaaS avec abonnement, livraison white-label complète dès le premier jour","svc.f6":"dès €1 500",
+      "pricing.eye":"Tarifs","pricing.title":"Simple &amp; transparent",
+      "pricing.from_eye":"Investissement",
+      "pricing.from_desc":"Le prix final dépend du périmètre de votre projet, des intégrations nécessaires et du niveau d'automatisation. Nous calculons votre coût en 24 heures — gratuitement.",
+      "pricing.cta":"Obtenir un devis personnalisé →",
       "cta.title":"Lancez votre équipe IA","cta.sub":"Augmentez vos revenus et réduisez vos coûts ce mois-ci",
       "cta.btn1":"Démarrer gratuitement sur Telegram","cta.btn2":"Voir les agents",
       "footer.contact":"Contact",
@@ -835,11 +945,19 @@
       "roi.answer":"Los agentes IA eliminan estas pérdidas <span>completamente</span>",
       "how.eye":"Proceso","how.title":"Tres pasos para lanzar",
       "how.s1":"Elige tu agente","how.s2":"Lo configuramos para ti","how.s3":"Leads en piloto automático",
-      "pricing.eye":"Precios","pricing.title":"Simple &amp; transparente","pricing.mo":"/ mes",
-      "pricing.d1":"1 agente IA · reservas &amp; FAQ · Telegram &amp; WhatsApp · 3 idiomas",
-      "pricing.d2":"1 agente de voz IA · scoring leads · 5 idiomas · analytics · setup prioritario",
-      "pricing.d3":"Suite multi-agente · integraciones a medida · marca blanca · manager dedicado",
-      "pricing.btn1":"Empezar","pricing.btn2":"Empezar","pricing.btn3":"Contactar",
+      "services.eye":"Soluciones",
+      "services.title":"IA para cualquier negocio",
+      "services.sub":"Desde un simple chatbot hasta una oficina IA completa — desarrollado y puesto en marcha de principio a fin",
+      "svc.n1":"Agentes IA para empresas","svc.d1":"Empleados digitales que se comunican con clientes 24/7, procesan leads, cierran ventas y automatizan el soporte sin necesidad de equipo","svc.f1":"desde €350",
+      "svc.n2":"Asistentes IA personalizados","svc.d2":"IA personal diseñada para tu negocio — gestiona tareas, trabaja con CRM y bases de datos, acelera la toma de decisiones","svc.f2":"desde €500",
+      "svc.n3":"Automatización de procesos","svc.d3":"Automatiza ventas, procesamiento de leads, atención al cliente, marketing y operaciones internas — hasta un 40 % menos de trabajo manual","svc.f3":"desde €700",
+      "svc.n4":"Chatbots &amp; bots de voz","svc.d4":"Telegram, WhatsApp, web y operadores IA de voz — atienden llamadas, reservan clientes y responden preguntas las 24 horas","svc.f4":"desde €400",
+      "svc.n5":"Integración IA","svc.d5":"Conecta la IA a tu CRM, sitio web, base de datos y APIs externas — sin interrumpir los flujos de trabajo existentes","svc.f5":"desde €300",
+      "svc.n6":"White Label / SaaS","svc.d6":"Lanza un producto IA bajo tu propia marca — tu plataforma, SaaS con suscripción, entrega white-label completa desde el primer día","svc.f6":"desde €1.500",
+      "pricing.eye":"Precios","pricing.title":"Simple &amp; transparente",
+      "pricing.from_eye":"Inversión",
+      "pricing.from_desc":"El precio final depende del alcance de tu proyecto, las integraciones necesarias y el nivel de automatización. Calculamos tu coste en 24 horas, sin cargo.",
+      "pricing.cta":"Solicitar presupuesto personalizado →",
       "cta.title":"Lanza tu equipo IA","cta.sub":"Aumenta los ingresos y reduce costos este mes",
       "cta.btn1":"Empezar gratis en Telegram","cta.btn2":"Ver agentes",
       "footer.contact":"Contacto",
@@ -868,11 +986,19 @@
       "roi.answer":"ИИ-агенты устраняют эти потери <span>полностью</span>",
       "how.eye":"Процесс","how.title":"Три шага до запуска",
       "how.s1":"Выберите агента","how.s2":"Мы настроим под вас","how.s3":"Лиды на автопилоте",
-      "pricing.eye":"Тарифы","pricing.title":"Просто и прозрачно","pricing.mo":"в месяц",
-      "pricing.d1":"1 ИИ-агент · запись и FAQ · Telegram и WhatsApp · 3 языка",
-      "pricing.d2":"1 голосовой ИИ-агент · скоринг лидов · 5 языков · аналитика · приоритетный запуск",
-      "pricing.d3":"Мульти-агентный пакет · кастомные интеграции · white label · персональный менеджер",
-      "pricing.btn1":"Начать","pricing.btn2":"Начать","pricing.btn3":"Связаться",
+      "services.eye":"Решения",
+      "services.title":"ИИ для любого бизнеса",
+      "services.sub":"От простого чат-бота до полноценного ИИ-офиса — разработаем и запустим под ключ",
+      "svc.n1":"ИИ-агенты для бизнеса","svc.d1":"Цифровые сотрудники, которые общаются с клиентами 24/7, обрабатывают заявки, закрывают продажи и автоматизируют поддержку","svc.f1":"от €350",
+      "svc.n2":"Персональные ИИ-ассистенты","svc.d2":"ИИ-ассистент под ваш бизнес — управляет задачами и процессами, работает с CRM и базами данных, ускоряет принятие решений","svc.f2":"от €500",
+      "svc.n3":"Автоматизация процессов","svc.d3":"Автоматизируем продажи, обработку лидов, поддержку клиентов, маркетинг и внутренние операции — до 40% меньше ручного труда","svc.f3":"от €700",
+      "svc.n4":"Чат-боты и голосовые боты","svc.d4":"Telegram, WhatsApp, сайт и голосовые ИИ-операторы — принимают звонки, записывают клиентов и отвечают на вопросы круглосуточно","svc.f4":"от €400",
+      "svc.n5":"Интеграция ИИ","svc.d5":"Подключаем ИИ к вашей CRM, сайту, базе данных и внешним API — бесшовно, не нарушая существующие процессы","svc.f5":"от €300",
+      "svc.n6":"White Label / SaaS","svc.d6":"Создаём ИИ-продукт под вашим брендом — собственная платформа, SaaS с подпиской, полная white-label поставка с первого дня","svc.f6":"от €1 500",
+      "pricing.eye":"Стоимость","pricing.title":"Прозрачные цены",
+      "pricing.from_eye":"Инвестиция",
+      "pricing.from_desc":"Финальная цена зависит от объёма задачи, необходимых интеграций и уровня автоматизации. Рассчитаем стоимость за 24 часа — бесплатно.",
+      "pricing.cta":"Получить расчёт →",
       "cta.title":"Запустите ИИ-команду","cta.sub":"Увеличьте выручку и сократите расходы уже в этом месяце",
       "cta.btn1":"Начать бесплатно в Telegram","cta.btn2":"Смотреть агентов",
       "footer.contact":"Контакты",
