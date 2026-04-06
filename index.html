@@ -493,6 +493,40 @@
       background: var(--light); border-radius: 10px; font-weight: 500;
     }
 
+    /* ── CONTACTS ── */
+    .contacts-grid {
+      max-width: 620px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 20px;
+    }
+    .contact-card {
+      border: 1px solid var(--border); border-radius: 22px;
+      padding: 44px 36px; display: flex; flex-direction: column;
+      align-items: flex-start; gap: 14px; background: var(--white);
+      text-decoration: none; color: inherit;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .contact-card:hover { box-shadow: 0 20px 56px rgba(0,0,0,0.08); transform: translateY(-5px); }
+    .contact-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon.ci-email { background: rgba(0,122,255,0.10); }
+    .contact-icon.ci-wa    { background: rgba(37,211,102,0.12); }
+    .contact-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--gray);
+    }
+    .contact-value {
+      font-size: 1rem; font-weight: 700; color: var(--black);
+      letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .contact-hint { font-size: 0.82rem; color: var(--gray); line-height: 1.45; }
+    .contact-arrow {
+      margin-top: auto; font-size: 0.82rem; font-weight: 600;
+      color: var(--blue); display: flex; align-items: center; gap: 4px;
+    }
+
     /* ── SCROLL REVEAL ── */
     .r { opacity:0; transform: translateY(22px); transition: opacity 0.85s ease, transform 0.85s ease; }
     .r.in { opacity:1; transform: none; }
@@ -507,7 +541,7 @@
       nav { padding: 0 20px; }
       .nav-links { display: none; }
       #hero, .sec, #trust, #cta, footer { padding-left: 24px; padding-right: 24px; }
-      .wgrid, .cards, .steps, .plans, .svcs { grid-template-columns: 1fr; }
+      .wgrid, .cards, .steps, .plans, .svcs, .contacts-grid { grid-template-columns: 1fr; }
       .step { border-right: none; border-bottom: 1px solid var(--border); }
       .step:last-child { border-bottom: none; }
       elevenlabs-convai { bottom: 20px !important; left: 16px !important; }
@@ -540,6 +574,7 @@
       <li><a href="#agents" data-i18n="nav.agents">Agents</a></li>
       <li><a href="#roi">ROI</a></li>
       <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+      <li><a href="#contacts" data-i18n="nav.contacts">Contact</a></li>
     </ul>
     <div class="nav-right">
       <div class="lang-switcher">
@@ -739,6 +774,45 @@
     </div>
   </section>
 
+  <!-- CONTACTS -->
+  <section id="contacts" class="sec alt">
+    <div class="sec-head r">
+      <div class="sec-eye" data-i18n="contacts.eye">Contact</div>
+      <h2 class="sec-title" data-i18n="contacts.title">Get in Touch</h2>
+      <p class="sec-sub" data-i18n="contacts.sub">Write or message us — we reply within a few hours</p>
+    </div>
+    <div class="contacts-grid r">
+
+      <!-- Email -->
+      <a href="mailto:info@jares-ai.com" class="contact-card">
+        <div class="contact-icon ci-email">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="20" height="16" rx="3" stroke="#007AFF" stroke-width="1.8"/>
+            <path d="M2 7l10 7 10-7" stroke="#007AFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="contact-label" data-i18n="contacts.email_label">Email</div>
+        <div class="contact-value">info@jares-ai.com</div>
+        <div class="contact-hint" data-i18n="contacts.email_hint">We reply within a few hours</div>
+        <div class="contact-arrow" data-i18n="contacts.email_cta">Send a message ›</div>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/35797614750" target="_blank" rel="noopener" class="contact-card">
+        <div class="contact-icon ci-wa">
+          <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </div>
+        <div class="contact-label" data-i18n="contacts.wa_label">WhatsApp</div>
+        <div class="contact-value">+357 97 614 750</div>
+        <div class="contact-hint" data-i18n="contacts.wa_hint">Write anytime — we're online</div>
+        <div class="contact-arrow" data-i18n="contacts.wa_cta">Open WhatsApp ›</div>
+      </a>
+
+    </div>
+  </section>
+
   <!-- CTA -->
   <section id="cta">
     <h2 class="cta-h r" data-i18n="cta.title">Launch Your AI Team</h2>
@@ -756,7 +830,7 @@
       <li><a href="#agents" data-i18n="nav.agents">Agents</a></li>
       <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
       <li><a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener">Telegram</a></li>
-      <li><a href="mailto:hello@jares-ai.com" data-i18n="footer.contact">Contact</a></li>
+      <li><a href="#contacts" data-i18n="footer.contact">Contact</a></li>
     </ul>
     <div class="f-copy">© <span id="copy-year"></span> <span class="f-brand">JARES AI</span></div>
   </footer>
@@ -800,7 +874,7 @@
   ═══════════════════════════════ */
   const i18n = {
     en: {
-      "nav.agents":"Agents","nav.pricing":"Pricing","nav.cta":"Start Free",
+      "nav.agents":"Agents","nav.pricing":"Pricing","nav.contacts":"Contact","nav.cta":"Start Free",
       "hero.eyebrow":"AI Agent Marketplace",
       "hero.title":"Growth Without a Team",
       "hero.sub":"AI agents replace departments, increase conversion and reduce costs — without hiring",
@@ -835,13 +909,17 @@
       "pricing.from_eye":"Investment",
       "pricing.from_desc":"The final price depends on the scope of your task, required integrations and level of automation. We calculate your cost within 24 hours — free of charge.",
       "pricing.cta":"Get a Custom Quote →",
+      "contacts.eye":"Contact","contacts.title":"Get in Touch",
+      "contacts.sub":"Write or message us — we reply within a few hours",
+      "contacts.email_label":"Email","contacts.email_hint":"We reply within a few hours","contacts.email_cta":"Send a message ›",
+      "contacts.wa_label":"WhatsApp","contacts.wa_hint":"Write anytime — we're online","contacts.wa_cta":"Open WhatsApp ›",
       "cta.title":"Launch Your AI Team","cta.sub":"Increase revenue and cut costs this month",
       "cta.btn1":"Start Free Trial in Telegram","cta.btn2":"Browse Agents",
       "footer.contact":"Contact",
       "widget.action":"Talk to Jares"
     },
     de: {
-      "nav.agents":"Agenten","nav.pricing":"Preise","nav.cta":"Kostenlos starten",
+      "nav.agents":"Agenten","nav.pricing":"Preise","nav.contacts":"Kontakt","nav.cta":"Kostenlos starten",
       "hero.eyebrow":"KI-Agenten Marktplatz",
       "hero.title":"Wachstum ohne Team",
       "hero.sub":"KI-Agenten ersetzen Abteilungen, steigern die Conversion und senken Kosten — ohne Einstellungen",
@@ -876,13 +954,17 @@
       "pricing.from_eye":"Investition",
       "pricing.from_desc":"Der Endpreis hängt vom Umfang Ihrer Aufgabe, den erforderlichen Integrationen und dem Automatisierungsgrad ab. Wir berechnen Ihre Kosten innerhalb von 24 Stunden — kostenlos.",
       "pricing.cta":"Individuelles Angebot anfordern →",
+      "contacts.eye":"Kontakt","contacts.title":"Schreiben Sie uns",
+      "contacts.sub":"Kontaktieren Sie uns — wir antworten innerhalb weniger Stunden",
+      "contacts.email_label":"E-Mail","contacts.email_hint":"Antwort innerhalb weniger Stunden","contacts.email_cta":"Nachricht senden ›",
+      "contacts.wa_label":"WhatsApp","contacts.wa_hint":"Schreiben Sie jederzeit — wir sind erreichbar","contacts.wa_cta":"WhatsApp öffnen ›",
       "cta.title":"KI-Team starten","cta.sub":"Umsatz steigern und Kosten noch diesen Monat senken",
       "cta.btn1":"Kostenlos in Telegram starten","cta.btn2":"Agenten entdecken",
       "footer.contact":"Kontakt",
       "widget.action":"Mit Jares sprechen"
     },
     fr: {
-      "nav.agents":"Agents","nav.pricing":"Tarifs","nav.cta":"Commencer gratuitement",
+      "nav.agents":"Agents","nav.pricing":"Tarifs","nav.contacts":"Contact","nav.cta":"Commencer gratuitement",
       "hero.eyebrow":"Marketplace d'agents IA",
       "hero.title":"Croissance sans équipe",
       "hero.sub":"Les agents IA remplacent les départements, augmentent la conversion et réduisent les coûts — sans embauche",
@@ -917,13 +999,17 @@
       "pricing.from_eye":"Investissement",
       "pricing.from_desc":"Le prix final dépend du périmètre de votre projet, des intégrations nécessaires et du niveau d'automatisation. Nous calculons votre coût en 24 heures — gratuitement.",
       "pricing.cta":"Obtenir un devis personnalisé →",
+      "contacts.eye":"Contact","contacts.title":"Contactez-nous",
+      "contacts.sub":"Écrivez-nous — nous répondons en quelques heures",
+      "contacts.email_label":"E-mail","contacts.email_hint":"Réponse en quelques heures","contacts.email_cta":"Envoyer un message ›",
+      "contacts.wa_label":"WhatsApp","contacts.wa_hint":"Écrivez à tout moment — nous sommes disponibles","contacts.wa_cta":"Ouvrir WhatsApp ›",
       "cta.title":"Lancez votre équipe IA","cta.sub":"Augmentez vos revenus et réduisez vos coûts ce mois-ci",
       "cta.btn1":"Démarrer gratuitement sur Telegram","cta.btn2":"Voir les agents",
       "footer.contact":"Contact",
       "widget.action":"Parler à Jares"
     },
     es: {
-      "nav.agents":"Agentes","nav.pricing":"Precios","nav.cta":"Empezar gratis",
+      "nav.agents":"Agentes","nav.pricing":"Precios","nav.contacts":"Contacto","nav.cta":"Empezar gratis",
       "hero.eyebrow":"Marketplace de agentes IA",
       "hero.title":"Crecimiento sin equipo",
       "hero.sub":"Los agentes IA reemplazan departamentos, aumentan la conversión y reducen costos — sin contratar",
@@ -958,13 +1044,17 @@
       "pricing.from_eye":"Inversión",
       "pricing.from_desc":"El precio final depende del alcance de tu proyecto, las integraciones necesarias y el nivel de automatización. Calculamos tu coste en 24 horas, sin cargo.",
       "pricing.cta":"Solicitar presupuesto personalizado →",
+      "contacts.eye":"Contacto","contacts.title":"Escríbenos",
+      "contacts.sub":"Contáctanos — respondemos en pocas horas",
+      "contacts.email_label":"Email","contacts.email_hint":"Respondemos en pocas horas","contacts.email_cta":"Enviar mensaje ›",
+      "contacts.wa_label":"WhatsApp","contacts.wa_hint":"Escribe cuando quieras — estamos disponibles","contacts.wa_cta":"Abrir WhatsApp ›",
       "cta.title":"Lanza tu equipo IA","cta.sub":"Aumenta los ingresos y reduce costos este mes",
       "cta.btn1":"Empezar gratis en Telegram","cta.btn2":"Ver agentes",
       "footer.contact":"Contacto",
       "widget.action":"Hablar con Jares"
     },
     ru: {
-      "nav.agents":"Агенты","nav.pricing":"Цены","nav.cta":"Начать бесплатно",
+      "nav.agents":"Агенты","nav.pricing":"Цены","nav.contacts":"Контакты","nav.cta":"Начать бесплатно",
       "hero.eyebrow":"Маркетплейс ИИ-агентов",
       "hero.title":"Рост без команды",
       "hero.sub":"ИИ-агенты заменяют отделы, увеличивают конверсию и снижают расходы — без найма сотрудников",
@@ -999,6 +1089,10 @@
       "pricing.from_eye":"Инвестиция",
       "pricing.from_desc":"Финальная цена зависит от объёма задачи, необходимых интеграций и уровня автоматизации. Рассчитаем стоимость за 24 часа — бесплатно.",
       "pricing.cta":"Получить расчёт →",
+      "contacts.eye":"Контакты","contacts.title":"Свяжитесь с нами",
+      "contacts.sub":"Напишите нам — отвечаем в течение нескольких часов",
+      "contacts.email_label":"Email","contacts.email_hint":"Ответим в течение нескольких часов","contacts.email_cta":"Написать письмо ›",
+      "contacts.wa_label":"WhatsApp","contacts.wa_hint":"Пишите в любое время — мы на связи","contacts.wa_cta":"Открыть WhatsApp ›",
       "cta.title":"Запустите ИИ-команду","cta.sub":"Увеличьте выручку и сократите расходы уже в этом месяце",
       "cta.btn1":"Начать бесплатно в Telegram","cta.btn2":"Смотреть агентов",
       "footer.contact":"Контакты",
