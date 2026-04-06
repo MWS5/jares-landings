@@ -1085,10 +1085,11 @@
     const w = document.getElementById('jares-widget');
     if (!w) return;
     /* Official ElevenLabs events */
-    ['elevenlabs-convai:call_ended','elevenlabs-convai:disconnect',
-     'conversation_ended','conversationended','call-ended'].forEach(evt => {
-      w.addEventListener(evt, showLeadPopup);
-    });
+    // Lead popup on conversation end — disabled
+    // ['elevenlabs-convai:call_ended','elevenlabs-convai:disconnect',
+    //  'conversation_ended','conversationended','call-ended'].forEach(evt => {
+    //   w.addEventListener(evt, showLeadPopup);
+    // });
     /* Shadow DOM fallback: watch for "conversation ended" state text */
     if (w.shadowRoot) {
       const obs = new MutationObserver(() => {
@@ -1107,11 +1108,8 @@
   window.addEventListener('load', attachWidgetEvents);
   setTimeout(attachWidgetEvents, 1500);
 
-  /* ══════════════════════════════════════
-     POPUP TRIGGER — 5.5s after page load
-     Slides up above the ElevenLabs widget
-  ══════════════════════════════════════ */
-  setTimeout(showLeadPopup, 5500);
+  /* Lead popup disabled — access via Telegram Mini App */
+  // setTimeout(showLeadPopup, 5500);
   </script>
 </body>
 </html>

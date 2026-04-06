@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/jarvis", "destination": "/", "permanent": false },
+    { "source": "/jarvis/(.*)", "destination": "/", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/beauty", "destination": "/beauty/index.html" },
     { "source": "/salon", "destination": "/salon/index.html" },
