@@ -9,6 +9,8 @@
     { "source": "/clinic", "destination": "/clinic/index.html" },
     { "source": "/hotel", "destination": "/hotel/index.html" },
     { "source": "/realty", "destination": "/realty/index.html" },
+    { "source": "/partnerscout", "destination": "/partnerscout/index.html" },
+    { "source": "/partnerscout/dashboard", "destination": "/partnerscout/dashboard.html" },
     { "source": "/((?!.*\\.).*)", "destination": "/index.html" }
   ]
 }
