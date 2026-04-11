@@ -108,7 +108,7 @@ function renderResults(companies, isTrial) {
       : `<span class="email-blurred">${c.email}</span>`;
 
     const contactCell = (c.personal_email && c.personal_email.includes('🔒'))
-      ? `<span class="locked"><span class="lock-icon">🔒</span> <a href="index.html#pricing">Unlock</a></span>`
+      ? `<span class="locked"><span class="lock-icon">🔒</span> <a href="/partnerscout#pricing">Unlock</a></span>`
       : `<span class="contact-blurred">${c.contact_person || 'Not found'}</span>`;
 
     return `

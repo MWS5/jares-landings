@@ -100,8 +100,8 @@ if (trialForm) {
       showToast(msg, 'success');
 
       const dashUrl = IS_ADMIN
-        ? `dashboard.html?order_id=${orderId}&admin=${encodeURIComponent(_adminSecret)}`
-        : `dashboard.html?order_id=${orderId}`;
+        ? `/partnerscout/dashboard?order_id=${orderId}&admin=${encodeURIComponent(_adminSecret)}`
+        : `/partnerscout/dashboard?order_id=${orderId}`;
 
       setTimeout(() => {
         window.location.href = dashUrl;
