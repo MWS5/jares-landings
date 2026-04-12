@@ -1,6 +1,6 @@
 /**
- * PartnerScout AI — Dashboard
- * Polls order status → shows progress → renders results table
+ * PartnerScout AI — Dashboard v2
+ * Smart results display: data badges, blurred trial, full report CTA
  */
 
 const API_BASE = window.location.hostname === 'localhost'
@@ -8,9 +8,8 @@ const API_BASE = window.location.hostname === 'localhost'
   : 'https://partnerscout-api-production.up.railway.app';
 
 const POLL_INTERVAL_MS = 3000;
-const MAX_POLLS = 120; // 6 minutes max
+const MAX_POLLS = 120;
 
-// ── State ─────────────────────────────────────────────────────────────────────
 let pollCount = 0;
 let pollTimer = null;
 
@@ -19,9 +18,7 @@ const orderId      = params.get('order_id') || localStorage.getItem('ps_trial_or
 const _adminSecret = params.get('admin') || localStorage.getItem('ps_admin_secret') || '';
 const IS_ADMIN     = _adminSecret.length > 0;
 
-if (IS_ADMIN) {
-  document.title = '⚡ PartnerScout — Admin Dashboard';
-}
+if (IS_ADMIN) document.title = '⚡ PartnerScout — Admin Dashboard';
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const statusTitle    = document.getElementById('statusTitle');
@@ -37,142 +34,203 @@ const resultsTable   = document.getElementById('resultsTable');
 const resultsCount   = document.getElementById('resultsCount');
 const trialBanner    = document.getElementById('trialBanner');
 
-// ── Progress step mapping ─────────────────────────────────────────────────────
+// ── Progress steps ────────────────────────────────────────────────────────────
 const STEPS = [
   { id: 'step1', threshold: 10,  label: '🔎 Generating queries' },
   { id: 'step2', threshold: 30,  label: '📡 Searching sources' },
-  { id: 'step3', threshold: 70,  label: '🏗️ Extracting data' },
+  { id: 'step3', threshold: 70,  label: '🏗️ Extracting contacts' },
   { id: 'step4', threshold: 85,  label: '✅ Validating luxury' },
-  { id: 'step5', threshold: 100, label: '📦 Preparing results' },
+  { id: 'step5', threshold: 100, label: '📦 Preparing report' },
 ];
 
 function updateProgressSteps(progress) {
-  STEPS.forEach((step) => {
+  STEPS.forEach(step => {
     const el = document.getElementById(step.id);
     if (!el) return;
     if (progress >= step.threshold) {
       el.classList.remove('pstep--active');
       el.classList.add('pstep--done');
-    } else if (progress >= (step.threshold - 20)) {
+    } else if (progress >= step.threshold - 20) {
       el.classList.add('pstep--active');
     }
   });
 }
 
-// ── Category display ──────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 const CAT_LABELS = {
-  hotel:        '🏨 Hotel',
-  event_agency: '🎪 Event',
-  wedding:      '💍 Wedding',
-  concierge:    '🎩 Concierge',
-  travel:       '✈️ Travel',
-  venue:        '🏛️ Venue',
+  hotel: '🏨 Hotel', event_agency: '🎪 Event', wedding: '💍 Wedding',
+  concierge: '🎩 Concierge', travel: '✈️ Travel', venue: '🏛️ Venue',
 };
+const catLabel = cat => CAT_LABELS[cat] || cat;
 
-function catLabel(category) {
-  return CAT_LABELS[category] || category;
-}
-
-// ── Luxury score badge ────────────────────────────────────────────────────────
 function scoreBadge(score) {
   const pct = Math.round((score || 0) * 100);
   const cls = pct >= 80 ? 'score-badge--high' : 'score-badge--mid';
-  const star = pct >= 90 ? '★★★' : pct >= 75 ? '★★' : '★';
-  return `<span class="score-badge ${cls}">${star} ${pct}%</span>`;
+  const stars = pct >= 90 ? '★★★' : pct >= 75 ? '★★' : '★';
+  return `<span class="score-badge ${cls}">${stars} ${pct}%</span>`;
+}
+
+// ── Data availability badges ──────────────────────────────────────────────────
+/**
+ * Shows small icons for each data field:
+ * Green dot = found, grey dot = not found / locked
+ * Allows user to see at a glance how complete the data is
+ */
+function dataBadges(c, isTrial) {
+  const fields = [
+    { key: 'address',        icon: '📍', label: 'Address' },
+    { key: 'phone',          icon: '📞', label: 'Phone' },
+    { key: 'email',          icon: '📧', label: 'Email' },
+    { key: 'contact_person', icon: '👤', label: 'Contact' },
+    { key: 'personal_phone', icon: '📱', label: 'Direct phone' },
+    { key: 'personal_email', icon: '✉️', label: 'Direct email' },
+  ];
+
+  return fields.map(f => {
+    const val = c[f.key] || '';
+    const isLocked = val.includes('🔒');
+    const isFound  = val && val !== 'Not found' && !isLocked;
+    const cls = isFound ? 'data-dot data-dot--found' : isLocked ? 'data-dot data-dot--locked' : 'data-dot data-dot--missing';
+    const title = isFound ? `${f.label}: ${f.key === 'email' || f.key === 'personal_email' ? val : '✓'}` : isLocked ? `${f.label}: locked (upgrade)` : `${f.label}: not found`;
+    return `<span class="${cls}" title="${title}">${f.icon}</span>`;
+  }).join('');
+}
+
+// ── Blur helpers for trial ────────────────────────────────────────────────────
+function blurEmail(email, isTrial) {
+  if (!email || email === 'Not found') return `<span class="data-missing">—</span>`;
+  if (email.includes('🔒')) return `<span class="data-locked">🔒 <a href="/partnerscout#pricing" class="unlock-link">Upgrade</a></span>`;
+  if (!isTrial || IS_ADMIN) return `<a href="mailto:${email}" class="data-found">${email}</a>`;
+  // Trial: show as-is (already blurred server-side: j***@domain.com)
+  return `<span class="data-blurred">${email}</span>`;
+}
+
+function blurPhone(phone, isTrial) {
+  if (!phone || phone === 'Not found') return `<span class="data-missing">—</span>`;
+  if (!isTrial || IS_ADMIN) return `<a href="tel:${phone.replace(/\s/g,'')}}" class="data-found">${phone}</a>`;
+  // Trial: show first 4 chars + ***
+  const visible = phone.replace(/\s/g, '').slice(0, 4);
+  return `<span class="data-blurred">${visible}•••</span>`;
+}
+
+function contactPerson(c, isTrial) {
+  if (!c.contact_person || c.contact_person === 'Not found') return `<span class="data-missing">—</span>`;
+  if (!isTrial || IS_ADMIN) return `<span class="data-found">${c.contact_person}</span>`;
+  // Trial: show role only (server already strips name)
+  return `<span class="data-blurred">${c.contact_person}</span>`;
 }
 
 // ── Render results table ──────────────────────────────────────────────────────
 function renderResults(companies, isTrial) {
-  if (!resultsTable) return;
+  if (!resultsTable || !companies.length) return;
+
+  // Stats for summary bar
+  const emailsFound   = companies.filter(c => c.email && c.email !== 'Not found' && !c.email.includes('🔒')).length;
+  const phonesFound   = companies.filter(c => c.phone && c.phone !== 'Not found').length;
+  const contactsFound = companies.filter(c => c.contact_person && c.contact_person !== 'Not found').length;
+
+  const statsBar = `
+    <div class="results-stats">
+      <span class="stat-item stat-item--good">📧 ${emailsFound} emails found</span>
+      <span class="stat-item stat-item--good">📞 ${phonesFound} phones found</span>
+      <span class="stat-item stat-item--good">👤 ${contactsFound} contacts found</span>
+      ${isTrial && !IS_ADMIN ? `<span class="stat-item stat-item--locked">🔒 Full data in report</span>` : ''}
+    </div>`;
 
   const header = `
     <div class="result-row result-row--header">
       <span>Company</span>
       <span>Category</span>
       <span>Contact email</span>
+      <span>Phone</span>
       <span>Contact person</span>
       <span>Score</span>
-    </div>
-  `;
+      <span title="Data fields available">Data</span>
+    </div>`;
 
-  const rows = companies.map((c) => {
+  const rows = companies.map(c => {
     const website = c.website && c.website !== 'Not found'
-      ? `<div class="company-website"><a href="${c.website}" target="_blank" rel="noopener">${c.website.replace(/^https?:\/\//, '').slice(0, 30)}…</a></div>`
+      ? `<a href="${c.website}" target="_blank" rel="noopener" class="company-link">${c.website.replace(/^https?:\/\//, '').slice(0, 28)}…</a>`
       : '';
-    const address = c.address && c.address !== 'Not found'
-      ? `<div class="company-address">${c.address.slice(0, 50)}</div>`
-      : '';
-
-    const emailCell = c.email === 'Not found'
-      ? `<span class="locked">Not found</span>`
-      : `<span class="email-blurred">${c.email}</span>`;
-
-    const contactCell = (c.personal_email && c.personal_email.includes('🔒'))
-      ? `<span class="locked"><span class="lock-icon">🔒</span> <a href="/partnerscout#pricing">Unlock</a></span>`
-      : `<span class="contact-blurred">${c.contact_person || 'Not found'}</span>`;
 
     return `
       <div class="result-row">
         <div>
           <div class="company-name">${c.company_name}</div>
-          ${website}
-          ${address}
+          <div class="company-website">${website}</div>
         </div>
         <div><span class="cat-tag">${catLabel(c.category)}</span></div>
-        <div>${emailCell}</div>
-        <div>${contactCell}</div>
+        <div>${blurEmail(c.email, isTrial)}</div>
+        <div>${blurPhone(c.phone, isTrial)}</div>
+        <div>${contactPerson(c, isTrial)}</div>
         <div>${scoreBadge(c.luxury_score)}</div>
-      </div>
-    `;
+        <div class="data-badges">${dataBadges(c, isTrial)}</div>
+      </div>`;
   }).join('');
 
-  resultsTable.innerHTML = header + rows;
+  // Full report CTA (trial only)
+  const fullReportCTA = (isTrial && !IS_ADMIN) ? `
+    <div class="full-report-cta">
+      <div class="full-report-cta__title">📦 Your full report also includes:</div>
+      <div class="full-report-cta__fields">
+        <span>📍 Full address</span>
+        <span>📞 Direct phone</span>
+        <span>📧 Full email (unblurred)</span>
+        <span>👤 Contact name & title</span>
+        <span>📱 Personal mobile</span>
+        <span>✉️ Personal email</span>
+      </div>
+      <div class="full-report-cta__sub">Ready as CSV & JSON — import directly into your CRM</div>
+      <a href="/partnerscout#pricing" class="btn btn--primary btn--sm">Unlock full report →</a>
+    </div>` : '';
+
+  resultsTable.innerHTML = statsBar + header + rows + fullReportCTA;
 
   if (resultsCount) {
-    resultsCount.textContent = `${companies.length} companies found`;
+    const total = companies.length;
+    resultsCount.textContent = IS_ADMIN
+      ? `${total} companies (admin — full data)`
+      : isTrial ? `${total} preview leads · 50 found total` : `${total} companies found`;
   }
 }
 
 // ── Show done state ────────────────────────────────────────────────────────────
 async function showDone(orderId, isTrial) {
-  // Update status card
   statusIcon.textContent = '✅';
   statusTitle.textContent = IS_ADMIN
     ? '⚡ Admin: full results ready!'
     : isTrial ? '10 preview leads ready!' : 'Your leads are ready!';
   statusSub.textContent = IS_ADMIN
     ? 'Full unblurred data — 50 companies'
-    : isTrial ? 'Partial contacts shown — upgrade to unlock full data' : 'Download your full database below';
+    : isTrial ? 'Emails & phones shown — upgrade for full contacts + CSV'
+    : 'Download your full database below';
   statusBadge.textContent = 'Done';
   statusBadge.classList.add('status-badge--done');
   progressFill.style.width = '100%';
   updateProgressSteps(100);
 
-  // Fetch preview results
   try {
-    // Admin gets full JSON; trial gets blurred preview; paid gets full JSON
     const endpoint = IS_ADMIN || !isTrial
       ? `${API_BASE}/api/v1/export/${orderId}/json`
       : `${API_BASE}/api/v1/export/${orderId}/preview`;
 
     const fetchHeaders = IS_ADMIN ? { 'X-Admin-Secret': _adminSecret } : {};
     const resp = await fetch(endpoint, { headers: fetchHeaders });
-    if (!resp.ok) throw new Error(`Failed to fetch results: ${resp.status}`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
     const data = await resp.json();
     const companies = Array.isArray(data) ? data : (data.companies || []);
 
     renderResults(companies, isTrial);
-
-    // Show results section
     resultsSection.style.display = 'block';
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   } catch (err) {
     console.error('[DASHBOARD] Failed to load results:', err);
-    // Still show results section but with empty table message
-    resultsTable.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted)">Results are ready — check your email for the download link.</div>`;
-    resultsSection.style.display = 'block';
+    if (resultsTable) {
+      resultsTable.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted)">Results are ready — check your email for the download link.</div>`;
+    }
+    if (resultsSection) resultsSection.style.display = 'block';
   }
 }
 
@@ -183,8 +241,8 @@ function showError(message) {
   statusSub.textContent = 'An error occurred during the search';
   statusBadge.textContent = 'Error';
   statusBadge.classList.add('status-badge--error');
-  progressWrap.style.display = 'none';
-  if (errorMsg) errorMsg.textContent = message || 'Unknown error occurred.';
+  if (progressWrap) progressWrap.style.display = 'none';
+  if (errorMsg) errorMsg.textContent = message || 'Unknown error.';
   if (errorSection) errorSection.style.display = 'block';
 }
 
@@ -204,7 +262,6 @@ async function pollStatus(orderId) {
     const data = await resp.json();
     const { status, progress, is_trial, error_msg } = data;
 
-    // Update progress bar
     if (typeof progress === 'number') {
       progressFill.style.width = `${progress}%`;
       updateProgressSteps(progress);
@@ -217,19 +274,15 @@ async function pollStatus(orderId) {
       clearInterval(pollTimer);
       showError(error_msg || 'Pipeline failed. Please try again.');
     }
-    // else: still running — keep polling
-
   } catch (err) {
-    console.warn(`[DASHBOARD] Poll error (${pollCount}):`, err.message);
-    // Don't stop polling on network hiccups — Railway cold starts can cause 502s
+    console.warn(`[DASHBOARD] Poll ${pollCount}:`, err.message);
   }
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 if (!orderId) {
-  showError('No order ID found. Please start a new search.');
+  showError('No order ID. Please start a new search.');
 } else {
-  // Start polling immediately, then every 3 seconds
   pollStatus(orderId);
   pollTimer = setInterval(() => pollStatus(orderId), POLL_INTERVAL_MS);
 }
