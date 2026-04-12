@@ -1,6 +1,8 @@
 /**
- * PartnerScout AI — Dashboard v2
- * Smart results display: data badges, blurred trial, full report CTA
+ * PartnerScout AI — Dashboard v3
+ * - Trial: uses preview data from poll response directly (no extra fetch)
+ * - Admin/paid: fetches full JSON from export endpoint
+ * - Auto-reports JS errors to backend for JARVIS logging
  */
 
 const API_BASE = window.location.hostname === 'localhost'
@@ -33,6 +35,17 @@ const errorMsg       = document.getElementById('errorMsg');
 const resultsTable   = document.getElementById('resultsTable');
 const resultsCount   = document.getElementById('resultsCount');
 const trialBanner    = document.getElementById('trialBanner');
+
+// ── Auto error reporting to JARVIS ────────────────────────────────────────────
+async function reportError(context, message) {
+  try {
+    await fetch(`${API_BASE}/api/v1/log/error`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context, message, order_id: orderId, ts: new Date().toISOString() }),
+    });
+  } catch (_) { /* non-fatal */ }
+}
 
 // ── Progress steps ────────────────────────────────────────────────────────────
 const STEPS = [
@@ -71,12 +84,7 @@ function scoreBadge(score) {
 }
 
 // ── Data availability badges ──────────────────────────────────────────────────
-/**
- * Shows small icons for each data field:
- * Green dot = found, grey dot = not found / locked
- * Allows user to see at a glance how complete the data is
- */
-function dataBadges(c, isTrial) {
+function dataBadges(c) {
   const fields = [
     { key: 'address',        icon: '📍', label: 'Address' },
     { key: 'phone',          icon: '📞', label: 'Phone' },
@@ -85,30 +93,27 @@ function dataBadges(c, isTrial) {
     { key: 'personal_phone', icon: '📱', label: 'Direct phone' },
     { key: 'personal_email', icon: '✉️', label: 'Direct email' },
   ];
-
   return fields.map(f => {
     const val = c[f.key] || '';
     const isLocked = val.includes('🔒');
     const isFound  = val && val !== 'Not found' && !isLocked;
     const cls = isFound ? 'data-dot data-dot--found' : isLocked ? 'data-dot data-dot--locked' : 'data-dot data-dot--missing';
-    const title = isFound ? `${f.label}: ${f.key === 'email' || f.key === 'personal_email' ? val : '✓'}` : isLocked ? `${f.label}: locked (upgrade)` : `${f.label}: not found`;
+    const title = isFound ? `${f.label}: found` : isLocked ? `${f.label}: locked (upgrade)` : `${f.label}: not found`;
     return `<span class="${cls}" title="${title}">${f.icon}</span>`;
   }).join('');
 }
 
-// ── Blur helpers for trial ────────────────────────────────────────────────────
+// ── Blur helpers ──────────────────────────────────────────────────────────────
 function blurEmail(email, isTrial) {
   if (!email || email === 'Not found') return `<span class="data-missing">—</span>`;
   if (email.includes('🔒')) return `<span class="data-locked">🔒 <a href="/partnerscout#pricing" class="unlock-link">Upgrade</a></span>`;
   if (!isTrial || IS_ADMIN) return `<a href="mailto:${email}" class="data-found">${email}</a>`;
-  // Trial: show as-is (already blurred server-side: j***@domain.com)
   return `<span class="data-blurred">${email}</span>`;
 }
 
 function blurPhone(phone, isTrial) {
   if (!phone || phone === 'Not found') return `<span class="data-missing">—</span>`;
-  if (!isTrial || IS_ADMIN) return `<a href="tel:${phone.replace(/\s/g,'')}}" class="data-found">${phone}</a>`;
-  // Trial: show first 4 chars + ***
+  if (!isTrial || IS_ADMIN) return `<a href="tel:${phone.replace(/\s/g,'')}" class="data-found">${phone}</a>`;
   const visible = phone.replace(/\s/g, '').slice(0, 4);
   return `<span class="data-blurred">${visible}•••</span>`;
 }
@@ -116,15 +121,20 @@ function blurPhone(phone, isTrial) {
 function contactPerson(c, isTrial) {
   if (!c.contact_person || c.contact_person === 'Not found') return `<span class="data-missing">—</span>`;
   if (!isTrial || IS_ADMIN) return `<span class="data-found">${c.contact_person}</span>`;
-  // Trial: show role only (server already strips name)
   return `<span class="data-blurred">${c.contact_person}</span>`;
 }
 
 // ── Render results table ──────────────────────────────────────────────────────
 function renderResults(companies, isTrial) {
-  if (!resultsTable || !companies.length) return;
+  if (!resultsTable) return;
 
-  // Stats for summary bar
+  if (!companies || !companies.length) {
+    resultsTable.innerHTML = `<div style="padding:32px;text-align:center;color:var(--text-muted)">
+      No results found for this search. Try different niches or regions.
+    </div>`;
+    return;
+  }
+
   const emailsFound   = companies.filter(c => c.email && c.email !== 'Not found' && !c.email.includes('🔒')).length;
   const phonesFound   = companies.filter(c => c.phone && c.phone !== 'Not found').length;
   const contactsFound = companies.filter(c => c.contact_person && c.contact_person !== 'Not found').length;
@@ -134,16 +144,16 @@ function renderResults(companies, isTrial) {
       <span class="stat-item stat-item--good">📧 ${emailsFound} emails found</span>
       <span class="stat-item stat-item--good">📞 ${phonesFound} phones found</span>
       <span class="stat-item stat-item--good">👤 ${contactsFound} contacts found</span>
-      ${isTrial && !IS_ADMIN ? `<span class="stat-item stat-item--locked">🔒 Full data in report</span>` : ''}
+      ${isTrial && !IS_ADMIN ? `<span class="stat-item stat-item--locked">🔒 Full data in paid report</span>` : ''}
     </div>`;
 
   const header = `
     <div class="result-row result-row--header">
       <span>Company</span>
       <span>Category</span>
-      <span>Contact email</span>
+      <span>Email</span>
       <span>Phone</span>
-      <span>Contact person</span>
+      <span>Contact</span>
       <span>Score</span>
       <span title="Data fields available">Data</span>
     </div>`;
@@ -152,11 +162,10 @@ function renderResults(companies, isTrial) {
     const website = c.website && c.website !== 'Not found'
       ? `<a href="${c.website}" target="_blank" rel="noopener" class="company-link">${c.website.replace(/^https?:\/\//, '').slice(0, 28)}…</a>`
       : '';
-
     return `
       <div class="result-row">
         <div>
-          <div class="company-name">${c.company_name}</div>
+          <div class="company-name">${c.company_name || '—'}</div>
           <div class="company-website">${website}</div>
         </div>
         <div><span class="cat-tag">${catLabel(c.category)}</span></div>
@@ -164,11 +173,10 @@ function renderResults(companies, isTrial) {
         <div>${blurPhone(c.phone, isTrial)}</div>
         <div>${contactPerson(c, isTrial)}</div>
         <div>${scoreBadge(c.luxury_score)}</div>
-        <div class="data-badges">${dataBadges(c, isTrial)}</div>
+        <div class="data-badges">${dataBadges(c)}</div>
       </div>`;
   }).join('');
 
-  // Full report CTA (trial only)
   const fullReportCTA = (isTrial && !IS_ADMIN) ? `
     <div class="full-report-cta">
       <div class="full-report-cta__title">📦 Your full report also includes:</div>
@@ -190,12 +198,18 @@ function renderResults(companies, isTrial) {
     const total = companies.length;
     resultsCount.textContent = IS_ADMIN
       ? `${total} companies (admin — full data)`
-      : isTrial ? `${total} preview leads · 50 found total` : `${total} companies found`;
+      : isTrial ? `${total} preview leads` : `${total} companies found`;
   }
 }
 
 // ── Show done state ────────────────────────────────────────────────────────────
-async function showDone(orderId, isTrial) {
+/**
+ * @param {string} orderId
+ * @param {boolean} isTrial
+ * @param {object} pollData - Full response from GET /orders/{id} (already has preview!)
+ */
+async function showDone(orderId, isTrial, pollData) {
+  // Update status UI
   statusIcon.textContent = '✅';
   statusTitle.textContent = IS_ADMIN
     ? '⚡ Admin: full results ready!'
@@ -204,46 +218,75 @@ async function showDone(orderId, isTrial) {
     ? 'Full unblurred data — 50 companies'
     : isTrial ? 'Emails & phones shown — upgrade for full contacts + CSV'
     : 'Download your full database below';
-  statusBadge.textContent = 'Done';
-  statusBadge.classList.add('status-badge--done');
-  progressFill.style.width = '100%';
+  if (statusBadge) {
+    statusBadge.textContent = 'Done';
+    statusBadge.classList.add('status-badge--done');
+  }
+  if (progressFill) progressFill.style.width = '100%';
   updateProgressSteps(100);
 
-  try {
-    const endpoint = IS_ADMIN || !isTrial
-      ? `${API_BASE}/api/v1/export/${orderId}/json`
-      : `${API_BASE}/api/v1/export/${orderId}/preview`;
+  let companies = [];
 
-    const fetchHeaders = IS_ADMIN ? { 'X-Admin-Secret': _adminSecret } : {};
-    const resp = await fetch(endpoint, { headers: fetchHeaders });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  if (IS_ADMIN || !isTrial) {
+    // ── Admin / paid: fetch full JSON export ────────────────────────────────
+    try {
+      const fetchHeaders = IS_ADMIN ? { 'X-Admin-Secret': _adminSecret } : {};
+      const resp = await fetch(`${API_BASE}/api/v1/export/${orderId}/json`, { headers: fetchHeaders });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status} from /json`);
+      const data = await resp.json();
+      companies = Array.isArray(data) ? data : (data.companies || []);
+    } catch (err) {
+      console.error('[DASHBOARD] Full export fetch failed:', err);
+      await reportError('showDone/json', err.message);
+    }
 
-    const data = await resp.json();
-    const companies = Array.isArray(data) ? data : (data.companies || []);
+  } else {
+    // ── Trial: use preview data already in the poll response ────────────────
+    // The GET /orders/{id} endpoint ALREADY returns response["preview"] for done+trial orders.
+    // No second HTTP request needed — eliminates extra failure point.
+    companies = Array.isArray(pollData?.preview) ? pollData.preview : [];
 
-    renderResults(companies, isTrial);
+    // Fallback: if poll response somehow didn't include preview, fetch /preview
+    if (!companies.length) {
+      console.warn('[DASHBOARD] Poll data had no preview — trying /preview endpoint');
+      try {
+        const resp = await fetch(`${API_BASE}/api/v1/export/${orderId}/preview`);
+        if (resp.ok) {
+          const pData = await resp.json();
+          companies = Array.isArray(pData.companies) ? pData.companies : [];
+        } else {
+          const errMsg = `HTTP ${resp.status} from /preview`;
+          console.error('[DASHBOARD] Preview fallback failed:', errMsg);
+          await reportError('showDone/preview_fallback', errMsg);
+        }
+      } catch (fbErr) {
+        console.error('[DASHBOARD] Preview fallback exception:', fbErr);
+        await reportError('showDone/preview_exception', fbErr.message);
+      }
+    }
+  }
+
+  // Render whatever we have
+  renderResults(companies, isTrial);
+  if (resultsSection) {
     resultsSection.style.display = 'block';
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  } catch (err) {
-    console.error('[DASHBOARD] Failed to load results:', err);
-    if (resultsTable) {
-      resultsTable.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted)">Results are ready — check your email for the download link.</div>`;
-    }
-    if (resultsSection) resultsSection.style.display = 'block';
   }
 }
 
 // ── Show error state ───────────────────────────────────────────────────────────
 function showError(message) {
-  statusIcon.textContent = '❌';
-  statusTitle.textContent = 'Search failed';
-  statusSub.textContent = 'An error occurred during the search';
-  statusBadge.textContent = 'Error';
-  statusBadge.classList.add('status-badge--error');
+  if (statusIcon) statusIcon.textContent = '❌';
+  if (statusTitle) statusTitle.textContent = 'Search failed';
+  if (statusSub)   statusSub.textContent = 'An error occurred during the search';
+  if (statusBadge) {
+    statusBadge.textContent = 'Error';
+    statusBadge.classList.add('status-badge--error');
+  }
   if (progressWrap) progressWrap.style.display = 'none';
-  if (errorMsg) errorMsg.textContent = message || 'Unknown error.';
+  if (errorMsg)     errorMsg.textContent = message || 'Unknown error.';
   if (errorSection) errorSection.style.display = 'block';
+  reportError('showError', message);
 }
 
 // ── Poll order status ─────────────────────────────────────────────────────────
@@ -263,19 +306,23 @@ async function pollStatus(orderId) {
     const { status, progress, is_trial, error_msg } = data;
 
     if (typeof progress === 'number') {
-      progressFill.style.width = `${progress}%`;
+      if (progressFill) progressFill.style.width = `${progress}%`;
       updateProgressSteps(progress);
     }
 
     if (status === 'done') {
       clearInterval(pollTimer);
-      await showDone(orderId, is_trial !== false);
+      // Pass full poll data — it contains data.preview for trial orders!
+      await showDone(orderId, is_trial !== false, data);
     } else if (status === 'failed') {
       clearInterval(pollTimer);
       showError(error_msg || 'Pipeline failed. Please try again.');
     }
+    // else: still running — keep polling
+
   } catch (err) {
     console.warn(`[DASHBOARD] Poll ${pollCount}:`, err.message);
+    // Don't stop polling on network hiccups (Railway cold starts)
   }
 }
 
