@@ -1,8 +1,10 @@
 /**
- * PartnerScout AI — Dashboard v4 (demo-clean)
+ * PartnerScout AI — Dashboard v5 (demo-clean)
  * - Trial: uses preview data from poll response directly
  * - Admin/paid: fetches full JSON from export endpoint
- * - Stale order protection: if order_id in URL → always use URL (ignore localStorage)
+ * - Stale order protection:
+ *     Admin mode  → ALWAYS use URL order_id (never localStorage — avoids stale broken orders)
+ *     Trial mode  → URL order_id takes priority, fallback to localStorage
  * - Pricing / upgrade CTAs hidden for demo mode
  */
 
@@ -21,14 +23,19 @@ const _adminSecret = params.get('admin') || localStorage.getItem('ps_admin_secre
 const IS_ADMIN     = _adminSecret.length > 0;
 
 // ── Stale order protection ────────────────────────────────────────────────────
-// If order_id is in the URL → always use it (fresh order) + overwrite localStorage.
-// If only in localStorage → use it but show "New search" button.
+// Admin mode: NEVER use localStorage — stale admin orders had 0 results (broken pipeline).
+//   Admin MUST always submit a fresh order from index page with ?admin= param.
+// Trial mode: URL order_id takes priority; fallback to localStorage for tab refresh.
 const urlOrderId = params.get('order_id');
 if (urlOrderId) {
   // Fresh order from URL — overwrite any stale localStorage order
   localStorage.setItem('ps_trial_order_id', urlOrderId);
 }
-const orderId = urlOrderId || localStorage.getItem('ps_trial_order_id');
+// Admin: urlOrderId only (null if no order_id in URL → shows "start new search")
+// Trial: urlOrderId from URL, or fall back to localStorage
+const orderId = IS_ADMIN
+  ? urlOrderId
+  : (urlOrderId || localStorage.getItem('ps_trial_order_id'));
 
 if (IS_ADMIN) document.title = '⚡ PartnerScout — Admin Dashboard';
 
@@ -281,6 +288,14 @@ function showError(message) {
   }
   if (progressWrap) progressWrap.style.display = 'none';
   if (errorMsg)     errorMsg.textContent = message || 'Unknown error.';
+
+  // Admin mode: link back to index with admin param so they can start a fresh order
+  const retryLink = document.getElementById('errorRetryLink');
+  if (retryLink && IS_ADMIN) {
+    retryLink.href = `/partnerscout?admin=${encodeURIComponent(_adminSecret)}#trial`;
+    retryLink.textContent = '⚡ Start new admin search →';
+  }
+
   if (errorSection) errorSection.style.display = 'block';
   reportError('showError', message);
 }
@@ -324,7 +339,10 @@ async function pollStatus(orderId) {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 if (!orderId) {
-  showError('No order ID. Please start a new search.');
+  const msg = IS_ADMIN
+    ? 'No order ID. Please start a new search from the admin page.'
+    : 'No order ID. Please start a new search.';
+  showError(msg);
 } else {
   pollStatus(orderId);
   pollTimer = setInterval(() => pollStatus(orderId), POLL_INTERVAL_MS);
