@@ -1,8 +1,9 @@
 /**
- * PartnerScout AI — Dashboard v3
- * - Trial: uses preview data from poll response directly (no extra fetch)
+ * PartnerScout AI — Dashboard v4 (demo-clean)
+ * - Trial: uses preview data from poll response directly
  * - Admin/paid: fetches full JSON from export endpoint
- * - Auto-reports JS errors to backend for JARVIS logging
+ * - Stale order protection: if order_id in URL → always use URL (ignore localStorage)
+ * - Pricing / upgrade CTAs hidden for demo mode
  */
 
 const API_BASE = window.location.hostname === 'localhost'
@@ -16,9 +17,18 @@ let pollCount = 0;
 let pollTimer = null;
 
 const params       = new URLSearchParams(window.location.search);
-const orderId      = params.get('order_id') || localStorage.getItem('ps_trial_order_id');
 const _adminSecret = params.get('admin') || localStorage.getItem('ps_admin_secret') || '';
 const IS_ADMIN     = _adminSecret.length > 0;
+
+// ── Stale order protection ────────────────────────────────────────────────────
+// If order_id is in the URL → always use it (fresh order) + overwrite localStorage.
+// If only in localStorage → use it but show "New search" button.
+const urlOrderId = params.get('order_id');
+if (urlOrderId) {
+  // Fresh order from URL — overwrite any stale localStorage order
+  localStorage.setItem('ps_trial_order_id', urlOrderId);
+}
+const orderId = urlOrderId || localStorage.getItem('ps_trial_order_id');
 
 if (IS_ADMIN) document.title = '⚡ PartnerScout — Admin Dashboard';
 
@@ -106,7 +116,7 @@ function dataBadges(c) {
 // ── Blur helpers ──────────────────────────────────────────────────────────────
 function blurEmail(email, isTrial) {
   if (!email || email === 'Not found') return `<span class="data-missing">—</span>`;
-  if (email.includes('🔒')) return `<span class="data-locked">🔒 <a href="/partnerscout#pricing" class="unlock-link">Upgrade</a></span>`;
+  if (email.includes('🔒')) return `<span class="data-locked">🔒 Locked</span>`;
   if (!isTrial || IS_ADMIN) return `<a href="mailto:${email}" class="data-found">${email}</a>`;
   return `<span class="data-blurred">${email}</span>`;
 }
@@ -177,22 +187,8 @@ function renderResults(companies, isTrial) {
       </div>`;
   }).join('');
 
-  const fullReportCTA = (isTrial && !IS_ADMIN) ? `
-    <div class="full-report-cta">
-      <div class="full-report-cta__title">📦 Your full report also includes:</div>
-      <div class="full-report-cta__fields">
-        <span>📍 Full address</span>
-        <span>📞 Direct phone</span>
-        <span>📧 Full email (unblurred)</span>
-        <span>👤 Contact name & title</span>
-        <span>📱 Personal mobile</span>
-        <span>✉️ Personal email</span>
-      </div>
-      <div class="full-report-cta__sub">Ready as CSV & JSON — import directly into your CRM</div>
-      <a href="/partnerscout#pricing" class="btn btn--primary btn--sm">Unlock full report →</a>
-    </div>` : '';
-
-  resultsTable.innerHTML = statsBar + header + rows + fullReportCTA;
+  // Pricing CTA hidden for demo
+  resultsTable.innerHTML = statsBar + header + rows;
 
   if (resultsCount) {
     const total = companies.length;
