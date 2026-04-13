@@ -215,7 +215,7 @@ async function showDone(orderId, isTrial, pollData) {
     ? '⚡ Admin: full results ready!'
     : isTrial ? '10 preview leads ready!' : 'Your leads are ready!';
   statusSub.textContent = IS_ADMIN
-    ? 'Full unblurred data — 50 companies'
+    ? 'Full unblurred data — verified contacts ready'
     : isTrial ? 'Emails & phones shown — upgrade for full contacts + CSV'
     : 'Download your full database below';
   if (statusBadge) {
