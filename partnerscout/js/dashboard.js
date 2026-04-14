@@ -21,6 +21,13 @@ let pollTimer = null;
 const params       = new URLSearchParams(window.location.search);
 const _adminSecret = params.get('admin') || localStorage.getItem('ps_admin_secret') || '';
 const IS_ADMIN     = _adminSecret.length > 0;
+// Demo mode: jares-ai.com domain or ?demo=true param (from demo order redirect)
+const IS_DEMO      = !IS_ADMIN && (
+  params.get('demo') === 'true' ||
+  window.location.hostname.includes('jares-ai.com') ||
+  window.location.hostname === 'www.jares-ai.com'
+);
+const _demoSecret  = 'ps_demo_jares_2026';
 
 // ── Stale order protection ────────────────────────────────────────────────────
 // Admin mode: NEVER use localStorage — stale admin orders had 0 results (broken pipeline).
@@ -38,6 +45,7 @@ const orderId = IS_ADMIN
   : (urlOrderId || localStorage.getItem('ps_trial_order_id'));
 
 if (IS_ADMIN) document.title = '⚡ PartnerScout — Admin Dashboard';
+if (IS_DEMO)  document.title = '◈ PartnerScout AI — Live Demo';
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const statusTitle    = document.getElementById('statusTitle');
@@ -124,20 +132,20 @@ function dataBadges(c) {
 function blurEmail(email, isTrial) {
   if (!email || email === 'Not found') return `<span class="data-missing">—</span>`;
   if (email.includes('🔒')) return `<span class="data-locked">🔒 Locked</span>`;
-  if (!isTrial || IS_ADMIN) return `<a href="mailto:${email}" class="data-found">${email}</a>`;
+  if (!isTrial || IS_ADMIN || IS_DEMO) return `<a href="mailto:${email}" class="data-found">${email}</a>`;
   return `<span class="data-blurred">${email}</span>`;
 }
 
 function blurPhone(phone, isTrial) {
   if (!phone || phone === 'Not found') return `<span class="data-missing">—</span>`;
-  if (!isTrial || IS_ADMIN) return `<a href="tel:${phone.replace(/\s/g,'')}" class="data-found">${phone}</a>`;
+  if (!isTrial || IS_ADMIN || IS_DEMO) return `<a href="tel:${phone.replace(/\s/g,'')}" class="data-found">${phone}</a>`;
   const visible = phone.replace(/\s/g, '').slice(0, 4);
   return `<span class="data-blurred">${visible}•••</span>`;
 }
 
 function contactPerson(c, isTrial) {
   if (!c.contact_person || c.contact_person === 'Not found') return `<span class="data-missing">—</span>`;
-  if (!isTrial || IS_ADMIN) return `<span class="data-found">${c.contact_person}</span>`;
+  if (!isTrial || IS_ADMIN || IS_DEMO) return `<span class="data-found">${c.contact_person}</span>`;
   return `<span class="data-blurred">${c.contact_person}</span>`;
 }
 
@@ -161,7 +169,7 @@ function renderResults(companies, isTrial) {
       <span class="stat-item stat-item--good">📧 ${emailsFound} emails found</span>
       <span class="stat-item stat-item--good">📞 ${phonesFound} phones found</span>
       <span class="stat-item stat-item--good">👤 ${contactsFound} contacts found</span>
-      ${isTrial && !IS_ADMIN ? `<span class="stat-item stat-item--locked">🔒 Full data in paid report</span>` : ''}
+      ${isTrial && !IS_ADMIN && !IS_DEMO ? `<span class="stat-item stat-item--locked">🔒 Full data in paid report</span>` : ''}
     </div>`;
 
   const header = `
@@ -201,6 +209,7 @@ function renderResults(companies, isTrial) {
     const total = companies.length;
     resultsCount.textContent = IS_ADMIN
       ? `${total} companies (admin — full data)`
+      : IS_DEMO ? `${total} verified luxury partners`
       : isTrial ? `${total} preview leads` : `${total} companies found`;
   }
 }
@@ -216,10 +225,12 @@ async function showDone(orderId, isTrial, pollData) {
   statusIcon.textContent = '✅';
   statusTitle.textContent = IS_ADMIN
     ? '⚡ Admin: full results ready!'
+    : IS_DEMO ? '🎯 20 verified luxury partners found!'
     : isTrial ? '10 preview leads ready!' : 'Your leads are ready!';
   statusSub.textContent = IS_ADMIN
     ? 'Full unblurred data — verified contacts ready'
-    : isTrial ? 'Emails & phones shown — upgrade for full contacts + CSV'
+    : IS_DEMO ? 'Full contacts, emails and phones — download JSON below'
+    : isTrial ? 'Preview data — download JSON to see full structure'
     : 'Download your full database below';
   if (statusBadge) {
     statusBadge.textContent = 'Done';
@@ -230,10 +241,12 @@ async function showDone(orderId, isTrial, pollData) {
 
   let companies = [];
 
-  if (IS_ADMIN || !isTrial) {
-    // ── Admin / paid: fetch full JSON export ────────────────────────────────
+  if (IS_ADMIN || IS_DEMO || !isTrial) {
+    // ── Admin / Demo / paid: fetch full JSON export ──────────────────────────
     try {
-      const fetchHeaders = IS_ADMIN ? { 'X-Admin-Secret': _adminSecret } : {};
+      const fetchHeaders = {};
+      if (IS_ADMIN)      fetchHeaders['X-Admin-Secret'] = _adminSecret;
+      else if (IS_DEMO)  fetchHeaders['X-Demo-Secret']  = _demoSecret;
       const resp = await fetch(`${API_BASE}/api/v1/export/${orderId}/json`, { headers: fetchHeaders });
       if (!resp.ok) throw new Error(`HTTP ${resp.status} from /json`);
       const data = await resp.json();
@@ -245,11 +258,8 @@ async function showDone(orderId, isTrial, pollData) {
 
   } else {
     // ── Trial: use preview data already in the poll response ────────────────
-    // The GET /orders/{id} endpoint ALREADY returns response["preview"] for done+trial orders.
-    // No second HTTP request needed — eliminates extra failure point.
     companies = Array.isArray(pollData?.preview) ? pollData.preview : [];
 
-    // Fallback: if poll response somehow didn't include preview, fetch /preview
     if (!companies.length) {
       console.warn('[DASHBOARD] Poll data had no preview — trying /preview endpoint');
       try {
@@ -269,12 +279,77 @@ async function showDone(orderId, isTrial, pollData) {
     }
   }
 
-  // Render whatever we have
-  renderResults(companies, isTrial);
+  // Render results table
+  renderResults(companies, isTrial && !IS_DEMO);
+
+  // ── Download JSON button (all modes) ────────────────────────────────────────
+  _renderDownloadBar(orderId, companies, isTrial && !IS_DEMO);
+
   if (resultsSection) {
     resultsSection.style.display = 'block';
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+}
+
+// ── Download bar: JSON button for all modes ───────────────────────────────────
+function _renderDownloadBar(orderId, companies, isTrial) {
+  const wrap = document.getElementById('downloadBar');
+  if (!wrap || !companies || !companies.length) return;
+
+  let jsonBtn = '';
+
+  if (IS_ADMIN || IS_DEMO || !isTrial) {
+    // Full JSON from API (real export endpoint)
+    const headers = IS_ADMIN
+      ? `{'X-Admin-Secret': '${_adminSecret}'}`
+      : IS_DEMO ? `{'X-Demo-Secret': '${_demoSecret}'}` : '{}';
+    jsonBtn = `
+      <button class="btn btn--primary btn--download" onclick="_downloadFullJson('${orderId}')">
+        ⬇ Download JSON (${companies.length} leads)
+      </button>`;
+  } else {
+    // Trial: client-side JSON from preview data already in memory
+    jsonBtn = `
+      <button class="btn btn--secondary btn--download" onclick="_downloadPreviewJson()">
+        ⬇ Download Preview JSON (${companies.length} leads)
+      </button>`;
+  }
+
+  wrap.innerHTML = jsonBtn;
+  wrap.style.display = 'flex';
+  // Store companies for client-side download
+  window._psCompanies = companies;
+}
+
+async function _downloadFullJson(orderId) {
+  try {
+    const headers = {};
+    if (IS_ADMIN)     headers['X-Admin-Secret'] = _adminSecret;
+    else if (IS_DEMO) headers['X-Demo-Secret']  = _demoSecret;
+    const resp = await fetch(`${API_BASE}/api/v1/export/${orderId}/json`, { headers });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const blob = await resp.blob();
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `partnerscout_${orderId.slice(0,8)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error('[DASHBOARD] JSON download failed:', err);
+    alert('Download failed: ' + err.message);
+  }
+}
+
+function _downloadPreviewJson() {
+  const data = window._psCompanies || [];
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `partnerscout_preview.json`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ── Show error state ───────────────────────────────────────────────────────────

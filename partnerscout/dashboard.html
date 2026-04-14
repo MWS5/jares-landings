@@ -68,7 +68,7 @@
       <!-- RESULTS TABLE -->
       <div class="results-table-wrap">
         <div class="results-table-header">
-          <h2>Your 10 preview leads</h2>
+          <h2 id="resultsTitle">Your leads</h2>
           <div class="results-table-actions">
             <span id="resultsCount" class="results-count"></span>
           </div>
@@ -77,6 +77,11 @@
         <div class="results-table" id="resultsTable">
           <!-- Filled by JS -->
         </div>
+      </div>
+
+      <!-- DOWNLOAD BAR — shown after results load (all modes) -->
+      <div id="downloadBar" style="display:none; justify-content:center; margin:24px 0; gap:12px;">
+        <!-- Filled by JS: _renderDownloadBar() -->
       </div>
 
       <!-- UPGRADE CTA — hidden for demo presentation -->

@@ -7,14 +7,24 @@ const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:8000'
   : 'https://partnerscout-api-production.up.railway.app';
 
-// ── Admin mode detection ─────────────────────────────────────────────────────
-// Usage: jares-ai.com/partnerscout?admin=YOUR_SECRET
+// ── Admin / Demo mode detection ───────────────────────────────────────────────
+// Admin: ?admin=SECRET in URL (owner only, 50 leads)
+// Demo:  automatic for jares-ai.com domain (20 full leads, for showcase)
 const _adminSecret = new URLSearchParams(window.location.search).get('admin') || '';
 const IS_ADMIN = _adminSecret.length > 0;
+const IS_DEMO  = !IS_ADMIN && (
+  window.location.hostname.includes('jares-ai.com') ||
+  window.location.hostname === 'www.jares-ai.com'
+);
+// Demo secret embedded for jares-ai.com domain (separate from admin secret)
+const _demoSecret = 'ps_demo_jares_2026';
 
 if (IS_ADMIN) {
   console.log('[PartnerScout] Admin mode active — full results, no blur');
   document.title = '⚡ PartnerScout — Admin Mode';
+}
+if (IS_DEMO) {
+  console.log('[PartnerScout] Demo mode active — 20 full leads for showcase');
 }
 
 // ── Toast notifications ──────────────────────────────────────────────────────
@@ -62,20 +72,25 @@ if (trialForm) {
     trialBtnText.innerHTML = '<span class="spinner"></span> Starting AI search...';
 
     try {
-      const endpoint = IS_ADMIN
-        ? `${API_BASE}/api/v1/orders/admin`
-        : `${API_BASE}/api/v1/orders/trial`;
-
-      const headers = { 'Content-Type': 'application/json' };
-      if (IS_ADMIN) headers['X-Admin-Secret'] = _adminSecret;
+      let endpoint, headers;
+      if (IS_ADMIN) {
+        endpoint = `${API_BASE}/api/v1/orders/admin`;
+        headers = { 'Content-Type': 'application/json', 'X-Admin-Secret': _adminSecret };
+      } else if (IS_DEMO) {
+        endpoint = `${API_BASE}/api/v1/orders/demo`;
+        headers = { 'Content-Type': 'application/json', 'X-Demo-Secret': _demoSecret };
+      } else {
+        endpoint = `${API_BASE}/api/v1/orders/trial`;
+        headers = { 'Content-Type': 'application/json' };
+      }
 
       const response = await fetch(endpoint, {
         method: 'POST',
         headers,
         body: JSON.stringify({
           email, niches, regions, segment,
-          count_target: IS_ADMIN ? 50 : 10,
-          is_trial: !IS_ADMIN,
+          count_target: IS_ADMIN ? 50 : IS_DEMO ? 20 : 10,
+          is_trial: !IS_ADMIN && !IS_DEMO,
         }),
       });
 
@@ -96,11 +111,13 @@ if (trialForm) {
 
       const msg = IS_ADMIN
         ? '⚡ Admin mode — 50 full leads incoming!'
+        : IS_DEMO ? '✅ Searching for 20 verified partners...'
         : '✅ AI is searching! Redirecting to your results...';
       showToast(msg, 'success');
 
       const dashUrl = IS_ADMIN
         ? `/partnerscout/dashboard?order_id=${orderId}&admin=${encodeURIComponent(_adminSecret)}`
+        : IS_DEMO ? `/partnerscout/dashboard?order_id=${orderId}&demo=true`
         : `/partnerscout/dashboard?order_id=${orderId}`;
 
       setTimeout(() => {
