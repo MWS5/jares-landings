@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JARES AI — AI Agent Marketplace</title>
   <meta name="description" content="AI agents replace departments, increase conversion and reduce costs — without hiring." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+  <meta name="theme-color" content="#0A84FF" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
@@ -878,7 +881,6 @@
           </svg>
         </div>
         <div class="contact-label" data-i18n="contacts.wa_label">WhatsApp</div>
-        <div class="contact-value">+357 97 614 750</div>
         <div class="contact-hint" data-i18n="contacts.wa_hint">Write anytime — we're online</div>
         <div class="contact-arrow" data-i18n="contacts.wa_cta">Open WhatsApp ›</div>
       </a>
@@ -905,7 +907,14 @@
       <li><a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener">Telegram</a></li>
       <li><a href="#contacts" data-i18n="footer.contact">Contact</a></li>
     </ul>
-    <div class="f-copy">© <span id="copy-year"></span> <span class="f-brand">JARES AI</span></div>
+    <ul class="f-links" style="margin-top:14px">
+      <li><a href="/impressum.html" data-i18n="footer.impressum">Imprint</a></li>
+      <li><a href="/agb.html" data-i18n="footer.terms">Terms</a></li>
+      <li><a href="/datenschutz.html" data-i18n="footer.privacy">Privacy</a></li>
+      <li><a href="/widerrufsbelehrung.html" data-i18n="footer.withdrawal">Withdrawal</a></li>
+      <li><a href="#" onclick="event.preventDefault();showConsentBanner();" data-i18n="footer.cookies">Privacy settings</a></li>
+    </ul>
+    <div class="f-copy">© <span id="copy-year"></span> <span class="f-brand">JARES AI</span> · Eduards Mironovs · Niederwürschnitz, Germany</div>
   </footer>
 
   <!-- JARES VOICE WIDGET — bottom-left, blue orb to match design -->
@@ -916,7 +925,18 @@
     avatar-orb-color-1="#007AFF"
     avatar-orb-color-2="#0062CC"
   ></elevenlabs-convai>
-  <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
+  <!-- ElevenLabs widget script is loaded only after the user has given
+       voice-assistant consent in the GDPR banner (see #consent-banner). -->
+  <script>
+    window.JARES_loadVoiceWidget = function(){
+      if (window.__jaresVoiceLoaded) return;
+      window.__jaresVoiceLoaded = true;
+      const s = document.createElement('script');
+      s.src   = 'https://elevenlabs.io/convai-widget/index.js';
+      s.async = true;
+      document.body.appendChild(s);
+    };
+  </script>
 
   <!-- DEMO LIMIT ORB — appears when 3 free demos used today -->
   <div id="demo-limit-orb" onclick="toggleDemoLimitModal()" role="button" aria-label="Talk to Jares">💬</div>
@@ -1007,6 +1027,7 @@
       "cta.title":"Launch Your AI Team","cta.sub":"Increase revenue and cut costs this month",
       "cta.btn1":"Start Free Trial in Telegram","cta.btn2":"Browse Agents",
       "footer.contact":"Contact",
+      "footer.impressum":"Imprint","footer.terms":"Terms","footer.privacy":"Privacy","footer.withdrawal":"Withdrawal","footer.cookies":"Privacy settings",
       "widget.action":"Talk to Jares"
     },
     de: {
@@ -1052,6 +1073,7 @@
       "cta.title":"KI-Team starten","cta.sub":"Umsatz steigern und Kosten noch diesen Monat senken",
       "cta.btn1":"Kostenlos in Telegram starten","cta.btn2":"Agenten entdecken",
       "footer.contact":"Kontakt",
+      "footer.impressum":"Impressum","footer.terms":"AGB","footer.privacy":"Datenschutz","footer.withdrawal":"Widerruf","footer.cookies":"Datenschutz-Einstellungen",
       "widget.action":"Mit Jares sprechen"
     },
     fr: {
@@ -1097,6 +1119,7 @@
       "cta.title":"Lancez votre équipe IA","cta.sub":"Augmentez vos revenus et réduisez vos coûts ce mois-ci",
       "cta.btn1":"Démarrer gratuitement sur Telegram","cta.btn2":"Voir les agents",
       "footer.contact":"Contact",
+      "footer.impressum":"Mentions légales","footer.terms":"CGV","footer.privacy":"Confidentialité","footer.withdrawal":"Rétractation","footer.cookies":"Paramètres de confidentialité",
       "widget.action":"Parler à Jares"
     },
     es: {
@@ -1142,6 +1165,7 @@
       "cta.title":"Lanza tu equipo IA","cta.sub":"Aumenta los ingresos y reduce costos este mes",
       "cta.btn1":"Empezar gratis en Telegram","cta.btn2":"Ver agentes",
       "footer.contact":"Contacto",
+      "footer.impressum":"Aviso legal","footer.terms":"Términos","footer.privacy":"Privacidad","footer.withdrawal":"Desistimiento","footer.cookies":"Preferencias de privacidad",
       "widget.action":"Hablar con Jares"
     },
     ru: {
@@ -1187,6 +1211,7 @@
       "cta.title":"Запустите ИИ-команду","cta.sub":"Увеличьте выручку и сократите расходы уже в этом месяце",
       "cta.btn1":"Начать бесплатно в Telegram","cta.btn2":"Смотреть агентов",
       "footer.contact":"Контакты",
+      "footer.impressum":"Импрессум","footer.terms":"Условия","footer.privacy":"Конфиденциальность","footer.withdrawal":"Отказ","footer.cookies":"Настройки приватности",
       "widget.action":"Говорить с Jares"
     }
   };
@@ -1558,6 +1583,232 @@
     });
   }
   window.addEventListener('load', () => setTimeout(_initDemoLimiter, 900));
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       GDPR / DSGVO consent banner — DSGVO + § 25 TTDSG compliant.
+       Shown on first visit; re-openable via footer "Privacy settings".
+       Categories: necessary (always on) + voice (ElevenLabs, opt-in).
+       Default state until consent: NOTHING optional is loaded.
+  ═══════════════════════════════════════════════════════════════════ -->
+  <style>
+    #consent-banner{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);width:min(680px,calc(100vw - 32px));z-index:99999;background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,0.18),0 4px 12px rgba(0,0,0,0.08);padding:24px 26px;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;display:none;opacity:0;transition:opacity .25s ease}
+    #consent-banner.visible{display:block;opacity:1}
+    #consent-banner .cb-title{font-weight:700;font-size:17px;color:#1d1d1f;margin-bottom:6px;letter-spacing:-0.01em}
+    #consent-banner .cb-text{font-size:14px;line-height:1.55;color:#3a3a3c;margin-bottom:16px}
+    #consent-banner .cb-text a{color:#007AFF;text-decoration:none}
+    #consent-banner .cb-text a:hover{text-decoration:underline}
+    #consent-banner .cb-options{display:none;background:#f5f5f7;padding:14px 16px;border-radius:12px;margin-bottom:16px}
+    #consent-banner.expanded .cb-options{display:block}
+    #consent-banner .cb-row{display:flex;align-items:flex-start;gap:12px;padding:8px 0}
+    #consent-banner .cb-row + .cb-row{border-top:1px solid rgba(0,0,0,0.06)}
+    #consent-banner .cb-row label{flex:1;font-size:13.5px;line-height:1.5;color:#1d1d1f;cursor:pointer}
+    #consent-banner .cb-row label small{display:block;color:#6e6e73;font-size:12px;margin-top:2px;font-weight:400}
+    #consent-banner .cb-row label strong{font-weight:600}
+    #consent-banner input[type=checkbox]{width:18px;height:18px;margin-top:1px;accent-color:#007AFF;cursor:pointer}
+    #consent-banner input[disabled]{opacity:0.65}
+    #consent-banner .cb-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    #consent-banner .cb-btn{font:600 13.5px/1 'Inter',sans-serif;padding:11px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);cursor:pointer;background:#fff;color:#1d1d1f;letter-spacing:.01em;transition:all .15s ease}
+    #consent-banner .cb-btn:hover{background:#f5f5f7}
+    #consent-banner .cb-btn.primary{background:#1d1d1f;color:#fff;border-color:#1d1d1f}
+    #consent-banner .cb-btn.primary:hover{background:#000}
+    #consent-banner .cb-btn.flex{flex:1;min-width:130px}
+    @media (max-width:540px){#consent-banner{padding:20px;border-radius:14px;left:16px;right:16px;width:auto;transform:none;bottom:14px}#consent-banner .cb-buttons{flex-direction:column}#consent-banner .cb-btn.flex{width:100%}}
+  </style>
+
+  <div id="consent-banner" role="dialog" aria-modal="false" aria-labelledby="cb-title">
+    <div class="cb-title" id="cb-title"></div>
+    <div class="cb-text" id="cb-text"></div>
+
+    <div class="cb-options" aria-label="Consent categories">
+      <div class="cb-row">
+        <input type="checkbox" id="cb-cat-nec" checked disabled aria-checked="true">
+        <label for="cb-cat-nec">
+          <strong id="cb-cat-nec-title"></strong>
+          <small id="cb-cat-nec-desc"></small>
+        </label>
+      </div>
+      <div class="cb-row">
+        <input type="checkbox" id="cb-cat-voice" aria-checked="false">
+        <label for="cb-cat-voice">
+          <strong id="cb-cat-voice-title"></strong>
+          <small id="cb-cat-voice-desc"></small>
+        </label>
+      </div>
+    </div>
+
+    <div class="cb-buttons">
+      <button class="cb-btn flex"        id="cb-btn-reject" type="button"></button>
+      <button class="cb-btn flex"        id="cb-btn-custom" type="button"></button>
+      <button class="cb-btn flex primary" id="cb-btn-accept" type="button"></button>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const STORAGE_KEY = 'jares-consent';
+    const CONSENT_VERSION = '1.0';
+
+    const TXT = {
+      de: {
+        title: 'Datenschutz auf jares-ai.com',
+        text: 'Wir nutzen ausschließlich technisch notwendige Daten (Sprachauswahl, Lead-Formular-Status). Optional können Sie unseren <strong>Sprach-Assistenten "Jares" (ElevenLabs, USA)</strong> aktivieren — dabei werden Audio- und Verbindungsdaten an ElevenLabs übermittelt. Details: <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a>.',
+        nec_title: 'Notwendig',
+        nec_desc:  'Stets aktiv. Spracheinstellung, Status des Lead-Formulars, technische Sicherheit. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TTDSG.',
+        voice_title: 'Sprach-Assistent (ElevenLabs)',
+        voice_desc:  'Lädt das Voice-Widget von ElevenLabs Inc. (USA). Erfasst werden Audio, Transkript und Verbindungsdaten. Datentransfer in die USA. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO.',
+        btn_reject: 'Nur notwendige',
+        btn_custom: 'Einstellungen',
+        btn_accept: 'Alle akzeptieren',
+        btn_save:   'Auswahl speichern'
+      },
+      en: {
+        title: 'Privacy on jares-ai.com',
+        text: 'We use only strictly necessary data (language preference, lead-form status). You may optionally enable our <strong>voice assistant "Jares" (ElevenLabs, USA)</strong> — this transmits audio and connection data to ElevenLabs. Details: <a href="/datenschutz.html" target="_blank">Privacy Policy</a>.',
+        nec_title: 'Necessary',
+        nec_desc:  'Always active. Language preference, lead-form state, technical security. Legal basis: § 25 (2) no. 2 TTDSG.',
+        voice_title: 'Voice assistant (ElevenLabs)',
+        voice_desc:  'Loads the voice widget from ElevenLabs Inc. (USA). Audio, transcript and connection data are processed. Transfer to the USA. Legal basis: Art. 6 (1) a GDPR.',
+        btn_reject: 'Necessary only',
+        btn_custom: 'Customize',
+        btn_accept: 'Accept all',
+        btn_save:   'Save selection'
+      },
+      fr: {
+        title: 'Confidentialité sur jares-ai.com',
+        text: 'Nous utilisons uniquement des données strictement nécessaires (langue, statut du formulaire). Vous pouvez activer notre <strong>assistant vocal « Jares » (ElevenLabs, États-Unis)</strong> — audio et données de connexion sont transmis à ElevenLabs. Détails : <a href="/datenschutz.html" target="_blank">politique de confidentialité</a>.',
+        nec_title: 'Nécessaire',
+        nec_desc:  'Toujours actif. Langue, état du formulaire, sécurité technique. Base : § 25 (2) n° 2 TTDSG.',
+        voice_title: 'Assistant vocal (ElevenLabs)',
+        voice_desc:  'Charge le widget vocal d\'ElevenLabs Inc. (USA). Traitement audio, transcription et connexion. Transfert vers les États-Unis. Base : art. 6 (1) a RGPD.',
+        btn_reject: 'Uniquement nécessaire',
+        btn_custom: 'Paramètres',
+        btn_accept: 'Tout accepter',
+        btn_save:   'Enregistrer'
+      },
+      es: {
+        title: 'Privacidad en jares-ai.com',
+        text: 'Solo usamos datos estrictamente necesarios (idioma, estado del formulario). Puede activar nuestro <strong>asistente vocal «Jares» (ElevenLabs, EE. UU.)</strong> — se transmiten audio y datos de conexión a ElevenLabs. Detalles: <a href="/datenschutz.html" target="_blank">política de privacidad</a>.',
+        nec_title: 'Necesarios',
+        nec_desc:  'Siempre activos. Idioma, estado del formulario, seguridad técnica. Base: § 25 (2) n.º 2 TTDSG.',
+        voice_title: 'Asistente vocal (ElevenLabs)',
+        voice_desc:  'Carga el widget de ElevenLabs Inc. (EE. UU.). Procesa audio, transcripción y datos de conexión. Transferencia a EE. UU. Base: art. 6 (1) a RGPD.',
+        btn_reject: 'Solo necesarios',
+        btn_custom: 'Configurar',
+        btn_accept: 'Aceptar todo',
+        btn_save:   'Guardar selección'
+      },
+      ru: {
+        title: 'Конфиденциальность на jares-ai.com',
+        text: 'Мы используем только технически необходимые данные (язык, статус формы лида). По желанию можно включить <strong>голосовой ассистент «Jares» (ElevenLabs, США)</strong> — при этом аудио и данные подключения передаются в ElevenLabs. Подробности: <a href="/datenschutz.html" target="_blank">политика конфиденциальности</a>.',
+        nec_title: 'Необходимые',
+        nec_desc:  'Всегда активны. Язык, состояние формы лида, техническая безопасность. Правовая основа: § 25 (2) № 2 TTDSG.',
+        voice_title: 'Голосовой ассистент (ElevenLabs)',
+        voice_desc:  'Загружает голосовой виджет ElevenLabs Inc. (США). Обрабатываются аудио, транскрипция и данные подключения. Передача в США. Правовая основа: ст. 6 (1) a GDPR.',
+        btn_reject: 'Только необходимые',
+        btn_custom: 'Настройки',
+        btn_accept: 'Принять всё',
+        btn_save:   'Сохранить выбор'
+      }
+    };
+
+    function getStored(){
+      try{ const v = localStorage.getItem(STORAGE_KEY); return v ? JSON.parse(v) : null; } catch(_){ return null; }
+    }
+    function setStored(obj){
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); } catch(_){}
+    }
+    function currentTexts(){
+      // Source of truth: <html lang="..."> — set by the site's i18n on every switch.
+      const lang = (document.documentElement.lang || 'de').slice(0,2).toLowerCase();
+      return TXT[lang] || TXT.de;
+    }
+
+    function renderTexts(){
+      const t = currentTexts();
+      const $ = id => document.getElementById(id);
+      $('cb-title').textContent          = t.title;
+      $('cb-text').innerHTML             = t.text;
+      $('cb-cat-nec-title').textContent  = t.nec_title;
+      $('cb-cat-nec-desc').textContent   = t.nec_desc;
+      $('cb-cat-voice-title').textContent= t.voice_title;
+      $('cb-cat-voice-desc').textContent = t.voice_desc;
+      const banner = document.getElementById('consent-banner');
+      const expanded = banner.classList.contains('expanded');
+      $('cb-btn-reject').textContent = t.btn_reject;
+      $('cb-btn-custom').textContent = expanded ? t.btn_save : t.btn_custom;
+      $('cb-btn-accept').textContent = t.btn_accept;
+    }
+
+    function showBanner(forceExpanded){
+      const banner = document.getElementById('consent-banner');
+      banner.classList.toggle('expanded', !!forceExpanded);
+      renderTexts();
+      banner.classList.add('visible');
+    }
+    function hideBanner(){
+      const banner = document.getElementById('consent-banner');
+      banner.classList.remove('visible');
+      banner.classList.remove('expanded');
+    }
+
+    function applyConsent(c){
+      // Activate functional services according to user choice
+      if (c && c.voice && typeof window.JARES_loadVoiceWidget === 'function') {
+        window.JARES_loadVoiceWidget();
+      }
+    }
+
+    function save(c){
+      const obj = Object.assign({
+        necessary: true,
+        voice: false,
+        version: CONSENT_VERSION,
+        given_at: new Date().toISOString()
+      }, c);
+      setStored(obj);
+      applyConsent(obj);
+      hideBanner();
+    }
+
+    // Public API for footer button + language switcher reflow
+    window.showConsentBanner = function(){ showBanner(true); };
+    window.refreshConsentBanner = function(){
+      if (document.getElementById('consent-banner').classList.contains('visible')) renderTexts();
+    };
+
+    // Wire buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('cb-btn-reject').addEventListener('click', () => save({voice:false}));
+      document.getElementById('cb-btn-accept').addEventListener('click', () => save({voice:true}));
+      document.getElementById('cb-btn-custom').addEventListener('click', () => {
+        const banner = document.getElementById('consent-banner');
+        if (banner.classList.contains('expanded')) {
+          // Save with current checkbox state
+          save({voice: document.getElementById('cb-cat-voice').checked});
+        } else {
+          showBanner(true);
+        }
+      });
+
+      // First-load decision
+      const stored = getStored();
+      if (!stored || stored.version !== CONSENT_VERSION) {
+        // Show banner shortly after page is interactive
+        setTimeout(() => showBanner(false), 800);
+      } else {
+        applyConsent(stored);
+      }
+
+      // Re-render banner whenever <html lang="..."> changes (covers all paths:
+      // top-bar lang buttons, browser-locale init, programmatic switches).
+      try {
+        new MutationObserver(() => {
+          renderTexts();
+        }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+      } catch(_) {}
+    });
+  })();
   </script>
 </body>
 </html>
