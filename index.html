@@ -343,27 +343,48 @@
     /* ── FOOTER ── */
     footer {
       background: var(--light); border-top: 1px solid var(--border);
-      padding: 36px 52px;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 16px;
+      padding: 56px 24px 48px;
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+      text-align: center;
     }
-    .f-domain {
-      font-size: 0.88rem; font-weight: 600;
-      color: var(--blue); letter-spacing: -0.01em;
-      text-decoration: none; transition: opacity 0.15s;
+    footer .f-domain {
+      font-size: 0.94rem; font-weight: 700; letter-spacing: -0.01em;
+      color: var(--blue); text-decoration: none; transition: opacity 0.15s;
+      margin-bottom: 4px;
     }
-    .f-domain:hover { opacity: 0.7; }
-    .f-links { display: flex; gap: 24px; list-style: none; }
-    .f-links a { text-decoration: none; color: var(--gray); font-size: 0.8rem; transition: color 0.15s; }
-    .f-links a:hover { color: var(--black); }
-    .f-copy { font-size: 0.78rem; color: rgba(0,0,0,0.25); }
-    .f-copy .f-brand { color: var(--black); font-weight: 600; }
+    footer .f-domain:hover { opacity: 0.7; }
+    footer .f-links {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px 22px; list-style: none; padding: 0; margin: 0;
+    }
+    footer .f-links li { display: inline-flex; align-items: center; }
+    footer .f-links li + li::before {
+      content: "·"; color: rgba(0,0,0,0.18); margin-right: 22px;
+      pointer-events: none;
+    }
+    footer .f-links a {
+      text-decoration: none; color: var(--gray);
+      font-size: 0.84rem; font-weight: 500; transition: color 0.15s;
+    }
+    footer .f-links a:hover { color: var(--black); }
+    footer .f-divider {
+      width: 56px; height: 1px; background: var(--border); margin: 4px 0;
+    }
+    footer .f-copy {
+      font-size: 0.78rem; color: rgba(0,0,0,0.32); letter-spacing: 0.01em;
+    }
+    footer .f-copy .f-brand { color: var(--black); font-weight: 600; }
+    @media (max-width: 540px) {
+      footer { padding: 44px 18px 36px; gap: 14px; }
+      footer .f-links { gap: 6px 16px; }
+      footer .f-links li + li::before { margin-right: 16px; }
+    }
 
-    /* ── JARES VOICE WIDGET — bottom-left ── */
+    /* ── JARES VOICE WIDGET — bottom-left, lifted to clear the footer ── */
     elevenlabs-convai {
       position: fixed !important;
-      bottom: 48px !important;
-      left: 28px !important;
+      bottom: 96px !important;
+      left: 24px !important;
       right: auto !important;
       z-index: 9998;
     }
@@ -620,7 +641,7 @@
       .wgrid, .cards, .steps, .plans, .svcs, .contacts-grid { grid-template-columns: 1fr; }
       .step { border-right: none; border-bottom: 1px solid var(--border); }
       .step:last-child { border-bottom: none; }
-      elevenlabs-convai { bottom: 20px !important; left: 16px !important; }
+      elevenlabs-convai { bottom: 84px !important; left: 14px !important; }
       #lead-popup { left: 16px; width: calc(100vw - 32px); bottom: 144px; }
       .price-simple-inner { padding: 48px 28px; }
       .price-from-items { grid-template-columns: 1fr; max-width: 100%; }
@@ -901,20 +922,25 @@
   <!-- FOOTER -->
   <footer>
     <a href="https://jares-ai.com" class="f-domain">jares-ai.com</a>
+
     <ul class="f-links">
-      <li><a href="#agents" data-i18n="nav.agents">Agents</a></li>
+      <li><a href="#agents"  data-i18n="nav.agents">Agents</a></li>
       <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
       <li><a href="https://t.me/JaresAgentsBot" target="_blank" rel="noopener">Telegram</a></li>
       <li><a href="#contacts" data-i18n="footer.contact">Contact</a></li>
     </ul>
-    <ul class="f-links" style="margin-top:14px">
-      <li><a href="/impressum.html" data-i18n="footer.impressum">Imprint</a></li>
-      <li><a href="/agb.html" data-i18n="footer.terms">Terms</a></li>
-      <li><a href="/datenschutz.html" data-i18n="footer.privacy">Privacy</a></li>
+
+    <div class="f-divider" aria-hidden="true"></div>
+
+    <ul class="f-links">
+      <li><a href="/impressum.html"          data-i18n="footer.impressum">Imprint</a></li>
+      <li><a href="/agb.html"                data-i18n="footer.terms">Terms</a></li>
+      <li><a href="/datenschutz.html"        data-i18n="footer.privacy">Privacy</a></li>
       <li><a href="/widerrufsbelehrung.html" data-i18n="footer.withdrawal">Withdrawal</a></li>
       <li><a href="#" onclick="event.preventDefault();showConsentBanner();" data-i18n="footer.cookies">Privacy settings</a></li>
     </ul>
-    <div class="f-copy">© <span id="copy-year"></span> <span class="f-brand">JARES AI</span> · Eduards Mironovs · Niederwürschnitz, Germany</div>
+
+    <div class="f-copy">© <span id="copy-year"></span> <span class="f-brand">JARES AI</span></div>
   </footer>
 
   <!-- JARES VOICE WIDGET — bottom-left, blue orb to match design -->
