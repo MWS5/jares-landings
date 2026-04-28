@@ -27,7 +27,7 @@ const IS_DEMO      = !IS_ADMIN && (
   window.location.hostname.includes('jares-ai.com') ||
   window.location.hostname === 'www.jares-ai.com'
 );
-const _demoSecret  = 'ps_demo_jares_2026';
+const _demoSecret  = 'ps_demo_jares_v2_de7c28167a92f2ad';
 
 // ── Stale order protection ────────────────────────────────────────────────────
 // Admin mode: NEVER use localStorage — stale admin orders had 0 results (broken pipeline).

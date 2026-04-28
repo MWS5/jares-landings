@@ -17,7 +17,7 @@ const IS_DEMO  = !IS_ADMIN && (
   window.location.hostname === 'www.jares-ai.com'
 );
 // Demo secret embedded for jares-ai.com domain (separate from admin secret)
-const _demoSecret = 'ps_demo_jares_2026';
+const _demoSecret = 'ps_demo_jares_v2_de7c28167a92f2ad';
 
 if (IS_ADMIN) {
   console.log('[PartnerScout] Admin mode active — full results, no blur');
